@@ -50,3 +50,13 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# VSCode
+.vscode
+
+# local help scripts
+_compile.bat
+_test.bat
+
+# Approval generated files
+*.received.*
