@@ -1,13 +1,15 @@
-# ApprovalTests.c.cmocka
+# ApprovalTests.c
 
 Plain/portable C 99 version - micro Approvals.
 
+## cmocka
+
 This approvals support [cmocka](https://cmocka.org/).
 
-To compile and run a test:
+To compile and run a test with:
 
-    gcc -g -Wall -Wextra -pedantic -std=c99 ... AppTest.c Approvals.c -l cmocka -o AppTest
-    ./AppTest
+    gcc -g -Wall -Wextra -pedantic -std=c99 ... ..\src\approvals.c AppTest.c -l cmocka -o AppTest.exe
+    ./AppTest.exe
 
 ## License
 
