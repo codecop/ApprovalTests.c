@@ -12,3 +12,7 @@ extern const char* __approvals_verify(const char* received,
 #define verify_xml(xml, testName)                                                \
     const char* __approved = __approvals_verify((xml), __FILE__, testName, "xml"); \
     assert_string_equal(__approved, (xml));
+
+#define verify_txt(xml, testName)                                                \
+    const char* __approved = __approvals_verify((xml), __FILE__, testName, "txt"); \
+    assert_string_equal(__approved, (xml));
