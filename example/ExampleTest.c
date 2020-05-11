@@ -2,9 +2,9 @@
 #include <stdarg.h> /* used by cmocka */
 #include <stddef.h> /* used by cmocka */
 
-#include <cmocka.h>
-
 #include "../include/approvals_cmocka.h"
+#include <cmocka.h>
+#include <stdlib.h> /* used by approvals */
 
 static void test_some_xml(void** state)
 {
