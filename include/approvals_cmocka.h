@@ -15,11 +15,13 @@ extern const char* __approvals_verify(const char* received,
                                       const char* extension_no_dot);
 
 #define verify_xml(xml, testName)                                                  \
-    const char* __approved = __approvals_verify((xml), __FILE__, testName, "xml"); \
-    assert_string_equal(__approved, (xml));                                        \
+    const char* __got = (xml);                                                     \
+    const char* __approved = __approvals_verify(__got, __FILE__, testName, "xml"); \
+    assert_string_equal(__approved, __got);                                        \
     free((void*)__approved);
 
 #define verify_txt(txt, testName)                                                  \
-    const char* __approved = __approvals_verify((txt), __FILE__, testName, "txt"); \
-    assert_string_equal(__approved, (txt));                                        \
+    const char* __got = (txt);                                                     \
+    const char* __approved = __approvals_verify(__got, __FILE__, testName, "txt"); \
+    assert_string_equal(__approved, __got);                                        \
     free((void*)__approved);
