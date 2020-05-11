@@ -4,8 +4,8 @@
 
 #include <cmocka.h>
 
-#include "../src/approvals.c"
 #include "../include/approvals_cmocka.h"
+#include "../src/approvals.c"
 
 static void test_approvals_name(void** state)
 {
@@ -42,6 +42,13 @@ static void test_verify_xml(void** state)
     verify_xml("<nope />", "test_verify_xml");
 }
 
+static void test_verify_txt(void** state)
+{
+    (void)state; /* unused */
+
+    verify_txt("Some text.\nNew line.\n", "test_verify_txt");
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -49,6 +56,7 @@ int main(void)
         cmocka_unit_test(test_approvals_save_load), /* */
         cmocka_unit_test(test_approvals_verify),    /* */
         cmocka_unit_test(test_verify_xml),          /* */
+        cmocka_unit_test(test_verify_txt),          /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
