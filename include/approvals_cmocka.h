@@ -4,15 +4,22 @@
  * BSD3 licensed.
  */
 
+/*
+#include <cmocka.h>
+#include <stdlib.h>
+*/
+
 extern const char* __approvals_verify(const char* received,
                                       const char* full_file_name,
                                       const char* test_name,
                                       const char* extension_no_dot);
 
-#define verify_xml(xml, testName)                                                \
+#define verify_xml(xml, testName)                                                  \
     const char* __approved = __approvals_verify((xml), __FILE__, testName, "xml"); \
-    assert_string_equal(__approved, (xml));
+    assert_string_equal(__approved, (xml));                                        \
+    free((void*)__approved);
 
-#define verify_txt(txt, testName)                                                \
+#define verify_txt(txt, testName)                                                  \
     const char* __approved = __approvals_verify((txt), __FILE__, testName, "txt"); \
-    assert_string_equal(__approved, (txt));
+    assert_string_equal(__approved, (txt));                                        \
+    free((void*)__approved);
