@@ -8,7 +8,10 @@ This approvals support [cmocka](https://cmocka.org/).
 
 To compile and run a test with:
 
-    gcc -g -Wall -Wextra -pedantic -std=c99 ... ..\src\approvals.c AppTest.c -l cmocka -o AppTest.exe
+    gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
+        ..\src\approvals.c ..\src\approvals_xml.c AppTest.c ^
+        -l cmocka ^
+        -o AppTest.exe
     ./AppTest.exe
 
 ## License
