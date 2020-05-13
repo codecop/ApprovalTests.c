@@ -3,7 +3,7 @@ TEST_DIR := ./tests
 
 CC := gcc
 STD := c99
-CFLAGS := -g -std=$(STD) -O -Wall -Wextra -pedantic -Wno-unused-function -Wno-nonnull
+CFLAGS := -g -std=$(STD) -O -Werror -Wall -Wextra -pedantic -Wno-error=format
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 CMOCKA := -lcmocka
 
