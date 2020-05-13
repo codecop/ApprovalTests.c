@@ -8,10 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-static const char* approvals_file_name_for(const char* full_file_name,
-                                           const char* test_name,
-                                           bool is_approved,
-                                           const char* extension_no_dot)
+const char* approvals_file_name_for(const char* full_file_name,
+                                    const char* test_name,
+                                    bool is_approved,
+                                    const char* extension_no_dot)
 {
     const char* last_dot = strrchr(full_file_name, '.');
     size_t length_file_name = 0;
@@ -56,7 +56,7 @@ static const char* approvals_file_name_for(const char* full_file_name,
     return s;
 }
 
-static const const char* approvals_load(const char* filename)
+const const char* approvals_load(const char* filename)
 {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -106,7 +106,7 @@ static const const char* approvals_load(const char* filename)
     return read_buffer;
 }
 
-static void approvals_save(const char* filename, const char* data)
+void approvals_save(const char* filename, const char* data)
 {
     FILE* file = fopen(filename, "w");
     if (file == NULL) {
@@ -128,7 +128,7 @@ static void approvals_save(const char* filename, const char* data)
     }
 }
 
-static void approvals_delete(const char* filename)
+void approvals_delete(const char* filename)
 {
     int error_remove = remove(filename);
     if (error_remove) {

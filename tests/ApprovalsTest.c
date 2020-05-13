@@ -3,15 +3,16 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
+#include <stdlib.h>
 
 #include "../include/approvals_cmocka.h"
-#include "../src/approvals.c"
+#include "../src/approvals_private.h"
 
 static void test_approvals_name(void** state)
 {
     (void)state; /* unused */
 
-    assert_string_equal("ApprovalsTest.foo.approved.txt",
+    assert_string_equal("tests/ApprovalsTest.foo.approved.txt",
                         approvals_file_name_for(__FILE__, "foo", true, "txt"));
 }
 
