@@ -26,6 +26,7 @@ const char* __approvals_xml_format(const char* xml)
     unsigned int intent = 0;
     char prev = '\0', current = '\0', next = '\0';
     const size_t len = strlen(xml);
+    bool newline = true;
     for (size_t i = 0; i < len; i++) {
         current = *(xml + i);
         next = *(xml + i + 1); /* \0 at end */
@@ -34,19 +35,16 @@ const char* __approvals_xml_format(const char* xml)
          * TODO ignore whitespace outside of tags, after > and before <, ignore \n
          */
 
+        switch (current) {
         /*
         newline before opening tag (unless last was newline)
         newline before closing tag, remove intent, (unless last was newline)
-        newline after opening tag, increase intent
-        newline after closing tag
         */
-
-        switch (current) {
-        case '<':  /* opening or closing tag */
+        case '<':              /* opening or closing tag */
             if (next == '/') { /* closing tag */
                 intent -= 1;
             }
-            if (prev != '\0') {
+            if (!newline) {
                 xml_newline(sb, intent);
             }
             break;
@@ -56,7 +54,12 @@ const char* __approvals_xml_format(const char* xml)
 
         // printf("%d: %s %d - %d\n", i, (xml + i), current, intent);
         sb_append_len(sb, xml + i, 1);
+        newline = false;
         switch (current) {
+        /*
+        newline after opening tag, increase intent
+        newline after closing tag
+        */
         case '<':
             if (next != '/') {
                 intent += 1;
@@ -66,7 +69,11 @@ const char* __approvals_xml_format(const char* xml)
             if (prev == '/') {
                 intent -= 1;
             }
-            xml_newline(sb, intent);
+            if (next != '<') {
+                /* if there is a next tag, it will do what is necessary */
+                xml_newline(sb, intent);
+                newline = true;
+            }
             break;
         default:
             break;
