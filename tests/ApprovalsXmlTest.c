@@ -58,6 +58,17 @@ static void test_format_sibling_intent(void** state)
     free((void*)formatted);
 }
 
+static void test_format_sibling_text(void** state)
+{
+    (void)state; /* unused */
+
+    const char* xml = "<r><a>bar</a>foo</r>";
+    const char* formatted = __approvals_xml_format(xml);
+
+    assert_string_equal("<r>\n  <a>\n    bar\n  </a>\n  foo\n</r>\n", formatted);
+    free((void*)formatted);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -66,6 +77,7 @@ int main(void)
         cmocka_unit_test(test_format_single_intent),  /* */
         cmocka_unit_test(test_format_multi_intent),   /* */
         cmocka_unit_test(test_format_sibling_intent), /* */
+        cmocka_unit_test(test_format_sibling_text),   /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
