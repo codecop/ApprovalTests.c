@@ -43,6 +43,21 @@ static void test_format_xml(void** state)
     free((void*)formatted);
 }
 
+/* TODO <?xml version="1.0" encoding="UTF-8"?> */
+
+static void test_orders_xml(void** state)
+{
+    (void)state; /* unused */
+
+    verify_xml(
+        "<orders><order id='1234'><product id='EVENT02' stylist='Celeste "
+        "Pulchritudo'><price "
+        "currency='USD'>149.99</price>Makeover</product></order><order "
+        "id='1235'><product id='LIPSTICK01' weight='30'><price "
+        "currency='USD'>14.99</price>Cherry Bloom</product></order></orders>",
+        "test_orders_xml");
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -52,6 +67,7 @@ int main(void)
         cmocka_unit_test_prestate(test_format_xml, &test_cases[2]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[3]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[4]), /* */
+        cmocka_unit_test(test_orders_xml),                          /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
