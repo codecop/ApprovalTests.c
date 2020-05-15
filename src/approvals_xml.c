@@ -21,27 +21,31 @@ static void xml_newline(struct StringBuilder* sb, unsigned int intent)
 const char* __approvals_xml_format(const char* xml)
 {
     struct StringBuilder* sb = make_sb();
-    sb_ensure_size(sb, strlen(xml));
+    const size_t xml_len = strlen(xml);
+    sb_ensure_size(sb, xml_len);
 
     unsigned int intent = 0;
     char prev = '\0', current = '\0', next = '\0';
-    const size_t len = strlen(xml);
     bool newline = true;
-    for (size_t i = 0; i < len; i++) {
+
+    for (size_t i = 0; i < xml_len; i++) {
         current = *(xml + i);
         next = *(xml + i + 1); /* \0 at end */
-
-        /*
-         * TODO ignore whitespace outside of tags, after > and before <, ignore \n
-         */
 
         switch (current) {
         /*
         newline before opening tag (unless last was newline)
         newline before closing tag, remove intent, (unless last was newline)
         */
-        case '<':              /* opening or closing tag */
-            if (next == '/') { /* closing tag */
+       /*
+        case ' ':
+            if (prev == '>') {
+                continue;
+            }
+            break;
+            */
+        case '<':
+            if (next == '/') {
                 intent -= 1;
             }
             if (!newline) {
@@ -52,9 +56,9 @@ const char* __approvals_xml_format(const char* xml)
             break;
         }
 
-        // printf("%d: %s %d - %d\n", i, (xml + i), current, intent);
         sb_append_len(sb, xml + i, 1);
         newline = false;
+
         switch (current) {
         /*
         newline after opening tag, increase intent
@@ -70,7 +74,6 @@ const char* __approvals_xml_format(const char* xml)
                 intent -= 1;
             }
             if (next != '<') {
-                /* if there is a next tag, it will do what is necessary */
                 xml_newline(sb, intent);
                 newline = true;
             }

@@ -58,6 +58,10 @@ static void test_orders_xml(void** state)
         "test_orders_xml");
 }
 
+/*
+* TODO ignore whitespace outside of tags, after > and before <, ignore \n
+*/
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
