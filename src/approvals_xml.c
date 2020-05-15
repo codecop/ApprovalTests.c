@@ -10,57 +10,63 @@
 
 #include <stdio.h>
 
+static void xml_newline(struct StringBuilder* sb, unsigned int intent)
+{
+    sb_append(sb, "\n");
+    for (unsigned int i = 0; i < intent; i++) {
+        sb_append(sb, "  ");
+    }
+}
+
 const char* __approvals_xml_format(const char* xml)
 {
     struct StringBuilder* sb = make_sb();
     sb_ensure_size(sb, strlen(xml));
 
-    int intent = 0;
-    char prev = '\0';
+    unsigned int intent = 0;
+    char prev = '\0', current = '\0', next = '\0';
     const size_t len = strlen(xml);
     for (size_t i = 0; i < len; i++) {
-        char current = *(xml + i);
-        char next = *(xml + i + 1); /* \0 at end */
+        current = *(xml + i);
+        next = *(xml + i + 1); /* \0 at end */
+
+        /*
+         * TODO ignore whitespace outside of tags, after > and before <, ignore \n
+         */
+
+        /*
+        newline before opening tag (unless last was newline)
+        newline before closing tag, remove intent, (unless last was newline)
+        newline after opening tag, increase intent
+        newline after closing tag
+        */
 
         switch (current) {
-        case '<':
-            if (next == '/') {
+        case '<':  /* opening or closing tag */
+            if (next == '/') { /* closing tag */
                 intent -= 1;
             }
             if (prev != '\0') {
-                sb_append(sb, "\n");
-                if (intent > 0) {
-                    sb_append(sb, "  ");
-                }
+                xml_newline(sb, intent);
             }
             break;
         default:
             break;
         }
 
-        // bool is_opening = (current = '<' && next != '/');
         // printf("%d: %s %d - %d\n", i, (xml + i), current, intent);
         sb_append_len(sb, xml + i, 1);
-        /*
-         * TODO ignore whitespace outside of tags, after > and before <, ignore \n
-         */
         switch (current) {
         case '<':
             if (next != '/') {
                 intent += 1;
-            }
-            else {
-                intent -= 1;
             }
             break;
         case '>':
             if (prev == '/') {
                 intent -= 1;
             }
-            sb_append(sb, "\n");
-            if (intent > 0) {
-                sb_append(sb, "  ");
-            }
+            xml_newline(sb, intent);
             break;
         default:
             break;
