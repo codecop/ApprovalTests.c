@@ -36,13 +36,6 @@ static void test_approvals_verify(void** state)
     assert_string_equal(approved, "abc123");
 }
 
-static void test_verify_xml(void** state)
-{
-    (void)state; /* unused */
-
-    verify_xml("<nope />", "test_verify_xml");
-}
-
 static void test_verify_txt(void** state)
 {
     (void)state; /* unused */
@@ -56,7 +49,6 @@ int main(void)
         cmocka_unit_test(test_approvals_name),      /* */
         cmocka_unit_test(test_approvals_save_load), /* */
         cmocka_unit_test(test_approvals_verify),    /* */
-        cmocka_unit_test(test_verify_xml),          /* */
         cmocka_unit_test(test_verify_txt),          /* */
     };
 

@@ -14,6 +14,9 @@ const char* __approvals_xml_format(const char* xml)
 
     for (size_t i = 0; i < strlen(xml); i++) {
         sb_append_len(sb, xml + i, 1);
+        if (*(xml + i) == '>') {
+            sb_append(sb, "\n");
+        }
     }
 
     const char* s = sb_string(sb);

@@ -7,6 +7,13 @@
 
 #include "../include/approvals_cmocka.h"
 
+static void test_verify_xml(void** state)
+{
+    (void)state; /* unused */
+
+    verify_xml("<nope />", "test_verify_xml");
+}
+
 static void test_format_xml_null(void** state)
 {
     (void)state; /* unused */
@@ -14,7 +21,7 @@ static void test_format_xml_null(void** state)
     const char* xml = "<nope />";
     const char* formatted = __approvals_xml_format(xml);
 
-    assert_string_equal("<nope />", formatted);
+    assert_string_equal("<nope />\n", formatted);
     free((void*)formatted);
 }
 
@@ -32,6 +39,7 @@ static void test_format_single_intent(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
+        cmocka_unit_test(test_verify_xml),           /* */
         cmocka_unit_test(test_format_xml_null),      /* */
         cmocka_unit_test(test_format_single_intent), /* */
     };
