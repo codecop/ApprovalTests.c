@@ -14,6 +14,28 @@ static void test_verify_xml(void** state)
     verify_xml("<nope />", "test_verify_xml");
 }
 
+typedef struct {
+    char* xml;
+    char* expected_xml;
+} FormatterTestCase;
+
+FormatterTestCase test_cases[] = {
+    {"<nope />", "<nope />\n"},                                   /* empty */
+    {"<a>foo</a>", "<a>\n  foo\n</a>\n"},                         /* intent */
+    {"<a><b>foo</b></a>", "<a>\n  <b>\n    foo\n  </b>\n</a>\n"}, /* nested */
+};
+
+static void test_format_xml(void** state)
+{
+    FormatterTestCase test_case = **(FormatterTestCase**)state;
+
+    const char* xml = test_case.xml;
+    const char* formatted = __approvals_xml_format(xml);
+
+    assert_string_equal(test_case.expected_xml, formatted);
+    free((void*)formatted);
+}
+
 static void test_format_xml_null(void** state)
 {
     (void)state; /* unused */
@@ -72,12 +94,13 @@ static void test_format_sibling_text(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_verify_xml),            /* */
-        cmocka_unit_test(test_format_xml_null),       /* */
-        cmocka_unit_test(test_format_single_intent),  /* */
-        cmocka_unit_test(test_format_multi_intent),   /* */
-        cmocka_unit_test(test_format_sibling_intent), /* */
-        cmocka_unit_test(test_format_sibling_text),   /* */
+        cmocka_unit_test(test_verify_xml),                          /* */
+        cmocka_unit_test_prestate(test_format_xml, &test_cases[0]), /* */
+        cmocka_unit_test(test_format_xml_null),                     /* */
+        cmocka_unit_test(test_format_single_intent),                /* */
+        cmocka_unit_test(test_format_multi_intent),                 /* */
+        cmocka_unit_test(test_format_sibling_intent),               /* */
+        cmocka_unit_test(test_format_sibling_text),                 /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
