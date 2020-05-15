@@ -3,21 +3,19 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include "StringBuilder.h"
 #include <stdlib.h>
 #include <string.h>
 
-/* not C99, only POSIX */
-char* strdup(const char* src)
-{
-    char* dst = malloc(strlen(src) + 1);
-    if (dst == NULL) {
-        return NULL;
-    }
-    strcpy(dst, src);
-    return dst;
-}
-
 const char* __approvals_xml_format(const char* xml)
 {
-    return strdup(xml);
+    struct StringBuilder* sb = make_sb();
+    sb_ensure_size(sb, strlen(xml));
+
+    for (size_t i = 0; i < strlen(xml); i++) {
+        sb_append_len(sb, xml + i, 1);
+    }
+
+    const char* s = sb_string(sb);
+    return s;
 }
