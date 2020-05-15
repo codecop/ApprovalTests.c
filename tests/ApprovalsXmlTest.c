@@ -32,7 +32,7 @@ static void test_format_single_intent(void** state)
     const char* xml = "<a>foo</a>";
     const char* formatted = __approvals_xml_format(xml);
 
-    assert_string_equal("<a>\n  foo\n</a>", formatted);
+    assert_string_equal("<a>\n  foo\n</a>\n", formatted);
     free((void*)formatted);
 }
 
