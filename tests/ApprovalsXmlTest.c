@@ -47,13 +47,25 @@ static void test_format_multi_intent(void** state)
     free((void*)formatted);
 }
 
+static void test_format_sibling_intent(void** state)
+{
+    (void)state; /* unused */
+
+    const char* xml = "<r><a>bar</a><b>foo</b></r>";
+    const char* formatted = __approvals_xml_format(xml);
+
+    assert_string_equal("<r>\n  <a>\n    bar\n  </a>\n  <b>\n    foo\n  </b>\n</r>\n", formatted);
+    free((void*)formatted);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_verify_xml),           /* */
-        cmocka_unit_test(test_format_xml_null),      /* */
-        cmocka_unit_test(test_format_single_intent), /* */
-        cmocka_unit_test(test_format_multi_intent),  /* */
+        cmocka_unit_test(test_verify_xml),            /* */
+        cmocka_unit_test(test_format_xml_null),       /* */
+        cmocka_unit_test(test_format_single_intent),  /* */
+        cmocka_unit_test(test_format_multi_intent),   /* */
+        cmocka_unit_test(test_format_sibling_intent), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
