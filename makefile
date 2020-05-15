@@ -24,7 +24,7 @@ $(TEST_DIR)/%.exe: $(TEST_DIR)/%.c ${LIB_OBJ}
 .PHONY: test
 test: ${TEST_EXE}
 #	$(info $$var is [${TEST_EXE}])
-	for exe in ${TEST_EXE}; do $$exe; done
+	for exe in ${TEST_EXE}; do $$exe || exit; done
 
 .PHONY: clean
 clean:
