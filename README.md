@@ -1,16 +1,36 @@
 # ApprovalTests.c
 
-Plain/portable C 99 version - micro Approvals.
+Plain/portable C 99 version.
 
-## cmocka
+## Building
+
+Create the library stub (in `./lib`) and dynamic library (in `./bin`) with:
+
+    make build
+
+## Usage with cmocka
 
 This approvals support [cmocka](https://cmocka.org/).
 
-To compile and run a test with:
+### Creating a Test
+
+See `ExampleTest` in `./example`.
+
+### Compiling and Running
+
+Compile and run a test using the sources with:
 
     gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
         ..\src\approvals.c ..\src\approvals_xml.c AppTest.c ^
         -l cmocka ^
+        -o AppTest.exe
+    ./AppTest.exe
+
+If you built the library (`make build`), compile and run a test with:
+
+    gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
+        AppTest.c ^
+        -l cmocka -l approvals ^
         -o AppTest.exe
     ./AppTest.exe
 
