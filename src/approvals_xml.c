@@ -20,34 +20,34 @@ static void xml_newline(struct StringBuilder* sb, unsigned int intent)
 
 const char* __approvals_xml_format(const char* xml)
 {
-    struct StringBuilder* sb = make_sb();
-    const size_t xml_len = strlen(xml);
-    sb_ensure_size(sb, xml_len);
+    struct StringBuilder* sb = make_sb_sized(strlen(xml));
+    if (sb == NULL) {
+        /* error, do not format */
+        return xml;
+    }
 
     unsigned int intent = 0;
     char prev = '\0', current = '\0', next = '\0';
     bool newline = true;
 
-    for (size_t i = 0; i < xml_len; i++) {
-        current = *(xml + i);
-        next = *(xml + i + 1); /* \0 at end */
+    for (const char* c = xml; *c; c++) {
+        current = *c;
+        next = *(c + 1); /* \0 at end */
 
         switch (current) {
-        /*
-        newline before opening tag (unless last was newline)
-        newline before closing tag, remove intent, (unless last was newline)
-        */
-       /*
-        case ' ':
-            if (prev == '>') {
-                continue;
-            }
-            break;
-            */
+            /*
+             case ' ':
+                 if (prev == '>') {
+                     continue end_loop;
+                 }
+                 break;
+                 */
         case '<':
             if (next == '/') {
+                /* before closing tag */
                 intent -= 1;
             }
+            /* before opening or closing tag */
             if (!newline) {
                 xml_newline(sb, intent);
             }
@@ -56,23 +56,22 @@ const char* __approvals_xml_format(const char* xml)
             break;
         }
 
-        sb_append_len(sb, xml + i, 1);
+        sb_append_len(sb, c, 1);
         newline = false;
 
         switch (current) {
-        /*
-        newline after opening tag, increase intent
-        newline after closing tag
-        */
         case '<':
             if (next != '/') {
+                /* after opening tag */
                 intent += 1;
             }
             break;
         case '>':
             if (prev == '/') {
+                /* self closed tag */
                 intent -= 1;
             }
+            /* after any tag */
             if (next != '<') {
                 xml_newline(sb, intent);
                 newline = true;
@@ -81,6 +80,8 @@ const char* __approvals_xml_format(const char* xml)
         default:
             break;
         }
+
+        /* end_loop: */
         prev = current;
     }
 

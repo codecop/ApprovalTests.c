@@ -8,7 +8,7 @@
 struct StringBuilder;
 
 extern struct StringBuilder* make_sb(void);
-extern int sb_ensure_size(struct StringBuilder* this, size_t length);
+extern struct StringBuilder* make_sb_sized(size_t length);
 extern int sb_append_len(struct StringBuilder* this, const char* s, size_t length);
 extern int sb_append(struct StringBuilder* this, const char* s);
 extern const char* sb_string(struct StringBuilder* this);
