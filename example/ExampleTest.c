@@ -2,7 +2,7 @@
 #include <stdarg.h> /* used by cmocka */
 #include <stddef.h> /* used by cmocka */
 
-#include "../include/approvals_cmocka.h"
+#include <approvals_cmocka.h>
 #include <cmocka.h>
 #include <stdlib.h> /* used by approvals */
 
