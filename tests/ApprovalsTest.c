@@ -31,8 +31,7 @@ static void test_approvals_verify(void** state)
 {
     (void)state; /* unused */
 
-    const char* approved =
-        __approvals_verify("abc123", __FILE__, "test_approvals_verify", "txt");
+    const char* approved = __approvals_verify("abc123", __FILE__, __func__, "txt");
     assert_string_equal(approved, "abc123");
 }
 
@@ -40,7 +39,7 @@ static void test_verify_txt(void** state)
 {
     (void)state; /* unused */
 
-    verify_txt("Some text.\nNew line.\n", "test_verify_txt");
+    verify_txt("Some text.\nNew line.\n");
 }
 
 int main(void)

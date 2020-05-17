@@ -7,11 +7,11 @@
 
 #include "../include/approvals_cmocka.h"
 
-static void test_verify_xml_macro(void** state)
+static void test_verify_xml(void** state)
 {
     (void)state; /* unused */
 
-    verify_xml("<nope />", "test_verify_xml");
+    verify_xml("<nope />");
 }
 
 typedef struct {
@@ -60,14 +60,13 @@ static void test_complex_complete_xml(void** state)
         "Pulchritudo'><price "
         "currency='USD'>149.99</price>Makeover</product></order><order "
         "id='1235'><product id='LIPSTICK01' weight='30'><price "
-        "currency='USD'>14.99</price>Cherry Bloom</product></order></orders>",
-        "test_orders_xml");
+        "currency='USD'>14.99</price>Cherry Bloom</product></order></orders>");
 }
 
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_verify_xml_macro),                    /* */
+        cmocka_unit_test(test_verify_xml),                          /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[0]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[1]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[2]), /* */

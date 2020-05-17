@@ -10,7 +10,7 @@ static void test_some_xml(void** state)
 {
     (void)state; /* unused */
 
-    verify_xml("<nope />", "test_some_xml");
+    verify_xml("<nope />");
 }
 
 int main(void)
