@@ -7,7 +7,7 @@
 
 #include "../include/approvals_cmocka.h"
 
-static void test_verify_xml(void** state)
+static void test_verify_xml_macro(void** state)
 {
     (void)state; /* unused */
 
@@ -20,17 +20,25 @@ typedef struct {
 } FormatterTestCase;
 
 FormatterTestCase test_cases[] = {
-    {"<nope />", /* empty */
-     "<nope />\n"},
-    {"<a>foo</a>", /* intent */
-     "<a>\n  foo\n</a>\n"},
-    {"<a><b>foo</b></a>", /* multi */
-     "<a>\n  <b>\n    foo\n  </b>\n</a>\n"},
-    {"<r><a>bar</a><b>foo</b></r>", /* sibling */
-     "<r>\n  <a>\n    bar\n  </a>\n  <b>\n    foo\n  </b>\n</r>\n"},
-    {"<r><a>bar</a>foo</r>", /* text */
-     "<r>\n  <a>\n    bar\n  </a>\n  foo\n</r>\n"},
+    {"<a />",                                /* format */
+     "<a />\n"},                             /* - null case */
+    {"<a>foo</a>",                           /* format */
+     "<a>\n  foo\n</a>\n"},                  /* - a single element */
+    {"<a><b>foo</b></a>",                    /* format */
+     "<a>\n  <b>\n    foo\n  </b>\n</a>\n"}, /* - multi elements */
+    {"<a><b>bar</b><b>foo</b></a>",          /* format */
+     "<a>\n  <b>\n    bar\n  </b>\n  <b>\n    foo\n  </b>\n</a>\n"}, /* - siblings */
+    {"<a><b>bar</b>foo</a>",                                         /* format */
+     "<a>\n  <b>\n    bar\n  </b>\n  foo\n</a>\n"},                  /* - text */
 };
+
+/* TODO test list
+ * <?xml version="1.0" encoding="UTF-8"?>
+ * ignore whitespace (' ', \n) outside of tags, after > and before <
+ * ignore additional whitespace in attributes
+ * CDATA
+ * Comments <!-- -->
+ */
 
 static void test_format_xml(void** state)
 {
@@ -43,9 +51,7 @@ static void test_format_xml(void** state)
     free((void*)formatted);
 }
 
-/* TODO <?xml version="1.0" encoding="UTF-8"?> */
-
-static void test_orders_xml(void** state)
+static void test_complex_complete_xml(void** state)
 {
     (void)state; /* unused */
 
@@ -58,20 +64,16 @@ static void test_orders_xml(void** state)
         "test_orders_xml");
 }
 
-/*
-* TODO ignore whitespace outside of tags, after > and before <, ignore \n
-*/
-
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_verify_xml),                          /* */
+        cmocka_unit_test(test_verify_xml_macro),                    /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[0]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[1]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[2]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[3]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[4]), /* */
-        cmocka_unit_test(test_orders_xml),                          /* */
+        cmocka_unit_test(test_complex_complete_xml),                /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
