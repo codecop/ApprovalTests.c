@@ -57,7 +57,10 @@ dkms.conf
 # local help scripts
 _compile.bat
 _test.bat
+
+# links
 *.lnk
+*.URL
 
 # Approval generated files
 *.received.*
