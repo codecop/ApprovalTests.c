@@ -35,25 +35,26 @@ const char* __approvals_xml_format(const char* xml)
         current = *c;
         next = *(c + 1); /* \0 at end */
 
+        if (prev == '<' && current == '!' && next == '-') {
+            /* before comment */
+            comment = true;
+        }
+
         if (comment) {
-            bool comment_ends = (prev == '-' && current == '>');
+            bool comment_ends = (comment && prev == '-' && current == '>');
 
             if (!comment_ends) {
                 sb_append_len(sb, c, 1);
                 goto end_loop;
             }
 
-            comment = false;
+            comment = comment ^ comment_ends;
         }
 
         if (current == '<') {
             if (next == '/') {
                 /* before closing tag */
                 intent -= 1;
-            }
-            if (next == '!') {
-                /* before comment */
-                comment = true;
             }
 
             /* before opening or closing tag, processing or comment */
@@ -65,26 +66,22 @@ const char* __approvals_xml_format(const char* xml)
         sb_append_len(sb, c, 1);
         newline = false;
 
-        switch (current) {
-        case '<':
-            if (next != '/' && next != '?' && next != '!') {
-                /* after opening tag (not closing, not processing, not comment) */
-                intent += 1;
-            }
-            break;
-        case '>':
+        if (current == '<' && (next != '/' && next != '?' && next != '!')) {
+            /* after opening tag (not closing, not processing, not comment) */
+            intent += 1;
+        }
+
+        if (current == '>') {
             if (prev == '/') {
                 /* self closed tag */
                 intent -= 1;
             }
+
             /* after any tag */
             if (next != '<') {
                 xml_newline(sb, intent);
                 newline = true;
             }
-            break;
-        default:
-            break;
         }
 
     end_loop:
