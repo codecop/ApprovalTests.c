@@ -34,6 +34,8 @@ FormatterTestCase test_cases[] = {
      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<a>\n  foo\n</a>\n"}, /* - processing instruction */
     {"<!-- a --><a>foo<!-- f --></a>",                                  /* format */
      "<!-- a -->\n<a>\n  foo\n  <!-- f -->\n</a>\n"},                   /* - comments */
+    {"<!-- <a>foo</a> -->",                                             /* format */
+     "<!-- <a>foo</a> -->\n"}, /* - commented tags */
 };
 
 /* TODO test list
@@ -41,7 +43,6 @@ FormatterTestCase test_cases[] = {
  * ignore whitespace (' ', \n) outside of tags, after > and before <
  * ignore additional whitespace in attributes
  * CDATA
- * Comments <!-- -->
  */
 
 static void test_format_xml(void** state)
@@ -78,6 +79,7 @@ int main(void)
         cmocka_unit_test_prestate(test_format_xml, &test_cases[4]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[5]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[6]), /* */
+        cmocka_unit_test_prestate(test_format_xml, &test_cases[7]), /* */
         cmocka_unit_test(test_complex_complete_xml),                /* */
     };
 

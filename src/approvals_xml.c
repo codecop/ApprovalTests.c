@@ -35,6 +35,17 @@ const char* __approvals_xml_format(const char* xml)
         current = *c;
         next = *(c + 1); /* \0 at end */
 
+        if (comment) {
+            bool comment_ends = (prev == '-' && current == '>');
+
+            if (!comment_ends) {
+                sb_append_len(sb, c, 1);
+                goto end_loop;
+            }
+
+            comment = false;
+        }
+
         if (current == '<') {
             if (next == '/') {
                 /* before closing tag */
@@ -76,7 +87,7 @@ const char* __approvals_xml_format(const char* xml)
             break;
         }
 
-        /* end_loop: */
+    end_loop:
         prev = current;
     }
 
