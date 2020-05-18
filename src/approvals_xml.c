@@ -29,31 +29,26 @@ const char* __approvals_xml_format(const char* xml)
     unsigned int intent = 0;
     char prev = '\0', current = '\0', next = '\0';
     bool newline = true;
+    bool comment = false;
 
     for (const char* c = xml; *c; c++) {
         current = *c;
         next = *(c + 1); /* \0 at end */
 
-        switch (current) {
-            /*
-             case ' ':
-                 if (prev == '>') {
-                     continue end_loop;
-                 }
-                 break;
-                 */
-        case '<':
+        if (current == '<') {
             if (next == '/') {
                 /* before closing tag */
                 intent -= 1;
             }
-            /* before opening or closing tag */
+            if (next == '!') {
+                /* before comment */
+                comment = true;
+            }
+
+            /* before opening or closing tag, processing or comment */
             if (!newline) {
                 xml_newline(sb, intent);
             }
-            break;
-        default:
-            break;
         }
 
         sb_append_len(sb, c, 1);
@@ -61,8 +56,8 @@ const char* __approvals_xml_format(const char* xml)
 
         switch (current) {
         case '<':
-            if (next != '/' && next != '?') {
-                /* after opening tag (not closing, not <? ?>) */
+            if (next != '/' && next != '?' && next != '!') {
+                /* after opening tag (not closing, not processing, not comment) */
                 intent += 1;
             }
             break;

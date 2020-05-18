@@ -32,6 +32,8 @@ FormatterTestCase test_cases[] = {
      "<a>\n  <b>\n    bar\n  </b>\n  foo\n</a>\n"},                  /* - text */
     {"<?xml version=\"1.0\" encoding=\"UTF-8\"?><a>foo</a>",         /* format */
      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<a>\n  foo\n</a>\n"}, /* - processing instruction */
+    {"<!-- a --><a>foo<!-- f --></a>",                                  /* format */
+     "<!-- a -->\n<a>\n  foo\n  <!-- f -->\n</a>\n"},                   /* - comments */
 };
 
 /* TODO test list
@@ -75,6 +77,7 @@ int main(void)
         cmocka_unit_test_prestate(test_format_xml, &test_cases[3]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[4]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[5]), /* */
+        cmocka_unit_test_prestate(test_format_xml, &test_cases[6]), /* */
         cmocka_unit_test(test_complex_complete_xml),                /* */
     };
 
