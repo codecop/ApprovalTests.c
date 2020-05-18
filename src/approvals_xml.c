@@ -30,6 +30,7 @@ const char* __approvals_xml_format(const char* xml)
     char prev = '\0', current = '\0', next = '\0';
     bool newline = true;
     bool comment = false;
+    bool cdata = false;
 
     for (const char* c = xml; *c; c++) {
         current = *c;
@@ -39,16 +40,22 @@ const char* __approvals_xml_format(const char* xml)
             /* before comment */
             comment = true;
         }
+        if (prev == '<' && current == '!' && next == '[') {
+            /* before cdata */
+            cdata = true;
+        }
 
-        if (comment) {
+        if (comment || cdata) {
             bool comment_ends = (comment && prev == '-' && current == '>');
+            bool cdata_ends = (cdata && prev == ']' && current == '>');
 
-            if (!comment_ends) {
+            if (!comment_ends && !cdata_ends) {
                 sb_append_len(sb, c, 1);
                 goto end_loop;
             }
 
             comment = comment ^ comment_ends;
+            cdata = cdata ^ cdata_ends;
         }
 
         if (current == '<') {
