@@ -61,8 +61,8 @@ const char* __approvals_xml_format(const char* xml)
 
         switch (current) {
         case '<':
-            if (next != '/') {
-                /* after opening tag */
+            if (next != '/' && next != '?') {
+                /* after opening tag (not closing, not <? ?>) */
                 intent += 1;
             }
             break;

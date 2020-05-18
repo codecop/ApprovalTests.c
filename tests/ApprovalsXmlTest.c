@@ -30,10 +30,12 @@ FormatterTestCase test_cases[] = {
      "<a>\n  <b>\n    bar\n  </b>\n  <b>\n    foo\n  </b>\n</a>\n"}, /* - siblings */
     {"<a><b>bar</b>foo</a>",                                         /* format */
      "<a>\n  <b>\n    bar\n  </b>\n  foo\n</a>\n"},                  /* - text */
+    {"<?xml version=\"1.0\" encoding=\"UTF-8\"?><a>foo</a>",         /* format */
+     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<a>\n  foo\n</a>\n"}, /* - processing instruction */
 };
 
 /* TODO test list
- * <?xml version="1.0" encoding="UTF-8"?>
+ *
  * ignore whitespace (' ', \n) outside of tags, after > and before <
  * ignore additional whitespace in attributes
  * CDATA
@@ -72,6 +74,7 @@ int main(void)
         cmocka_unit_test_prestate(test_format_xml, &test_cases[2]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[3]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[4]), /* */
+        cmocka_unit_test_prestate(test_format_xml, &test_cases[5]), /* */
         cmocka_unit_test(test_complex_complete_xml),                /* */
     };
 
