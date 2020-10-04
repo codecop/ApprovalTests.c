@@ -45,7 +45,9 @@ test: ${TEST_EXE}
 	for exe in ${TEST_EXE}; do $$exe || exit; done
 
 ${DLL_DIR}/approvals$(DLL): ${SRC_OBJ}
-	$(CC) $(CFLAGS) -shared $^ -o ${DLL_DIR}/approvals$(DLL) -Wl,--out-implib,${LIB_DIR}/libapprovals.a
+	$(CC) $(CFLAGS) -shared $^ -o ${DLL_DIR}/approvals$(DLL)
+#	-Wl,--out-implib,${LIB_DIR}/libapprovals.a
+# https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
 
 build: clean_all ${DLL_DIR}/approvals$(DLL)
 

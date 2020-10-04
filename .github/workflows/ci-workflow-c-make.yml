@@ -4,17 +4,44 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
     - name: Check out the repo
       uses: actions/checkout@v2
+
     - name: Install cmocka
+      run: |
+        sudo apt-get update
+        sudo apt-get install libcmocka-dev -V
       # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
-      run: sudo apt-get update && sudo apt-get install libcmocka-dev
-    - name: Test with make
-      run: make test example
+      # installed cmocka needs GLIBC_2.2.5, ldd reports Ubuntu GLIBC 2.27-3ubuntu1.2
+      # /usr/bin/ld: example/ExampleTest.: No symbol version section for versioned symbol `__cxa_finalize@@GLIBC_2.2.5'
+      # /usr/bin/ld: final link failed: Nonrepresentable section on output
+#    - name: Get cmocka
+#      run: |
+#        wget https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
+#        tar xf ./cmocka-1.1.5.tar.xz
+#        cd cmocka-1.1.5
+#        mkdir build
+#        cd build
+#        cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ..
+#        sudo make install
+
+    - name: Build and test with make
+      run: make build test
+
+    - name: Test the example
+      run: |
+        cp ./bin/approvals.so ./bin/libapprovals.so
+        ls -la bin
+        ls -la lib
+        export C_INCLUDE_PATH=$C_INCLUDE_PATH:./include
+        export LIBRARY_PATH=$LIBRARY_PATH:./lib:./bin
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./bin
+        make example
+
     - name: Clean build
-      run: make build
+      run: make clean
     - name: Keep binary files
       uses: actions/upload-artifact@v2
       with:
