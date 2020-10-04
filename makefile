@@ -34,7 +34,7 @@ test: ${TEST_EXE}
 	for exe in ${TEST_EXE}; do $$exe || exit; done
 
 ${DLL_DIR}/approvals.dll: ${SRC_OBJ}
-	$(CC) $(CFLAGS) -shared $^ -o ${DLL_DIR}/approvals.dll -Wl,--out-implib,${LIB_DIR}/libapprovals.a
+	$(CC) $(CFLAGS) -fPIC -shared $^ -o ${DLL_DIR}/approvals.dll -Wl,--out-implib,${LIB_DIR}/libapprovals.a
 
 build: clean_all ${DLL_DIR}/approvals.dll
 
