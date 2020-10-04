@@ -8,9 +8,15 @@ jobs:
     steps:
     - name: Check out the repo
       uses: actions/checkout@v2
-    - name: download cmocka
-      run: wget http://archive.ubuntu.com/ubuntu/pool/universe/c/cmocka/cmocka-doc_1.1.5-2_all.deb
+    # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
     - name: install cmocka
-      run: sudo dpkg -i cmocka-doc_1.1.5-2_all.deb
+      run: sudo apt-get update && sudo apt-get install libcmocka-dev
+#    - name: set up environment for cmocka
+#      run: xxx
+#      /usr/lib/x86_64-linux-gnu/libcmocka.so.0
+#set CMOCKA_HOME=E:\Develop\C\Katas\lib\cmocka-1.1.0
+#set C_INCLUDE_PATH=%CMOCKA_HOME%\include
+#set LIBRARY_PATH=%LIBRARY_PATH%;%CMOCKA_HOME%\lib
+#set PATH=%PATH%;%CMOCKA_HOME%\bin
     - name: make
       run: make test
