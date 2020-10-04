@@ -56,7 +56,7 @@ const char* approvals_file_name_for(const char* full_file_name,
     return s;
 }
 
-const const char* approvals_load(const char* filename)
+const char* approvals_load(const char* filename)
 {
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
