@@ -1,0 +1,16 @@
+name: CI Workflow C Make
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v2
+    - name: download cmocka
+      run: wget http://archive.ubuntu.com/ubuntu/pool/universe/c/cmocka/cmocka-doc_1.1.5-2_all.deb
+    - name: install cmocka
+      run: sudo dpkg -i cmocka-doc_1.1.5-2_all.deb
+    - name: make
+      run: make test
