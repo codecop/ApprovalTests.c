@@ -37,6 +37,49 @@ jobs:
         path: |
           ./include/*.h
           ./lib/*.so
-          ./src
           ./LICENSE
-          ./README.md
+
+#  build_windows:
+#    runs-on: windows-latest
+#    steps:
+#    - name: Check out the repo
+#      uses: actions/checkout@v2
+#
+#    - name: Get cmocka
+#      shell: powershell
+#      run: |
+#        $uri = 'https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz'
+#        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+#        Invoke-WebRequest -Uri $uri -OutFile C:\cmocka-1.1.5.tar.xz -UserAgent [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
+#        cd C:\
+#        tar xf C:\cmocka-1.1.5.tar.xz
+#        cd cmocka-1.1.5
+#        mkdir build
+#        cd build
+#        cmake -DCMAKE_INSTALL_PREFIX=C:\usr -DCMAKE_BUILD_TYPE=Debug ..
+#        make install
+#
+#    - name: Build with make
+#      run: make build
+#    - name: Test with make
+#      run: |
+#        make test
+#        make clean
+#
+#    - name: Test the example
+#      run: |
+#        set C_INCLUDE_PATH=%C_INCLUDE_PATH%;.\include
+#        set LIBRARY_PATH=%LIBRARY_PATH%;.\lib
+#        set LD_LIBRARY_PATH=%LD_LIBRARY_PATH%;.\lib
+#        make example
+#        make clean
+#
+#    - name: Keep binary files
+#      uses: actions/upload-artifact@v2
+#      with:
+#        name: Binaries_Windows_x64
+#        path: |
+#          .\bin\*.dll
+#          .\include\*.h
+#          .\lib\*.a
+#          .\LICENSE
