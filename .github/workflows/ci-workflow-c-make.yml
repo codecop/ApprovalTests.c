@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
     - name: Check out the repo
       uses: actions/checkout@v2
@@ -12,11 +12,8 @@ jobs:
     - name: Install cmocka
       run: |
         sudo apt-get update
-        sudo apt-get install libcmocka-dev -V
+        sudo apt-get install libcmocka-dev
       # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
-      # installed cmocka needs GLIBC_2.2.5, ldd reports Ubuntu GLIBC 2.27-3ubuntu1.2
-      # /usr/bin/ld: example/ExampleTest.: No symbol version section for versioned symbol `__cxa_finalize@@GLIBC_2.2.5'
-      # /usr/bin/ld: final link failed: Nonrepresentable section on output
 #    - name: Get cmocka
 #      run: |
 #        wget https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
@@ -32,12 +29,10 @@ jobs:
 
     - name: Test the example
       run: |
-        cp ./bin/approvals.so ./bin/libapprovals.so
-        ls -la bin
-        ls -la lib
+        make clean
         export C_INCLUDE_PATH=$C_INCLUDE_PATH:./include
-        export LIBRARY_PATH=$LIBRARY_PATH:./lib:./bin
-        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./bin
+        export LIBRARY_PATH=$LIBRARY_PATH:./lib
+        export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./lib
         make example
 
     - name: Clean build
@@ -47,7 +42,6 @@ jobs:
       with:
         name: Binaries_Linux_x64
         path: |
-          ./bin
           ./include
           ./lib
           ./src

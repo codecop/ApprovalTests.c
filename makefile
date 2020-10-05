@@ -1,6 +1,5 @@
 SRC_DIR := ./src
 TEST_DIR := ./tests
-DLL_DIR := ./bin
 LIB_DIR := ./lib
 EXAMPLE_DIR := ./example
 
@@ -8,17 +7,20 @@ CC := gcc
 STD := c99
 CFLAGS := -g -std=$(STD) -O -Werror -Wall -Wextra -pedantic -Wno-error=format
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+SHARED_FLAGS := -shared
 CMOCKA := -lcmocka
 APPROVALS := -lapprovals
 
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
 	EXE := .exe
-	DLL := .dll
+	DLL := ./bin/approvals.dll
+    # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
+	SHARED_FLAGS += -Wl,--out-implib,${LIB_DIR}/libapprovals.a
 else
     detected_OS := $(shell uname)
 	EXE := .
-	DLL := .so
+	DLL := ${LIB_DIR}/libapprovals.so
 	CFLAGS += -fPIC
 endif
 
@@ -41,15 +43,12 @@ $(TEST_DIR)/%$(EXE): $(TEST_DIR)/%.c ${SRC_OBJ}
 
 .PHONY: test
 test: ${TEST_EXE}
-#	$(info $$var is [${TEST_EXE}])
 	for exe in ${TEST_EXE}; do $$exe || exit; done
 
-${DLL_DIR}/approvals$(DLL): ${SRC_OBJ}
-	$(CC) $(CFLAGS) -shared $^ -o ${DLL_DIR}/approvals$(DLL)
-#	-Wl,--out-implib,${LIB_DIR}/libapprovals.a
-# https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
+${DLL}: ${SRC_OBJ}
+	$(CC) $(CFLAGS) $(SHARED_FLAGS) $^ -o ${DLL}
 
-build: clean_all ${DLL_DIR}/approvals$(DLL)
+build: clean_all ${DLL}
 
 .PHONY: clean
 clean:
@@ -59,10 +58,10 @@ clean:
 
 .PHONY: clean_all
 clean_all: clean
-	rm -f $(DLL_DIR)/*$(DLL)
+	rm -f ${DLL}
 	rm -f $(LIB_DIR)/*.a
 
-$(EXAMPLE_DIR)/%$(EXE): $(EXAMPLE_DIR)/%.c ${DLL_DIR}/approvals$(DLL)
+$(EXAMPLE_DIR)/%$(EXE): $(EXAMPLE_DIR)/%.c ${DLL}
 	$(CC) $(CFLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
 
 .PHONY: example
