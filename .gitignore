@@ -64,3 +64,6 @@ _test.bat
 
 # Approval generated files
 *.received.*
+
+# Binaries
+Binaries_*.zip

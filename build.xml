@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Package" basedir="." default="zip">
+
+    <property name="zip-name" value="Binaries_Windows_x64.zip"/>
+
+    <target name="zip" description="Create binary package">
+        <delete file="${zip-name}" />
+        <zip destfile="${zip-name}">
+            <zipfileset dir=".">
+                <include name="bin\*.dll" />
+                <include name="include\*.h" />
+                <include name="lib\*.a" />
+                <include name="LICENSE" />
+            </zipfileset>
+         </zip>
+    </target>
+
+</project>
