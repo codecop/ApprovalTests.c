@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "x86_x64.h"
+
 const char* approvals_file_name_for(const char* full_file_name,
                                     const char* test_name,
                                     bool is_approved,
@@ -86,7 +88,7 @@ const char* approvals_load(const char* filename)
 
     char* read_buffer = malloc(sizeof(char[buffer_size + 1]));
     if (read_buffer == NULL) {
-        fprintf(stderr, "Could not allocate buffer for file %s, need %u bytes.\n", filename, buffer_size);
+        fprintf(stderr, "Could not allocate buffer for file %s, need " PF_SIZE_T " bytes.\n", filename, buffer_size);
         fclose(file);
         return "";
     }
@@ -94,7 +96,7 @@ const char* approvals_load(const char* filename)
     size_t read = fread(read_buffer, sizeof(char), buffer_size, file);
     read_buffer[read] = '\0';
     if (read != buffer_size) {
-        fprintf(stderr, "Did not read whole file %s, got %u bytes instead of %u.\n",
+        fprintf(stderr, "Did not read whole file %s, got " PF_SIZE_T " bytes instead of " PF_SIZE_T ".\n",
                 filename, read, buffer_size);
     }
 
@@ -115,7 +117,7 @@ void approvals_save(const char* filename, const char* data)
     }
     size_t written = fwrite(data, sizeof(char), strlen(data), file);
     if (written != strlen(data)) {
-        fprintf(stderr, "Could not write whole %s, %u instead %u bytes.\n", filename,
+        fprintf(stderr, "Could not write whole %s, " PF_SIZE_T " instead " PF_SIZE_T " bytes.\n", filename,
                 strlen(data), written);
     }
     int error_flush = fflush(file);
