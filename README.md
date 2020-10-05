@@ -4,7 +4,8 @@ Plain/portable C 99 version.
 
 ## Building
 
-Create the library stub (in `./lib`) and dynamic library (in `./bin`) with:
+Using Windows `build` creates the library stub (in `./lib`) and dynamic library (in `./bin`).
+For Linux this creates only the shared library (in `./lib`).
 
     make build
 
