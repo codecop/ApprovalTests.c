@@ -3,7 +3,7 @@ name: CI Workflow C Make
 on: [push, pull_request]
 
 jobs:
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     steps:
     - name: Check out the repo
@@ -14,36 +14,29 @@ jobs:
         sudo apt-get update
         sudo apt-get install libcmocka-dev
       # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
-#    - name: Get cmocka
-#      run: |
-#        wget https://cmocka.org/files/1.1/cmocka-1.1.5.tar.xz
-#        tar xf ./cmocka-1.1.5.tar.xz
-#        cd cmocka-1.1.5
-#        mkdir build
-#        cd build
-#        cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug ..
-#        sudo make install
 
-    - name: Build and test with make
-      run: make build test
+    - name: Build with make
+      run: make build
+    - name: Test with make
+      run: |
+        make test
+        make clean
 
     - name: Test the example
       run: |
-        make clean
         export C_INCLUDE_PATH=$C_INCLUDE_PATH:./include
         export LIBRARY_PATH=$LIBRARY_PATH:./lib
         export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./lib
         make example
+        make clean
 
-    - name: Clean build
-      run: make clean
     - name: Keep binary files
       uses: actions/upload-artifact@v2
       with:
         name: Binaries_Linux_x64
         path: |
-          ./include
-          ./lib
+          ./include/*.h
+          ./lib/*.so
           ./src
           ./LICENSE
           ./README.md
