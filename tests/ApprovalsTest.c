@@ -12,20 +12,22 @@ static void test_approvals_name(void** state)
 {
     (void)state; /* unused */
 
-    assert_string_equal("tests/ApprovalsTest.foo.approved.txt",
-                        approvals_get_approved_file_name(__FILE__, "foo", "txt"));
+    assert_string_equal("tests/ApprovalsTest.test_approvals_name.approved.txt",
+                        approvals_get_approved_file_name(__FILE__, __func__, "txt"));
 }
+/* TODO approvals_writer_test */
 
 static void test_approvals_save_load(void** state)
 {
     (void)state; /* unused */
 
     const char* s = "abc123";
-    approvals_save("test_approvals_save_load", s);
-    const char* r = approvals_load("test_approvals_save_load");
+    approvals_write_received_file(__FILE__, __func__, "txt", s);
+    const char* r = approvals_load("tests/ApprovalsTest.test_approvals_save_load.received.txt");
     assert_string_equal(s, r);
-    approvals_delete("test_approvals_save_load");
+    approvals_delete("tests/ApprovalsTest.test_approvals_save_load.received.txt");
 }
+/* TODO approvals_writer_test */
 
 static void test_approvals_verify(void** state)
 {

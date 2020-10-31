@@ -7,10 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//     public String writeReceivedFile(String received) {
-//         FileUtils.writeFile(new File(received), this.text);
-//         return received;
-//     }
+#include "x86_x64.h"
 
 static const char* approvals_file_name_for(const char* full_file_name,
                                            const char* test_name,
@@ -30,9 +27,9 @@ static const char* approvals_file_name_for(const char* full_file_name,
     length += length_file_name;
     length += 1; /* . */
     length += strlen(test_name);
-    length += 1; /* . */
+    length += 1;              /* . */
     length += strlen(suffix); /* "approved" or "received" */
-    length += 1; /* . */
+    length += 1;              /* . */
     length += strlen(extension_no_dot);
     length += 1; /* \0 */
     char* s = (char*)malloc(length);
@@ -67,4 +64,40 @@ const char* approvals_get_received_file_name(const char* full_file_name,
                                              const char* extension_no_dot)
 {
     return approvals_file_name_for(full_file_name, test_name, "received", extension_no_dot);
+}
+
+static void approvals_save(const char* filename, const char* data)
+{
+    FILE* file = fopen(filename, "w");
+    if (file == NULL) {
+        fprintf(stderr, "Could not create file %s.\n", filename);
+        return;
+    }
+    size_t written = fwrite(data, sizeof(char), strlen(data), file);
+    if (written != strlen(data)) {
+        fprintf(stderr,
+                "Could not write whole %s, " PF_SIZE_T " instead " PF_SIZE_T " bytes.\n",
+                filename, strlen(data), written);
+    }
+    int error_flush = fflush(file);
+    if (error_flush) {
+        fprintf(stderr, "Could not flush %s, error %d.\n", filename, error_flush);
+    }
+    int error_close = fclose(file);
+    if (error_close) {
+        fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
+    }
+}
+
+void approvals_write_received_file(const char* full_file_name,
+                                   const char* test_name,
+                                   const char* extension_no_dot,
+                                   const char* received)
+{
+    const char* received_name =
+        approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
+
+    approvals_save(received_name, received);
+
+    free((void*)received_name);
 }
