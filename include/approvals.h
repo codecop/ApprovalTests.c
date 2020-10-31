@@ -14,14 +14,16 @@ extern const char* __approvals_approve(const char* received,
 
 extern const char* __approvals_xml_format(const char* xml);
 
+extern void use_reporter(void (*report)(const char* approved, const char* received));
+
 #define verify_xml(xml)                                                             \
     const char* __got = __approvals_xml_format(xml);                                \
     const char* __approved = __approvals_approve(__got, __FILE__, __func__, "xml"); \
-    __approval_report_failure(__approved, __got);                                     \
+    __approval_report_failure(__approved, __got);                                   \
     free((void*)__got);                                                             \
     free((void*)__approved);
 
 #define verify_txt(__got)                                                             \
     const char* __approved = __approvals_approve((__got), __FILE__, __func__, "txt"); \
-    __approval_report_failure(__approved, (__got));                                     \
+    __approval_report_failure(__approved, (__got));                                   \
     free((void*)__approved);

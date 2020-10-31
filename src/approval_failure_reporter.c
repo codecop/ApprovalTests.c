@@ -18,3 +18,8 @@ void approval_report_failure(const char* approved, const char* received)
         (*reporter)(approved, received);
     }
 }
+
+/*
+ * reporter needs file names
+ * also need AND reporter or chain of reporters
+ */
