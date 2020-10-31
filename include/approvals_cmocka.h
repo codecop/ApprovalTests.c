@@ -7,7 +7,7 @@
 /*
 #include <stdlib.h>
 */
-#include "approvals_cmocka_reporter.h"
+#include "approval_cmocka_reporter.h"
 
 extern const char* __approvals_verify(const char* received,
                                       const char* full_file_name,
