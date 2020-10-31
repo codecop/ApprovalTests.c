@@ -3,11 +3,10 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "x86_x64.h"
+#include "file_utils.h"
 
 static const char* approvals_file_name_for(const char* full_file_name,
                                            const char* test_name,
@@ -66,29 +65,6 @@ const char* approvals_get_received_file_name(const char* full_file_name,
     return approvals_file_name_for(full_file_name, test_name, "received", extension_no_dot);
 }
 
-static void approvals_save(const char* filename, const char* data)
-{
-    FILE* file = fopen(filename, "w");
-    if (file == NULL) {
-        fprintf(stderr, "Could not create file %s.\n", filename);
-        return;
-    }
-    size_t written = fwrite(data, sizeof(char), strlen(data), file);
-    if (written != strlen(data)) {
-        fprintf(stderr,
-                "Could not write whole %s, " PF_SIZE_T " instead " PF_SIZE_T " bytes.\n",
-                filename, strlen(data), written);
-    }
-    int error_flush = fflush(file);
-    if (error_flush) {
-        fprintf(stderr, "Could not flush %s, error %d.\n", filename, error_flush);
-    }
-    int error_close = fclose(file);
-    if (error_close) {
-        fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
-    }
-}
-
 void approvals_write_received_file(const char* full_file_name,
                                    const char* test_name,
                                    const char* extension_no_dot,
@@ -97,23 +73,15 @@ void approvals_write_received_file(const char* full_file_name,
     const char* received_name =
         approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
 
-    approvals_save(received_name, received);
+    approvals_save_text_file(received_name, received);
 
     free((void*)received_name);
-}
-
-static void approvals_delete(const char* filename)
-{
-    int error_remove = remove(filename);
-    if (error_remove) {
-        fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
-    }
 }
 
 void approvals_delete_received_file(const char* full_file_name, const char* test_name, const char* extension_no_dot)
 {
     const char* received_name =
         approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
-    approvals_delete(received_name);
+    approvals_delete_file(received_name);
     free((void*)received_name);
 }

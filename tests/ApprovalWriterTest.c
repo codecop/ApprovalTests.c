@@ -5,7 +5,7 @@
 #include <cmocka.h>
 
 #include "../src/approval_writer.h"
-#include "../src/approvals_private.h"
+#include "../src/file_utils.h"
 
 static void test_get_approved_file_name(void** state)
 {
@@ -22,8 +22,8 @@ static void test_write_received_file(void** state)
 
     const char* s = "abc123";
     approvals_write_received_file(__FILE__, __func__, "txt", s);
-    const char* r =
-        approvals_load("tests/ApprovalWriterTest.test_write_received_file.received.txt");
+    const char* r = approvals_load_text_file(
+        "tests/ApprovalWriterTest.test_write_received_file.received.txt");
     assert_string_equal(s, r);
     approvals_delete_received_file(__FILE__, __func__, "txt");
     /* TODO assert file is gone */
