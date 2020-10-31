@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "approval_failure_reporter.h"
 #include "approval_writer.h"
 #include "file_utils.h"
 
@@ -35,6 +36,10 @@ const char* __approvals_approve(const char* received,
     if (approvals_approve_text(approved, received)) {
         /* OK */
         approvals_delete_received_file(name);
+    }
+    else {
+        /* FAIL */
+        approval_report_failure(approved, received);
     }
 
     return approved;
