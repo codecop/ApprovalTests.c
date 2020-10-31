@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "approvals_writer.h"
+#include "approval_writer.h"
 #include "x86_x64.h"
 
 const char* approvals_load(const char* filename)

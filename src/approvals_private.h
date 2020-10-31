@@ -3,7 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include "approvals_writer.h"
+#include "approval_writer.h"
 
 extern const char* approvals_load(const char* filename);
 extern void approvals_save(const char* filename, const char* data);
