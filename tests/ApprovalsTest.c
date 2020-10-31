@@ -23,9 +23,11 @@ static void test_approvals_save_load(void** state)
 
     const char* s = "abc123";
     approvals_write_received_file(__FILE__, __func__, "txt", s);
-    const char* r = approvals_load("tests/ApprovalsTest.test_approvals_save_load.received.txt");
+    const char* r =
+        approvals_load("tests/ApprovalsTest.test_approvals_save_load.received.txt");
     assert_string_equal(s, r);
-    approvals_delete("tests/ApprovalsTest.test_approvals_save_load.received.txt");
+    approvals_delete_received_file(__FILE__, __func__, "txt");
+    /* TODO assert file is gone */
 }
 /* TODO approvals_writer_test */
 

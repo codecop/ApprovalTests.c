@@ -64,14 +64,6 @@ const char* approvals_load(const char* filename)
     return read_buffer;
 }
 
-void approvals_delete(const char* filename)
-{
-    int error_remove = remove(filename);
-    if (error_remove) {
-        fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
-    }
-}
-
 const char* __approvals_verify(const char* received,
                                const char* full_file_name,
                                const char* test_name,
@@ -85,10 +77,7 @@ const char* __approvals_verify(const char* received,
 
     if (strcmp(approved, received) == 0) {
         /* OK */
-        const char* received_name =
-            approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
-        approvals_delete(received_name);
-        free((void*)received_name);
+        approvals_delete_received_file(full_file_name, test_name, extension_no_dot);
     }
 
     free((void*)approved_name);

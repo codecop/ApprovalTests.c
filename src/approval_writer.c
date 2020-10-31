@@ -101,3 +101,19 @@ void approvals_write_received_file(const char* full_file_name,
 
     free((void*)received_name);
 }
+
+static void approvals_delete(const char* filename)
+{
+    int error_remove = remove(filename);
+    if (error_remove) {
+        fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
+    }
+}
+
+void approvals_delete_received_file(const char* full_file_name, const char* test_name, const char* extension_no_dot)
+{
+    const char* received_name =
+        approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
+    approvals_delete(received_name);
+    free((void*)received_name);
+}
