@@ -9,10 +9,9 @@
 #include "approval_writer.h"
 #include "file_utils.h"
 
-const char* approvals_read_approved(const char* full_file_name, const char* test_name, const char* extension_no_dot)
+const char* approvals_read_approved(struct ApprovalName name)
 {
-    const char* approved_name =
-        approvals_get_approved_file_name(full_file_name, test_name, extension_no_dot);
+    const char* approved_name = approvals_get_approved_file_name(name);
     const char* approved = approvals_load_text_file(approved_name);
     free((void*)approved_name);
 
@@ -29,12 +28,13 @@ const char* __approvals_approve(const char* received,
                                 const char* test_name,
                                 const char* extension_no_dot)
 {
-    const char* approved = approvals_read_approved(full_file_name, test_name, extension_no_dot);
+    const struct ApprovalName name = {full_file_name, test_name, extension_no_dot};
+    const char* approved = approvals_read_approved(name);
 
-    approvals_write_received_file(full_file_name, test_name, extension_no_dot, received);
+    approvals_write_received_file(name, received);
     if (approvals_approve_text(approved, received)) {
         /* OK */
-        approvals_delete_received_file(full_file_name, test_name, extension_no_dot);
+        approvals_delete_received_file(name);
     }
 
     return approved;
