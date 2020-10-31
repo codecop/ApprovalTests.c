@@ -9,7 +9,7 @@
 #include "approval_writer.h"
 #include "file_utils.h"
 
-const char* approvals_read_approved(struct ApprovalName name)
+static const char* approvals_read_approved(struct ApprovalName name)
 {
     const char* approved_name = approvals_get_approved_file_name(name);
     const char* approved = approvals_load_text_file(approved_name);
