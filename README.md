@@ -1,10 +1,14 @@
 # ApprovalTests.c
 
-Plain/portable C 99 version.
+Plain/portable C 99 version of [Approval Tests](https://approvaltests.com/).
+
+> Unit testing asserts can be difficult to use. Approval tests simplify this by taking a snapshot of the results, and confirming that they have not changed.
+>
+> In normal unit testing, you say `assert_int_equal(5, person->age)`. Approvals allow you to do this when the thing that you want to assert is no longer a primitive but a complex object. For example, you can say, `verify_txt(person_to_string(person))`.
 
 ## Building
 
-Using Windows `build` creates the library stub (in `./lib`) and dynamic library (in `./bin`).
+Building under Windows creates the library stub (in `./lib`) and thd dynamic library (in `./bin`).
 For Linux this creates only the shared library (in `./lib`).
 
     make build
@@ -27,7 +31,7 @@ Compile and run a test using the sources with:
         -o AppTest.exe
     ./AppTest.exe
 
-If you built the library (`make build`), compile and run a test with:
+If you are using the binary distribution, compile and run a test with:
 
     gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
         AppTest.c ^
