@@ -3,60 +3,12 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "x86_x64.h"
-
-const char* approvals_file_name_for(const char* full_file_name,
-                                    const char* test_name,
-                                    bool is_approved,
-                                    const char* extension_no_dot)
-{
-    const char* last_dot = strrchr(full_file_name, '.');
-    size_t length_file_name = 0;
-    if (last_dot) {
-        length_file_name = last_dot - full_file_name;
-    }
-    else {
-        length_file_name = strlen(full_file_name);
-    }
-
-    size_t length = 0;
-    length += length_file_name;
-    length += 1; /* . */
-    length += strlen(test_name);
-    length += 1; /* . */
-    length += 8; /* "approved" or "received" */
-    length += 1; /* . */
-    length += strlen(extension_no_dot);
-    length += 1; /* \0 */
-    char* s = (char*)malloc(length);
-
-    char* offset = s;
-    strcpy(offset, full_file_name);
-    offset += length_file_name;
-    strcpy(offset, ".");
-    offset += 1;
-    strcpy(offset, test_name);
-    offset += strlen(test_name);
-    strcpy(offset, ".");
-    offset += 1;
-    if (is_approved) {
-        strcpy(offset, "approved");
-    }
-    else {
-        strcpy(offset, "received");
-    }
-    offset += 8;
-    strcpy(offset, ".");
-    offset += 1;
-    strcpy(offset, extension_no_dot); /* includes \0 */
-
-    return s;
-}
+#include "approvals_writer.h"
 
 const char* approvals_load(const char* filename)
 {
@@ -144,11 +96,11 @@ const char* __approvals_verify(const char* received,
                                const char* extension_no_dot)
 {
     const char* received_name =
-        approvals_file_name_for(full_file_name, test_name, false, extension_no_dot);
+        approvals_get_received_file_name(full_file_name, test_name, extension_no_dot);
     approvals_save(received_name, received);
 
     const char* approved_name =
-        approvals_file_name_for(full_file_name, test_name, true, extension_no_dot);
+        approvals_get_approved_file_name(full_file_name, test_name, extension_no_dot);
     const char* approved = approvals_load(approved_name);
 
     if (strcmp(approved, received) == 0) {

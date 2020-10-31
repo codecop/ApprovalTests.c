@@ -13,7 +13,7 @@ static void test_approvals_name(void** state)
     (void)state; /* unused */
 
     assert_string_equal("tests/ApprovalsTest.foo.approved.txt",
-                        approvals_file_name_for(__FILE__, "foo", true, "txt"));
+                        approvals_get_approved_file_name(__FILE__, "foo", "txt"));
 }
 
 static void test_approvals_save_load(void** state)
