@@ -5,9 +5,9 @@
  */
 
 /*
-#include <cmocka.h>
 #include <stdlib.h>
 */
+#include "approvals_cmocka_reporter.h"
 
 extern const char* __approvals_verify(const char* received,
                                       const char* full_file_name,
@@ -19,12 +19,12 @@ extern const char* __approvals_xml_format(const char* xml);
 #define verify_xml(xml)                                                            \
     const char* __got = __approvals_xml_format(xml);                               \
     const char* __approved = __approvals_verify(__got, __FILE__, __func__, "xml"); \
-    assert_string_equal(__approved, __got);                                        \
+    approval_report_failure(__approved, __got);                                    \
     free((void*)__got);                                                            \
     free((void*)__approved);
 
 #define verify_txt(txt)                                                            \
     const char* __got = (txt);                                                     \
     const char* __approved = __approvals_verify(__got, __FILE__, __func__, "txt"); \
-    assert_string_equal(__approved, __got);                                        \
+    approval_report_failure(__approved, __got);                                    \
     free((void*)__approved);
