@@ -7,9 +7,9 @@
 /*
 #include <cmocka.h>
 */
-#ifndef __approval_report_failure
+#ifndef __approval_assert_equals
 
-#define __approval_report_failure(__approved, __got) \
+#define __approval_assert_equals(__approved, __got) \
     assert_string_equal((__approved), (__got));
 
 #endif
