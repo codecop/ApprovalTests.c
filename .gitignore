@@ -67,3 +67,9 @@ _test.bat
 
 # Binaries
 Binaries_*.zip
+
+# Eclipse
+.settings/
+.project
+.cproject
+/Default/

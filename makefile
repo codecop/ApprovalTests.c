@@ -55,6 +55,7 @@ clean:
 	rm -f $(SRC_DIR)/*.o
 	rm -f $(TEST_DIR)/*.o $(TEST_DIR)/*$(EXE) $(TEST_DIR)/*.received.*
 	rm -f ${EXAMPLE_DIR}/*.o ${EXAMPLE_DIR}/*$(EXE) ${EXAMPLE_DIR}/*.received.*
+	rm -r -f Default
 
 .PHONY: clean_all
 clean_all: clean
