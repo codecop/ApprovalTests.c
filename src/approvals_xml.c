@@ -13,7 +13,8 @@
 static void xml_newline(struct StringBuilder* sb, unsigned int intent)
 {
     sb_append(sb, "\n");
-    for (unsigned int i = 0; i < intent; i++) {
+    unsigned int i;
+    for (i = 0; i < intent; i++) {
         sb_append(sb, "  ");
     }
 }
@@ -32,7 +33,8 @@ const char* __approvals_xml_format(const char* xml)
     bool comment = false;
     bool cdata = false;
 
-    for (const char* c = xml; *c; c++) {
+    const char* c;
+    for (c = xml; *c; c++) {
         current = *c;
         next = *(c + 1); /* \0 at end */
 
