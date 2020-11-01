@@ -24,6 +24,15 @@ static int approvals_approve_text(const char* approved, const char* received)
     return strcmp(approved, received) == 0;
 }
 
+static void approvals_report(struct ApprovalName name)
+{
+    const char* approved_name = approvals_get_approved_file_name(name);
+    const char* received_name = approvals_get_received_file_name(name);
+    approval_report_failure(approved_name, received_name);
+    free((void*)received_name);
+    free((void*)approved_name);
+}
+
 const char* __approvals_approve(const char* received,
                                 const char* full_file_name,
                                 const char* test_name,
@@ -39,7 +48,7 @@ const char* __approvals_approve(const char* received,
     }
     else {
         /* FAIL */
-        approval_report_failure(approved, received);
+        approvals_report(name);
     }
 
     return approved;

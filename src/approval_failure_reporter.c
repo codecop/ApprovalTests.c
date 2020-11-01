@@ -3,23 +3,22 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-typedef void (*FailureReporter)(const char* approved, const char* received);
+typedef void (*FailureReporter)(const char* approved_file_name, const char* received_file_name);
 
-static FailureReporter reporter;
+static FailureReporter used_reporter;
 
-void use_reporter(FailureReporter r)
+void use_reporter(FailureReporter reporter)
 {
-    reporter = r;
+    used_reporter = reporter;
 }
 
-void approval_report_failure(const char* approved, const char* received)
+void approval_report_failure(const char* approved_file_name, const char* received_file_name)
 {
-    if (reporter) {
-        (*reporter)(approved, received);
+    if (used_reporter) {
+        (*used_reporter)(approved_file_name, received_file_name);
     }
 }
 
 /*
- * reporter needs file names
  * also need AND reporter or chain of reporters
  */

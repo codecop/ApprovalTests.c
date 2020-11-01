@@ -14,8 +14,6 @@ extern const char* __approvals_approve(const char* received,
 
 extern const char* __approvals_xml_format(const char* xml);
 
-extern void use_reporter(void (*reporter)(const char* approved, const char* received));
-
 #define verify_xml(xml)                                                             \
     const char* __got = __approvals_xml_format(xml);                                \
     const char* __approved = __approvals_approve(__got, __FILE__, __func__, "xml"); \
@@ -27,3 +25,8 @@ extern void use_reporter(void (*reporter)(const char* approved, const char* rece
     const char* __approved = __approvals_approve((__got), __FILE__, __func__, "txt"); \
     __approval_assert_equals(__approved, (__got));                                    \
     free((void*)__approved);
+
+/*
+ * copied from approval_failure_reporter.h
+ */
+extern void use_reporter(void (*reporter)(const char* approved_file_name, const char* received_file_name));
