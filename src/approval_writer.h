@@ -3,7 +3,6 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-
 struct ApprovalName {
     const char* full_file_name;
     const char* test_name;

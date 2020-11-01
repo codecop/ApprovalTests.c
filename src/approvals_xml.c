@@ -3,12 +3,12 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include "StringBuilder.h"
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <stdio.h>
+#include "StringBuilder.h"
 
 static void xml_newline(struct StringBuilder* sb, unsigned int intent)
 {
