@@ -10,17 +10,23 @@
 
 typedef void (*FailureReporter)(const char* approved_file_name, const char* received_file_name);
 
-static FailureReporter used_reporter;
+static FailureReporter used_reporter[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void use_reporter(FailureReporter reporter)
 {
-    used_reporter = reporter;
+    unsigned int i = 0;
+    while (used_reporter[i]) {
+        i += 1;
+    }
+    used_reporter[i] = reporter;
 }
 
 void approval_report_failure(const char* approved_file_name, const char* received_file_name)
 {
-    if (used_reporter) {
-        (*used_reporter)(approved_file_name, received_file_name);
+    unsigned int i = 0;
+    while (used_reporter[i]) {
+        (*used_reporter[i])(approved_file_name, received_file_name);
+        i += 1;
     }
 }
 
