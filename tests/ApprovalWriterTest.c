@@ -6,15 +6,16 @@
 
 #include "../src/approval_writer.h"
 #include "../src/file_utils.h"
+#include "../src/system_utils.h"
 
 static void test_get_approved_file_name(void** state)
 {
     (void)state; /* unused */
 
     const struct ApprovalName name = {__FILE__, __func__, "txt"};
-    assert_string_equal(
-        "tests/ApprovalWriterTest.test_get_approved_file_name.approved.txt",
-        approvals_get_approved_file_name(name));
+    assert_string_equal("tests" OS_SLASH
+                        "ApprovalWriterTest.test_get_approved_file_name.approved.txt",
+                        approvals_get_approved_file_name(name));
 }
 
 static void test_write_received_file(void** state)

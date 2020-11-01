@@ -8,6 +8,16 @@
 
 #include "approval_writer.h"
 #include "file_utils.h"
+#include "system_utils.h"
+
+static void to_windows_path(char* path)
+{
+    char* slash = strrchr(path, '/');
+    while (slash) {
+        *slash = '\\';
+        slash = strrchr(path, '/');
+    }
+}
 
 static const char* approvals_file_name_for(struct ApprovalName name, const char* suffix)
 {
@@ -45,6 +55,10 @@ static const char* approvals_file_name_for(struct ApprovalName name, const char*
     strcpy(offset, ".");
     offset += 1;
     strcpy(offset, name.extension_no_dot); /* includes \0 */
+
+#ifdef OS_WINDOWS
+    to_windows_path(s);
+#endif
 
     return s;
 }
