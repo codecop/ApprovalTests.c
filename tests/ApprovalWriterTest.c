@@ -25,11 +25,13 @@ static void test_write_received_file(void** state)
     const struct ApprovalName name = {__FILE__, __func__, "txt"};
     const char* s = "abc123";
     approvals_write_received_file(name, s);
-    const char* r = approvals_load_text_file(
-        "tests/ApprovalWriterTest.test_write_received_file.received.txt");
+    const char* file_name =
+        "tests/ApprovalWriterTest.test_write_received_file.received.txt";
+    assert_true(approvals_file_exists(file_name));
+    const char* r = approvals_load_text_file(file_name);
     assert_string_equal(s, r);
     approvals_delete_received_file(name);
-    /* TODO assert file is gone */
+    assert_false(approvals_file_exists(file_name));
 }
 
 int main(void)

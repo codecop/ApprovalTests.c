@@ -9,6 +9,19 @@
 
 #include "x86_x64.h"
 
+int approvals_file_exists(const char* filename)
+{
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        return 0;
+    }
+    int error_close = fclose(file);
+    if (error_close) {
+        fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
+    }
+    return 1;
+}
+
 const char* approvals_load_text_file(const char* filename)
 {
     FILE* file = fopen(filename, "r");
