@@ -31,10 +31,6 @@ void approval_report_failure(const char* approved_file_name, const char* receive
 }
 
 /*
- * TODO also need AND reporter or chain of reporters
- */
-
-/*
  * A reporter which creates the command to accept the received file as the approve file.
  */
 void approval_report_failure_quiet(const char* approved_file_name, const char* received_file_name)
