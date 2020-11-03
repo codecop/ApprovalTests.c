@@ -5,6 +5,7 @@
  */
 
 /*
+ * Need to include stdlib before including this macro.
 #include <stdlib.h>
 */
 extern const char* __approvals_approve(const char* received,

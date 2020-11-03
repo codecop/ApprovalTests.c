@@ -5,6 +5,7 @@
  */
 
 /*
+ * Need to include cmocka before including this macro.
 #include <cmocka.h>
 */
 #ifndef __approval_assert_equals
