@@ -6,9 +6,9 @@
 #include <stdlib.h>
 
 #include "../include/approvals_cmocka.h"
-#include "../src/approval_failure_reporter.h"
+#include "../include/approvals_reporters.h"
 
-static void test_quiet_reporter(void** state)
+static void show_quiet_reporter(void** state)
 {
     (void)state; /* unused */
 
@@ -19,7 +19,7 @@ static void test_quiet_reporter(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_quiet_reporter), /* */
+        cmocka_unit_test(show_quiet_reporter), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
