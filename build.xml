@@ -2,8 +2,9 @@
 <project name="Package" basedir="." default="zip">
 
     <property name="version" value="1.1"/>
+    <property name="arch" value="x64"/>
     <property name="zip-path" value="releases\v${version}"/>
-    <property name="zip-name" value="Binaries_Windows_x64.zip"/>
+    <property name="zip-name" value="Binaries_Windows_${arch}.zip"/>
 
     <target name="zip" description="Create binary package">
         <mkdir dir="${zip-path}" />
