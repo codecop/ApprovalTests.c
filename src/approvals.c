@@ -39,6 +39,7 @@ const char* __approvals_approve(const char* received,
                                 const char* extension_no_dot)
 {
     const struct ApprovalName name = {full_file_name, test_name, extension_no_dot};
+    /* TODO use basename here, drop struct ApprovalName */
     const char* approved = approvals_read_approved(name);
 
     approvals_write_received_file(name, received);
