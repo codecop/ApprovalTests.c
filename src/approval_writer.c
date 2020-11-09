@@ -10,13 +10,17 @@
 #include "file_utils.h"
 #include "system_utils.h"
 
-static void to_windows_path(char* path)
+static void to_path(char* path)
 {
+#ifdef OS_WINDOWS
     char* slash = strrchr(path, '/');
     while (slash) {
         *slash = '\\';
         slash = strrchr(path, '/');
     }
+#else
+    (void)path; /* unused */
+#endif
 }
 
 static const char* approvals_file_name_for(struct ApprovalName name, const char* suffix)
@@ -56,9 +60,7 @@ static const char* approvals_file_name_for(struct ApprovalName name, const char*
     offset += 1;
     strcpy(offset, name.extension_no_dot); /* includes \0 */
 
-#ifdef OS_WINDOWS
-    to_windows_path(s);
-#endif
+    to_path(s);
 
     return s;
 }
