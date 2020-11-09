@@ -47,9 +47,7 @@ const char* approval_namer_create_approval_name(const char* full_file_name, cons
     strcpy(offset, test_name);
     offset += strlen(test_name); /* includes \0 */
 
-#ifdef OS_WINDOWS
     to_path(s);
-#endif
 
     return s;
 }
