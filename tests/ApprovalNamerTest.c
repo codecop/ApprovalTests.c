@@ -12,10 +12,11 @@ static void test_create_approval_name(void** state)
 {
     (void)state; /* unused */
 
-    const char* base_name = approval_namer_create_approval_name(__FILE__, __func__);
-    assert_string_equal("tests" OS_SLASH "ApprovalNamerTest.test_create_approval_name", base_name);
+    const char* s = approval_namer_create_approval_name(__FILE__, __func__);
 
-    free((void*)base_name);
+    assert_string_equal("tests" OS_SLASH "ApprovalNamerTest.test_create_approval_name", s);
+
+    free((void*)s);
 }
 
 int main(void)

@@ -3,43 +3,68 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
+#include <stdlib.h>
 
 #include "../src/approval_writer.h"
 #include "../src/file_utils.h"
 
-static void test_get_approved_file_name(void** state)
+static void test_create_approved_file_name(void** state)
 {
     (void)state; /* unused */
 
-    const struct ApprovalName name = {
-        "tests/ApprovalWriterTest.test_get_approved_file_name", "txt"};
+    const struct ApprovalFileName name = {
+        "tests/ApprovalWriterTest.test_create_approved_file_name", "txt"};
+
+    const char* s = approval_writer_create_approved_file_name(name);
+
     assert_string_equal(
-        "tests/ApprovalWriterTest.test_get_approved_file_name.approved.txt",
-        approvals_get_approved_file_name(name));
+        "tests/ApprovalWriterTest.test_create_approved_file_name.approved.txt", s);
+
+    free((void*)s);
+}
+
+static void test_create_received_file_name(void** state)
+{
+    (void)state; /* unused */
+
+    const struct ApprovalFileName name = {
+        "tests/ApprovalWriterTest.test_create_received_file_name", "txt"};
+
+    const char* s = approval_writer_create_received_file_name(name);
+
+    assert_string_equal(
+        "tests/ApprovalWriterTest.test_create_received_file_name.received.txt", s);
+
+    free((void*)s);
 }
 
 static void test_write_received_file(void** state)
 {
     (void)state; /* unused */
 
-    const struct ApprovalName name = {"tests/ApprovalWriterTest.test_write_received_file",
-                                      "txt"};
-    const char* s = "abc123";
-    approvals_write_received_file(name, s);
+    const struct ApprovalFileName name = {
+        "tests/ApprovalWriterTest.test_write_received_file", "txt"};
+
+    const char* text = "abc123";
+    approval_writer_write_received_file(name, text);
+
     const char* file_name =
         "tests/ApprovalWriterTest.test_write_received_file.received.txt";
     assert_true(approvals_file_exists(file_name));
-    const char* r = approvals_load_text_file(file_name);
-    assert_string_equal(s, r);
-    approvals_delete_received_file(name);
+    const char* read = approvals_load_text_file(file_name);
+    assert_string_equal(text, read);
+    approval_writer_delete_received_file(name);
     assert_false(approvals_file_exists(file_name));
+
+    free((void*)read);
 }
 
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_get_approved_file_name), /* */
-        cmocka_unit_test(test_write_received_file),    /* */
+        cmocka_unit_test(test_create_approved_file_name), /* */
+        cmocka_unit_test(test_create_received_file_name), /* */
+        cmocka_unit_test(test_write_received_file),       /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

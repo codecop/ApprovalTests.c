@@ -8,9 +8,8 @@
 
 #include "approval_writer.h"
 #include "file_utils.h"
-#include "system_utils.h"
 
-static const char* approvals_file_name_for(struct ApprovalName name, const char* suffix)
+static const char* create_approvals_file_name_for(struct ApprovalFileName name, const char* suffix)
 {
     size_t length = 0;
     length += strlen(name.base_name);
@@ -35,28 +34,28 @@ static const char* approvals_file_name_for(struct ApprovalName name, const char*
     return s;
 }
 
-const char* approvals_get_approved_file_name(struct ApprovalName name)
+const char* approval_writer_create_approved_file_name(struct ApprovalFileName name)
 {
-    return approvals_file_name_for(name, "approved");
+    return create_approvals_file_name_for(name, "approved");
 }
 
-const char* approvals_get_received_file_name(struct ApprovalName name)
+const char* approval_writer_create_received_file_name(struct ApprovalFileName name)
 {
-    return approvals_file_name_for(name, "received");
+    return create_approvals_file_name_for(name, "received");
 }
 
-void approvals_write_received_file(struct ApprovalName name, const char* received)
+void approval_writer_write_received_file(struct ApprovalFileName name, const char* received)
 {
-    const char* received_name = approvals_get_received_file_name(name);
+    const char* received_name = approval_writer_create_received_file_name(name);
 
     approvals_save_text_file(received_name, received);
 
     free((void*)received_name);
 }
 
-void approvals_delete_received_file(struct ApprovalName name)
+void approval_writer_delete_received_file(struct ApprovalFileName name)
 {
-    const char* received_name = approvals_get_received_file_name(name);
+    const char* received_name = approval_writer_create_received_file_name(name);
     approvals_delete_file(received_name);
     free((void*)received_name);
 }
