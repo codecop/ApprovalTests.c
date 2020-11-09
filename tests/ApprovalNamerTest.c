@@ -3,6 +3,7 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
+#include <stdlib.h>
 
 #include "../src/approval_namer.h"
 #include "../src/system_utils.h"
@@ -11,8 +12,10 @@ static void test_create_approval_name(void** state)
 {
     (void)state; /* unused */
 
-    assert_string_equal("tests" OS_SLASH "ApprovalNamerTest.test_create_approval_name",
-                        approval_namer_create_approval_name(__FILE__, __func__));
+    const char* base_name = approval_namer_create_approval_name(__FILE__, __func__);
+    assert_string_equal("tests" OS_SLASH "ApprovalNamerTest.test_create_approval_name", base_name);
+
+    free((void*)base_name);
 }
 
 int main(void)
