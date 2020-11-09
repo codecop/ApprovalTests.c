@@ -10,34 +10,10 @@
 #include "file_utils.h"
 #include "system_utils.h"
 
-static void to_path(char* path)
-{
-#ifdef OS_WINDOWS
-    char* slash = strrchr(path, '/');
-    while (slash) {
-        *slash = '\\';
-        slash = strrchr(path, '/');
-    }
-#else
-    (void)path; /* unused */
-#endif
-}
-
 static const char* approvals_file_name_for(struct ApprovalName name, const char* suffix)
 {
-    const char* last_dot = strrchr(name.full_file_name, '.');
-    size_t length_file_name = 0;
-    if (last_dot) {
-        length_file_name = last_dot - name.full_file_name;
-    }
-    else {
-        length_file_name = strlen(name.full_file_name);
-    }
-
     size_t length = 0;
-    length += length_file_name;
-    length += 1; /* . */
-    length += strlen(name.test_name);
+    length += strlen(name.base_name);
     length += 1;              /* . */
     length += strlen(suffix); /* "approved" or "received" */
     length += 1;              /* . */
@@ -46,12 +22,8 @@ static const char* approvals_file_name_for(struct ApprovalName name, const char*
     char* s = (char*)malloc(length);
 
     char* offset = s;
-    strcpy(offset, name.full_file_name);
-    offset += length_file_name;
-    strcpy(offset, ".");
-    offset += 1;
-    strcpy(offset, name.test_name);
-    offset += strlen(name.test_name);
+    strcpy(offset, name.base_name);
+    offset += strlen(name.base_name);
     strcpy(offset, ".");
     offset += 1;
     strcpy(offset, suffix);
@@ -59,8 +31,6 @@ static const char* approvals_file_name_for(struct ApprovalName name, const char*
     strcpy(offset, ".");
     offset += 1;
     strcpy(offset, name.extension_no_dot); /* includes \0 */
-
-    to_path(s);
 
     return s;
 }
