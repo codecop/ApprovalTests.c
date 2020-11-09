@@ -11,7 +11,7 @@
 #include "approval_writer.h"
 #include "file_utils.h"
 
-static const char* approvals_read_approved(struct ApprovalFileName name)
+static const char* read_approved(struct ApprovalFileName name)
 {
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* approved = approvals_load_text_file(approved_name);
@@ -20,12 +20,12 @@ static const char* approvals_read_approved(struct ApprovalFileName name)
     return approved;
 }
 
-static int approvals_approve_text(const char* approved, const char* received)
+static int text_is_approved(const char* approved, const char* received)
 {
     return strcmp(approved, received) == 0;
 }
 
-static void approvals_report(struct ApprovalFileName name)
+static void report_failure(struct ApprovalFileName name)
 {
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
@@ -41,18 +41,18 @@ const char* __approvals_approve(const char* received,
 {
     const char* base_name = approval_namer_create_approval_name(full_file_name, test_name);
     const struct ApprovalFileName name = {base_name, extension_no_dot};
-    /* TODO use basename here, drop struct ApprovalName */
-    const char* approved = approvals_read_approved(name);
+    const char* approved = read_approved(name);
 
     approval_writer_write_received_file(name, received);
-    if (approvals_approve_text(approved, received)) {
+    if (text_is_approved(approved, received)) {
         /* OK */
         approval_writer_delete_received_file(name);
     }
     else {
         /* FAIL */
-        approvals_report(name);
+        report_failure(name);
     }
+
     free((void*)base_name);
     return approved;
 }
