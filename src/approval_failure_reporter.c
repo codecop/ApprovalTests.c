@@ -10,12 +10,14 @@
 
 typedef void (*FailureReporter)(const char* approved_file_name, const char* received_file_name);
 
-static FailureReporter used_reporter[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+#define MAX_REPORTERS 10
+
+static FailureReporter used_reporter[MAX_REPORTERS + 1];
 
 void approvals_use_reporter(FailureReporter reporter)
 {
     unsigned int i = 0;
-    while (used_reporter[i]) {
+    while (used_reporter[i] && i < (MAX_REPORTERS - 1)) {
         i += 1;
     }
     used_reporter[i] = reporter;
@@ -24,7 +26,7 @@ void approvals_use_reporter(FailureReporter reporter)
 void approvals_clear_reporters()
 {
     unsigned int i = 0;
-    while (used_reporter[i]) {
+    while (used_reporter[i] && i < MAX_REPORTERS) {
         used_reporter[i] = NULL;
         i += 1;
     }
@@ -33,7 +35,7 @@ void approvals_clear_reporters()
 void approval_report_failure(const char* approved_file_name, const char* received_file_name)
 {
     unsigned int i = 0;
-    while (used_reporter[i]) {
+    while (used_reporter[i] && i < MAX_REPORTERS) {
         (*used_reporter[i])(approved_file_name, received_file_name);
         i += 1;
     }
