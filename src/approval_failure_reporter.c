@@ -12,13 +12,22 @@ typedef void (*FailureReporter)(const char* approved_file_name, const char* rece
 
 static FailureReporter used_reporter[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-void use_reporter(FailureReporter reporter)
+void approvals_use_reporter(FailureReporter reporter)
 {
     unsigned int i = 0;
     while (used_reporter[i]) {
         i += 1;
     }
     used_reporter[i] = reporter;
+}
+
+void approvals_clear_reporters()
+{
+    unsigned int i = 0;
+    while (used_reporter[i]) {
+        used_reporter[i] = NULL;
+        i += 1;
+    }
 }
 
 void approval_report_failure(const char* approved_file_name, const char* received_file_name)
