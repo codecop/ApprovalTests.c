@@ -5,7 +5,7 @@ EXAMPLE_DIR := ./example
 
 CC := gcc
 STD := c99
-CFLAGS := -g -std=$(STD) -O -Werror -Wall -Wextra -pedantic -Wno-error=format -Wno-error=unused-function
+CFLAGS := -g -std=$(STD) -O -Werror -Wall -Wextra -pedantic -Wno-error=format -Wno-error=unused-variable
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 SHARED_FLAGS := -shared
 CMOCKA := -lcmocka

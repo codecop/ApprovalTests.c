@@ -63,7 +63,7 @@ static FailureReporterResult approval_report_failure_diff(struct DiffInfo diff,
                                                           const char* approved_file_name,
                                                           const char* received_file_name)
 {
-    fprintf(stdout, "DIFF \"%s\" \"%s\"\n", received_file_name, approved_file_name);
+    fprintf(stdout, diff.parameters, received_file_name, approved_file_name);
     return FailureReport_continue;
 }
 
