@@ -6,9 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "approval_failure_reporter.h"
 #include "system_utils.h"
-
-typedef void (*FailureReporter)(const char* approved_file_name, const char* received_file_name);
 
 #define MAX_REPORTERS 10
 
@@ -36,19 +35,23 @@ void approval_report_failure(const char* approved_file_name, const char* receive
 {
     unsigned int i = 0;
     while (used_reporter[i] && i < MAX_REPORTERS) {
-        (*used_reporter[i])(approved_file_name, received_file_name);
+        int result = (*used_reporter[i])(approved_file_name, received_file_name);
         i += 1;
+        if (result == FailureReporterResult_stop) {
+            break;
+        }
     }
 }
 
 /*
  * A reporter which creates the command to accept the received file as the approve file.
  */
-void approval_report_failure_quiet(const char* approved_file_name, const char* received_file_name)
+int approval_report_failure_quiet(const char* approved_file_name, const char* received_file_name)
 {
 #ifdef OS_WINDOWS
     fprintf(stdout, "move /Y \"%s\" \"%s\"\n", received_file_name, approved_file_name);
 #else
     fprintf(stdout, "mv %s %s\n", received_file_name, approved_file_name);
 #endif
+    return FailureReporterResult_continue;
 }
