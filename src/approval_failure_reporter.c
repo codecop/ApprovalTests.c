@@ -11,6 +11,11 @@
 
 #define MAX_REPORTERS 10
 
+typedef enum FailureReporterResult {
+    FailureReport_continue = 0, /* */
+    FailureReport_abort = 1     /* */
+} FailureReporterResult;
+
 static FailureReporter used_reporter[MAX_REPORTERS + 1];
 
 void approvals_use_reporter(FailureReporter reporter)
@@ -37,7 +42,7 @@ void approval_report_failure(const char* approved_file_name, const char* receive
     while (used_reporter[i] && i < MAX_REPORTERS) {
         int result = (*used_reporter[i])(approved_file_name, received_file_name);
         i += 1;
-        if (result == FailureReporterResult_stop) {
+        if (result == FailureReport_abort) {
             break;
         }
     }
@@ -53,5 +58,5 @@ int approval_report_failure_quiet(const char* approved_file_name, const char* re
 #else
     fprintf(stdout, "mv %s %s\n", received_file_name, approved_file_name);
 #endif
-    return FailureReporterResult_continue;
+    return FailureReport_continue;
 }
