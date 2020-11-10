@@ -73,3 +73,6 @@ Binaries_*.zip
 .project
 .cproject
 /Default/
+
+# Porting code
+*.java
