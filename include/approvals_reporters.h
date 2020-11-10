@@ -6,7 +6,14 @@
 #ifndef ApprovalsFailureReporters
 #define ApprovalsFailureReporters
 
-typedef int (*FailureReporter)(const char* approved_file_name, const char* received_file_name);
+typedef enum FailureReporterResult {
+    FailureReport_continue = 0, /* */
+    FailureReport_abort = 1     /* */
+} FailureReporterResult;
+
+// TODO use struct struct ApprovalFileNames for both file names
+typedef FailureReporterResult (*FailureReporter)(const char* approved_file_name,
+                                                 const char* received_file_name);
 
 extern void approvals_use_reporter(FailureReporter reporter);
 extern void approvals_clear_reporters();
@@ -18,17 +25,21 @@ extern void approvals_clear_reporters();
 /*
  * A reporter which creates the command to accept the received file as the approve file.
  */
-extern int approval_report_failure_quiet(const char* approved_file_name, const char* received_file_name);
-/*
+extern FailureReporterResult approval_report_failure_quiet(const char* approved_file_name,
+                                                           const char* received_file_name);
+
 struct DiffInfo {
     const char* diff_program;
     const char* parameters;
 };
-*/
-/* Windows */
-/*
+
 static struct DiffInfo WINDOWS_KDIFF3 = {"{ProgramFiles}KDiff3\\kdiff3.exe", "%s %s"};
 static struct DiffInfo WINDOWS_VISUAL_STUDIO_CODE = {
     "{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"};
-*/
+
+/*
+ * A reporter which opens the diff between the received file as the approve file.
+ */
+extern FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff);
+
 #endif

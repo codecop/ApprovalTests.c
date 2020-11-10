@@ -19,7 +19,7 @@ static void show_quiet_reporter(void** state)
 
 static int reporters_called[3];
 
-int fakeReportA(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportA(const char* approved_file_name, const char* received_file_name)
 {
     (void)approved_file_name; /* unused */
     (void)received_file_name; /* unused */
@@ -27,7 +27,7 @@ int fakeReportA(const char* approved_file_name, const char* received_file_name)
     return 0;
 }
 
-int fakeReportB(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportB(const char* approved_file_name, const char* received_file_name)
 {
     (void)approved_file_name; /* unused */
     (void)received_file_name; /* unused */
@@ -35,7 +35,7 @@ int fakeReportB(const char* approved_file_name, const char* received_file_name)
     return 1;
 }
 
-int fakeReportC(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportC(const char* approved_file_name, const char* received_file_name)
 {
     (void)approved_file_name; /* unused */
     (void)received_file_name; /* unused */
@@ -61,6 +61,15 @@ static void test_report_sequence_of_reporters(void** state)
     assert_int_equal(0, reporters_called[2]);
 }
 
+static void show_windows_kdiff_reporter(void** state)
+{
+    (void)state; /* unused */
+
+    approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_KDIFF3));
+
+    approval_report_failure("approved", "received");
+}
+
 static int reset_reporters(void** state)
 {
     (void)state; /* unused */
@@ -73,6 +82,7 @@ int main(void)
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test_teardown(show_quiet_reporter, reset_reporters), /* */
         cmocka_unit_test_teardown(test_report_sequence_of_reporters, reset_reporters), /* */
+        cmocka_unit_test_teardown(show_windows_kdiff_reporter, reset_reporters), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

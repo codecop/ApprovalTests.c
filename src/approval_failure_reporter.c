@@ -6,17 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "approval_failure_reporter.h"
+#include "../include/approvals_reporters.h"
 #include "system_utils.h"
 
 #define MAX_REPORTERS 10
 
-typedef enum FailureReporterResult {
-    FailureReport_continue = 0, /* */
-    FailureReport_abort = 1     /* */
-} FailureReporterResult;
-
-static FailureReporter used_reporter[MAX_REPORTERS + 1];
+static FailureReporter used_reporter[MAX_REPORTERS];
 
 void approvals_use_reporter(FailureReporter reporter)
 {
@@ -40,7 +35,7 @@ void approval_report_failure(const char* approved_file_name, const char* receive
 {
     unsigned int i = 0;
     while (used_reporter[i] && i < MAX_REPORTERS) {
-        int result = (*used_reporter[i])(approved_file_name, received_file_name);
+        FailureReporterResult result = (*used_reporter[i])(approved_file_name, received_file_name);
         i += 1;
         if (result == FailureReport_abort) {
             break;
@@ -48,10 +43,8 @@ void approval_report_failure(const char* approved_file_name, const char* receive
     }
 }
 
-/*
- * A reporter which creates the command to accept the received file as the approve file.
- */
-int approval_report_failure_quiet(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult approval_report_failure_quiet(const char* approved_file_name,
+                                                    const char* received_file_name)
 {
 #ifdef OS_WINDOWS
     fprintf(stdout, "move /Y \"%s\" \"%s\"\n", received_file_name, approved_file_name);
@@ -59,4 +52,49 @@ int approval_report_failure_quiet(const char* approved_file_name, const char* re
     fprintf(stdout, "mv %s %s\n", received_file_name, approved_file_name);
 #endif
     return FailureReport_continue;
+}
+
+/* TODO move to generic diff reporter */
+
+#define MAX_DIFF_REPORTERS 10
+static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
+
+static FailureReporterResult approval_report_failure_diff(struct DiffInfo diff,
+                                                          const char* approved_file_name,
+                                                          const char* received_file_name)
+{
+    fprintf(stdout, "DIFF \"%s\" \"%s\"\n", received_file_name, approved_file_name);
+    return FailureReport_continue;
+}
+
+// TODO macro for defining methods for each i in 0...MAX_DIFF_REPORTERS
+// and put into array
+static FailureReporterResult approval_report_failure_diff_0(const char* approved_file_name,
+                                                            const char* received_file_name)
+{
+    return approval_report_failure_diff(used_diffs[0], approved_file_name, received_file_name);
+}
+
+static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+    approval_report_failure_diff_0, /* */
+};
+
+FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
+{
+    unsigned int i = 0;
+    while (used_diffs[i].diff_program && i < (MAX_DIFF_REPORTERS - 1)) {
+        i += 1;
+    }
+    used_diffs[i] = diff;
+
+    return diffs_reporters[i];
 }

@@ -4,6 +4,7 @@
  * BSD3 licensed.
  */
 struct ApprovalFileName {
+    // TODO rename to ApprovalBaseName
     const char* base_name;
     const char* extension_no_dot;
 };
