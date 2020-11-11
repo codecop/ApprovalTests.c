@@ -46,58 +46,35 @@ static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct Approva
 #define MAX_DIFF_REPORTERS 10
 static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 
-static FailureReporterResult open_diff_tool_0(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[0], file_names);
-}
-static FailureReporterResult open_diff_tool_1(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[1], file_names);
-}
-static FailureReporterResult open_diff_tool_2(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[2], file_names);
-}
-static FailureReporterResult open_diff_tool_3(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[3], file_names);
-}
-static FailureReporterResult open_diff_tool_4(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[4], file_names);
-}
-static FailureReporterResult open_diff_tool_5(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[5], file_names);
-}
-static FailureReporterResult open_diff_tool_6(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[6], file_names);
-}
-static FailureReporterResult open_diff_tool_7(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[7], file_names);
-}
-static FailureReporterResult open_diff_tool_8(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[8], file_names);
-}
-static FailureReporterResult open_diff_tool_9(struct ApprovalFileNames file_names)
-{
-    return open_diff_tool(used_diffs[9], file_names);
-}
+#define open_diff_tool_name_for(i) open_diff_tool_##i
+#define open_diff_tool_for(i)                                                                    \
+    static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names) \
+    {                                                                                            \
+        return open_diff_tool(used_diffs[i], file_names);                                        \
+    }
+
+open_diff_tool_for(0)
+open_diff_tool_for(1)
+open_diff_tool_for(2)
+open_diff_tool_for(3)
+open_diff_tool_for(4)
+open_diff_tool_for(5)
+open_diff_tool_for(6)
+open_diff_tool_for(7)
+open_diff_tool_for(8)
+open_diff_tool_for(9)
 
 static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
-    open_diff_tool_0, /* */
-    open_diff_tool_1, /* */
-    open_diff_tool_2, /* */
-    open_diff_tool_3, /* */
-    open_diff_tool_4, /* */
-    open_diff_tool_5, /* */
-    open_diff_tool_6, /* */
-    open_diff_tool_7, /* */
-    open_diff_tool_8, /* */
-    open_diff_tool_9, /* */
+    open_diff_tool_name_for(0), /* */
+    open_diff_tool_name_for(1), /* */
+    open_diff_tool_name_for(2), /* */
+    open_diff_tool_name_for(3), /* */
+    open_diff_tool_name_for(4), /* */
+    open_diff_tool_name_for(5), /* */
+    open_diff_tool_name_for(6), /* */
+    open_diff_tool_name_for(7), /* */
+    open_diff_tool_name_for(8), /* */
+    open_diff_tool_name_for(9), /* */
 };
 
 FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
