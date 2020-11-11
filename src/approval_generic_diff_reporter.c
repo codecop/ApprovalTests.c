@@ -9,8 +9,7 @@
 #include "../include/approvals_reporters.h"
 #include "system_utils.h"
 
-static FailureReporterResult approval_report_failure_diff(struct DiffInfo diff,
-                                                          struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     fprintf(stdout, diff.parameters, file_names.received, file_names.approved);
     /*
@@ -47,58 +46,58 @@ static FailureReporterResult approval_report_failure_diff(struct DiffInfo diff,
 #define MAX_DIFF_REPORTERS 10
 static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 
-static FailureReporterResult approval_report_failure_diff_0(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_0(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[0], file_names);
+    return open_diff_tool(used_diffs[0], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_1(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_1(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[1], file_names);
+    return open_diff_tool(used_diffs[1], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_2(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_2(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[2], file_names);
+    return open_diff_tool(used_diffs[2], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_3(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_3(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[3], file_names);
+    return open_diff_tool(used_diffs[3], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_4(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_4(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[4], file_names);
+    return open_diff_tool(used_diffs[4], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_5(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_5(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[5], file_names);
+    return open_diff_tool(used_diffs[5], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_6(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_6(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[6], file_names);
+    return open_diff_tool(used_diffs[6], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_7(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_7(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[7], file_names);
+    return open_diff_tool(used_diffs[7], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_8(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_8(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[8], file_names);
+    return open_diff_tool(used_diffs[8], file_names);
 }
-static FailureReporterResult approval_report_failure_diff_9(struct ApprovalFileNames file_names)
+static FailureReporterResult open_diff_tool_9(struct ApprovalFileNames file_names)
 {
-    return approval_report_failure_diff(used_diffs[9], file_names);
+    return open_diff_tool(used_diffs[9], file_names);
 }
 
 static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
-    approval_report_failure_diff_0, /* */
-    approval_report_failure_diff_1, /* */
-    approval_report_failure_diff_2, /* */
-    approval_report_failure_diff_3, /* */
-    approval_report_failure_diff_4, /* */
-    approval_report_failure_diff_5, /* */
-    approval_report_failure_diff_6, /* */
-    approval_report_failure_diff_7, /* */
-    approval_report_failure_diff_8, /* */
-    approval_report_failure_diff_9, /* */
+    open_diff_tool_0, /* */
+    open_diff_tool_1, /* */
+    open_diff_tool_2, /* */
+    open_diff_tool_3, /* */
+    open_diff_tool_4, /* */
+    open_diff_tool_5, /* */
+    open_diff_tool_6, /* */
+    open_diff_tool_7, /* */
+    open_diff_tool_8, /* */
+    open_diff_tool_9, /* */
 };
 
 FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
