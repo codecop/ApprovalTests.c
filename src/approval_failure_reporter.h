@@ -5,4 +5,4 @@
  */
 #include "../include/approvals_reporters.h"
 
-extern void approval_report_failure(const char* approved_file_name, const char* received_file_name);
+extern void approval_report_failure(struct ApprovalFileNames file_names);

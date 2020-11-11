@@ -29,7 +29,8 @@ static void report_failure(struct ApprovalBaseName name)
 {
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
-    approval_report_failure(approved_name, received_name);
+    struct ApprovalFileNames file_names = {approved_name, received_name};
+    approval_report_failure(file_names);
     free((void*)received_name);
     free((void*)approved_name);
 }

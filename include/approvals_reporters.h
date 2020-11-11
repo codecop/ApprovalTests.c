@@ -6,14 +6,21 @@
 #ifndef ApprovalsFailureReporters
 #define ApprovalsFailureReporters
 
+/*
+ * Definition of failure reporters.
+ */
+
 typedef enum FailureReporterResult {
     FailureReport_continue = 0, /* */
     FailureReport_abort = 1     /* */
 } FailureReporterResult;
 
-// TODO use struct struct ApprovalFileNames for both file names
-typedef FailureReporterResult (*FailureReporter)(const char* approved_file_name,
-                                                 const char* received_file_name);
+struct ApprovalFileNames {
+    const char* approved;
+    const char* received;
+};
+
+typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_names);
 
 extern void approvals_use_reporter(FailureReporter reporter);
 extern void approvals_clear_reporters();
@@ -25,8 +32,7 @@ extern void approvals_clear_reporters();
 /*
  * A reporter which creates the command to accept the received file as the approve file.
  */
-extern FailureReporterResult approval_report_failure_quiet(const char* approved_file_name,
-                                                           const char* received_file_name);
+extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names);
 
 struct DiffInfo {
     const char* diff_program;

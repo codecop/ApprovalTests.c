@@ -14,31 +14,28 @@ static void show_quiet_reporter(void** state)
 
     approvals_use_reporter(approval_report_failure_quiet);
     /* verify_txt("text"); */
-    approval_report_failure("approved", "received");
+    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
 }
 
 static int reporters_called[3];
 
-FailureReporterResult fakeReportA(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportA(struct ApprovalFileNames file_names)
 {
-    (void)approved_file_name; /* unused */
-    (void)received_file_name; /* unused */
+    (void)file_names; /* unused */
     reporters_called[0] = 1;
     return 0;
 }
 
-FailureReporterResult fakeReportB(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportB(struct ApprovalFileNames file_names)
 {
-    (void)approved_file_name; /* unused */
-    (void)received_file_name; /* unused */
+    (void)file_names; /* unused */
     reporters_called[1] = 1;
     return 1;
 }
 
-FailureReporterResult fakeReportC(const char* approved_file_name, const char* received_file_name)
+FailureReporterResult fakeReportC(struct ApprovalFileNames file_names)
 {
-    (void)approved_file_name; /* unused */
-    (void)received_file_name; /* unused */
+    (void)file_names; /* unused */
     reporters_called[2] = 1;
     return 0;
 }
@@ -54,7 +51,7 @@ static void test_report_sequence_of_reporters(void** state)
     reporters_called[1] = 0;
     reporters_called[2] = 0;
 
-    approval_report_failure("approved", "received");
+    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
 
     assert_int_equal(1, reporters_called[0]);
     assert_int_equal(1, reporters_called[1]);
@@ -67,7 +64,7 @@ static void show_windows_kdiff_reporter(void** state)
 
     approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_KDIFF3));
 
-    approval_report_failure("approved", "received");
+    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
 }
 
 static int reset_reporters(void** state)
