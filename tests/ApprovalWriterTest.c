@@ -12,7 +12,7 @@ static void test_create_approved_file_name(void** state)
 {
     (void)state; /* unused */
 
-    const struct ApprovalFileName name = {
+    const struct ApprovalBaseName name = {
         "tests/ApprovalWriterTest.test_create_approved_file_name", "txt"};
 
     const char* s = approval_writer_create_approved_file_name(name);
@@ -27,7 +27,7 @@ static void test_create_received_file_name(void** state)
 {
     (void)state; /* unused */
 
-    const struct ApprovalFileName name = {
+    const struct ApprovalBaseName name = {
         "tests/ApprovalWriterTest.test_create_received_file_name", "txt"};
 
     const char* s = approval_writer_create_received_file_name(name);
@@ -42,7 +42,7 @@ static void test_write_received_file(void** state)
 {
     (void)state; /* unused */
 
-    const struct ApprovalFileName name = {
+    const struct ApprovalBaseName name = {
         "tests/ApprovalWriterTest.test_write_received_file", "txt"};
 
     const char* text = "abc123";

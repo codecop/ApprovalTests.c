@@ -9,7 +9,7 @@
 #include "approval_writer.h"
 #include "file_utils.h"
 
-static const char* create_approvals_file_name_for(struct ApprovalFileName name, const char* suffix)
+static const char* create_approvals_file_name_for(struct ApprovalBaseName name, const char* suffix)
 {
     size_t length = 0;
     length += strlen(name.base_name);
@@ -34,17 +34,17 @@ static const char* create_approvals_file_name_for(struct ApprovalFileName name, 
     return s;
 }
 
-const char* approval_writer_create_approved_file_name(struct ApprovalFileName name)
+const char* approval_writer_create_approved_file_name(struct ApprovalBaseName name)
 {
     return create_approvals_file_name_for(name, "approved");
 }
 
-const char* approval_writer_create_received_file_name(struct ApprovalFileName name)
+const char* approval_writer_create_received_file_name(struct ApprovalBaseName name)
 {
     return create_approvals_file_name_for(name, "received");
 }
 
-void approval_writer_write_received_file(struct ApprovalFileName name, const char* received)
+void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
 {
     const char* received_name = approval_writer_create_received_file_name(name);
 
@@ -53,7 +53,7 @@ void approval_writer_write_received_file(struct ApprovalFileName name, const cha
     free((void*)received_name);
 }
 
-void approval_writer_delete_received_file(struct ApprovalFileName name)
+void approval_writer_delete_received_file(struct ApprovalBaseName name)
 {
     const char* received_name = approval_writer_create_received_file_name(name);
     approvals_delete_file(received_name);
