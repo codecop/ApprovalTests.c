@@ -39,6 +39,7 @@ const char* aprovals_resolve_program_path(const char* diff_program)
     get_path_in_program_files(diff_program);
 
     if (approvals_file_exists(diff_program)) {
+        /* copy name for consistent semantic of this method */
         size_t length = strlen(diff_program) + 1;
         char* resolved_program = (char*)malloc(length);
         strcpy(resolved_program, diff_program);

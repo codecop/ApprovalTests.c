@@ -36,7 +36,6 @@ static void resolve_existing_file(void** state)
     }
 
     const char* diff_program = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
-
     const char* resolved = aprovals_resolve_program_path(diff_program);
 
     assert_string_equal(diff_program, resolved);
@@ -46,10 +45,21 @@ static void resolve_existing_file(void** state)
     }
 }
 
+static void not_resolve_missing_file(void** state)
+{
+    (void)state; /* unused */
+
+    const char* diff_program = "/this_does_not_exist.exe";
+    const char* resolved = aprovals_resolve_program_path(diff_program);
+
+    assert_null(resolved);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(resolve_existing_file), /* */
+        cmocka_unit_test(resolve_existing_file),    /* */
+        cmocka_unit_test(not_resolve_missing_file), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
