@@ -23,21 +23,21 @@ FailureReporterResult fakeReportA(struct ApprovalFileNames file_names)
 {
     (void)file_names; /* unused */
     reporters_called[0] = 1;
-    return 0;
+    return FailureReport_continue;
 }
 
 FailureReporterResult fakeReportB(struct ApprovalFileNames file_names)
 {
     (void)file_names; /* unused */
     reporters_called[1] = 1;
-    return 1;
+    return FailureReport_abort;
 }
 
 FailureReporterResult fakeReportC(struct ApprovalFileNames file_names)
 {
     (void)file_names; /* unused */
     reporters_called[2] = 1;
-    return 0;
+    return FailureReport_continue;
 }
 
 static void test_report_sequence_of_reporters(void** state)
