@@ -9,12 +9,6 @@
 #include "file_utils.h"
 #include "string_utils.h"
 #include "system_utils.h"
-/*
-  1. diff exe ************************************************
-
-  public boolean checkFileExists()
-  -> approvals_file_exists
-*/
 
 static const char* program_files[] = {
     "C:\\Program Files", /* Windows */
