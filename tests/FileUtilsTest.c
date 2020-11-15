@@ -16,18 +16,31 @@ static void create_if_needed(void** state)
     }
     assert_false(approvals_file_exists(test_file));
 
-    approvals_create_if_needed(test_file);
+    int result = approvals_create_if_needed(test_file);
 
     assert_true(approvals_file_exists(test_file));
+    assert_int_equal(1, result);
 
     approvals_delete_file(test_file);
     assert_false(approvals_file_exists(test_file));
 }
 
+static void leave_alone_if_exists(void** state)
+{
+    (void)state; /* unused */
+
+    const char* test_file = "tests/ApprovalsTest.test_verify_txt.approved.txt";
+
+    int result = approvals_create_if_needed(test_file);
+
+    assert_int_equal(0, result);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(create_if_needed), /* */
+        cmocka_unit_test(create_if_needed),      /* */
+        cmocka_unit_test(leave_alone_if_exists), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

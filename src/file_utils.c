@@ -107,10 +107,11 @@ void approvals_delete_file(const char* filename)
     }
 }
 
-void approvals_create_if_needed(const char* filename)
+int approvals_create_if_needed(const char* filename)
 {
     if (approvals_file_exists(filename)) {
-        return;
+        return 0;
     }
     approvals_save_text_file(filename, "");
+    return 1;
 }
