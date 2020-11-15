@@ -31,7 +31,7 @@ static void resolve_existing_file(void** state)
     }
 
     const char* diff_program = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
-    const char* resolved = aprovals_resolve_program_path(diff_program);
+    const char* resolved = aprovals_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(tortoiseHg, resolved);
@@ -46,7 +46,7 @@ static void not_resolve_missing_file(void** state)
     (void)state; /* unused */
 
     const char* diff_program = "/this_does_not_exist.exe";
-    const char* resolved = aprovals_resolve_program_path(diff_program);
+    const char* resolved = aprovals_create_resolved_path(diff_program);
 
     assert_null(resolved);
 }
@@ -59,7 +59,7 @@ static void resolve_windows_program_files(void** state)
     }
 
     const char* diff_program = "{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe";
-    const char* resolved = aprovals_resolve_program_path(diff_program);
+    const char* resolved = aprovals_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(tortoiseHg, resolved);
@@ -77,7 +77,7 @@ static void resolve_windows_x86_program_files(void** state)
     }
 
     const char* diff_program = "{ProgramFiles}KDiff3\\kdiff3.exe";
-    const char* resolved = aprovals_resolve_program_path(diff_program);
+    const char* resolved = aprovals_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(kdiff3, resolved);

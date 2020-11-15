@@ -62,8 +62,7 @@ static const char* get_path_in_program_files(const char* diff_program)
     return 0;
 }
 
-/* TODO rename to create resolved program_path */
-const char* aprovals_resolve_program_path(const char* diff_program)
+const char* aprovals_create_resolved_path(const char* diff_program)
 {
     const char* tag = "{ProgramFiles}";
     if (string_starts_with(diff_program, tag)) {
