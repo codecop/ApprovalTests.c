@@ -3,9 +3,8 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
+#include <stdio.h>
 
-#include "../include/approvals_cmocka.h"
-#include "../include/approvals_reporters.h"
 #include "../src/approval_failure_reporter.h"
 
 static void show_quiet_reporter(void** state)
@@ -13,8 +12,12 @@ static void show_quiet_reporter(void** state)
     (void)state; /* unused */
 
     approvals_use_reporter(approval_report_failure_quiet);
-    /* verify_txt("text"); */
-    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
+
+    /* ! check system out */
+    printf("On Windows system expect output of\n%s\n",
+           ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
+    approval_report_failure(
+        (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"});
 }
 
 static int reporters_called[3];
@@ -58,15 +61,6 @@ static void test_report_sequence_of_reporters(void** state)
     assert_int_equal(0, reporters_called[2]);
 }
 
-static void show_windows_kdiff_reporter(void** state)
-{
-    (void)state; /* unused */
-
-    approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_KDIFF3));
-
-    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
-}
-
 static int reset_reporters(void** state)
 {
     (void)state; /* unused */
@@ -79,7 +73,6 @@ int main(void)
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test_teardown(show_quiet_reporter, reset_reporters), /* */
         cmocka_unit_test_teardown(test_report_sequence_of_reporters, reset_reporters), /* */
-        cmocka_unit_test_teardown(show_windows_kdiff_reporter, reset_reporters), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
