@@ -25,9 +25,6 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
 
     /*
 
-    String full = String.format(arguments, "{received}", "{approved}");
-    List<String> argsSplitOnSpace = Arrays.stream(full.split(" "))
-        .map(t -> t.replace("{received}", received).replace("{approved}", approved)).collect(Collectors.toList());
     ArrayList<String> commands = new ArrayList<String>();
     commands.add(diffProgram);
     commands.addAll(argsSplitOnSpace);

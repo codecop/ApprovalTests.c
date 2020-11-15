@@ -2,7 +2,6 @@
 
 * check test coverage - tool?
 * add assert where it makes sense - check all code
-* assert based approvals without testing framework
 
 * kdiff reporter
 
