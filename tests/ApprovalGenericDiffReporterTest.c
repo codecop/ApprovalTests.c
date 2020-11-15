@@ -13,7 +13,9 @@ static void show_windows_diff_reporter(void** state)
 
     approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_KDIFF3));
 
-    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
+    approval_report_failure((struct ApprovalFileNames){
+        "tests/ApprovalGenericDiffReporterTest_approved.txt",
+        "tests/ApprovalGenericDiffReporterTest_received.txt"});
 }
 
 static int reset_reporters(void** state)
