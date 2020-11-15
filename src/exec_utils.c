@@ -18,14 +18,14 @@
 static const char* get_path_in_program_files(const char* diff_program)
 {
     /* Windows */
-    const char* s = string_make_2("C:\\Program Files\\", diff_program);
+    const char* s = string_create_joined(2, "C:\\Program Files\\", diff_program);
     if (approvals_file_exists(s)) {
         return s;
     }
 
     const char* pf = getenv("ProgramFiles(x86)");
     if (pf) {
-        s = string_make_3(pf, "\\", diff_program);
+        s = string_create_joined(3, pf, "\\", diff_program);
         if (approvals_file_exists(s)) {
             return s;
         }
@@ -33,7 +33,7 @@ static const char* get_path_in_program_files(const char* diff_program)
 
     pf = getenv("ProgramFiles");
     if (pf) {
-        s = string_make_3(pf, "\\", diff_program);
+        s = string_create_joined(3, pf, "\\", diff_program);
         if (approvals_file_exists(s)) {
             return s;
         }
@@ -41,20 +41,20 @@ static const char* get_path_in_program_files(const char* diff_program)
 
     pf = getenv("ProgramW6432");
     if (pf) {
-        s = string_make_3(pf, "\\", diff_program);
+        s = string_create_joined(3, pf, "\\", diff_program);
         if (approvals_file_exists(s)) {
             return s;
         }
     }
 
     /* Mac */
-    s = string_make_2("/Applications/", diff_program);
+    s = string_create_joined(2, "/Applications/", diff_program);
     if (approvals_file_exists(s)) {
         return s;
     }
 
     /* Linux */
-    s = string_make_2("/usr/bin/", diff_program);
+    s = string_create_joined(2, "/usr/bin/", diff_program);
     if (approvals_file_exists(s)) {
         return s;
     }
@@ -78,11 +78,7 @@ const char* aprovals_resolve_program_path(const char* diff_program)
 
     if (approvals_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
-        /* TODO use string_make_1 for that */
-        size_t length = strlen(diff_program) + 1;
-        char* resolved_program = (char*)malloc(length);
-        strcpy(resolved_program, diff_program);
-        return resolved_program;
+        return string_create_joined(1, diff_program);
     }
 
     return 0;

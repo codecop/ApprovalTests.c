@@ -4,6 +4,7 @@
  * BSD3 licensed.
  */
 #include <assert.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -33,39 +34,40 @@ const char* string_create_substring(const char* s, int start, size_t length)
     return substring;
 }
 
-const char* string_make_2(const char* s1, const char* s2)
+static size_t string_count_joined(size_t count, ...)
 {
+    va_list strings;
     size_t length = 0;
-    length += strlen(s1);
-    length += strlen(s2);
-    length += 1; /* \0 */
-    char* s = (char*)malloc(length);
 
-    char* offset = s;
-    strcpy(offset, s1);
-    offset += strlen(s1);
-    strcpy(offset, s2); /* includes \0 */
-    offset += strlen(s2);
+    va_start(strings, count);
+    size_t i;
+    for (i = 0; i < count; i++) {
+        const char* s = va_arg(strings, char*);
+        length += strlen(s);
+    }
+    va_end(strings);
 
-    return s;
+    return length;
 }
 
-const char* string_make_3(const char* s1, const char* s2, const char* s3)
+const char* string_create_joined(size_t count, ...)
 {
-    size_t length = 0;
-    length += strlen(s1);
-    length += strlen(s2);
-    length += strlen(s3);
-    length += 1; /* \0 */
-    char* s = (char*)malloc(length);
+    va_list strings;
+    va_start(strings, count);
 
+    size_t total_length = string_count_joined(count, strings) + 1; /* \0 */
+    char* s = (char*)malloc(total_length);
     char* offset = s;
-    strcpy(offset, s1);
-    offset += strlen(s1);
-    strcpy(offset, s2);
-    offset += strlen(s2);
-    strcpy(offset, s3); /* includes \0 */
-    offset += strlen(s3);
+
+    size_t i;
+    for (i = 0; i < count; i++) {
+        const char* string_i = va_arg(strings, char*);
+        strcpy(offset, string_i);
+        offset += strlen(string_i);
+    }
+    va_end(strings);
+
+    *offset = '\0';
 
     return s;
 }

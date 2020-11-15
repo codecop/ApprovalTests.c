@@ -52,12 +52,30 @@ static void string_with_different_substrings(void** state)
     free((void*)s);
 }
 
+static void string_joining(void** state)
+{
+    (void)state; /* unused */
+
+    const char* s = string_create_joined(0);
+    assert_string_equal("", s);
+    free((void*)s);
+
+    s = string_create_joined(1, "abcd");
+    assert_string_equal("abcd", s);
+    free((void*)s);
+
+    s = string_create_joined(4, "a", "b", "c", "d");
+    assert_string_equal("abcd", s);
+    free((void*)s);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(string_starts_with_other_string),          /* */
         cmocka_unit_test(string_does_not_starts_with_other_string), /* */
         cmocka_unit_test(string_with_different_substrings),         /* */
+        cmocka_unit_test(string_joining),                           /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
