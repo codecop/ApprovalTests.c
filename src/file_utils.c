@@ -106,3 +106,11 @@ void approvals_delete_file(const char* filename)
         fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
     }
 }
+
+void approvals_create_if_needed(const char* filename)
+{
+    if (approvals_file_exists(filename)) {
+        return;
+    }
+    approvals_save_text_file(filename, "");
+}
