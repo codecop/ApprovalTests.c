@@ -87,6 +87,16 @@ static void resolve_windows_x86_program_files(void** state)
     }
 }
 
+static void not_resolve_missing_windows_file(void** state)
+{
+    (void)state; /* unused */
+
+    const char* diff_program = "{ProgramFiles}this_does_not_exist.exe";
+    const char* resolved = aprovals_create_resolved_path(diff_program);
+
+    assert_null(resolved);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -94,6 +104,7 @@ int main(void)
         cmocka_unit_test(not_resolve_missing_file),          /* */
         cmocka_unit_test(resolve_windows_program_files),     /* */
         cmocka_unit_test(resolve_windows_x86_program_files), /* */
+        cmocka_unit_test(not_resolve_missing_windows_file),  /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
