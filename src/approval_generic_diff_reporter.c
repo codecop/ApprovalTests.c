@@ -8,9 +8,9 @@
 
 #include "../include/approvals_reporters.h"
 #include "exec_utils.h"
-#include "system_utils.h"
+#include "file_utils.h"
 
-static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
+FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
     if (diff_program == 0) {
@@ -18,11 +18,12 @@ static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct Approva
         return FailureReport_tool_missing;
     }
 
+    approvals_create_if_needed(file_names.approved);
+
     fprintf(stdout, diff.parameters, file_names.received, file_names.approved);
     /* TODO implement diff report using exec_utils. */
 
     /*
-    FileUtils.createIfNeeded(approved);
 
     String full = String.format(arguments, "{received}", "{approved}");
     List<String> argsSplitOnSpace = Arrays.stream(full.split(" "))
@@ -49,7 +50,7 @@ static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 #define open_diff_tool_for(i)                                                                    \
     static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names) \
     {                                                                                            \
-        return open_diff_tool(used_diffs[i], file_names);                                        \
+        return approval_open_diff_tool(used_diffs[i], file_names);                                        \
     }
 
 open_diff_tool_for(0)

@@ -6,9 +6,8 @@
 #include "../include/approvals_reporters.h"
 /*
  * in public include
-extern void approvals_use_reporter(FailureReporter reporter);
-extern void approvals_clear_reporters();
-extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names);
+extern FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff);
 */
 
-extern void approval_report_failure(struct ApprovalFileNames file_names);
+extern FailureReporterResult approval_open_diff_tool(struct DiffInfo diff,
+                                                     struct ApprovalFileNames file_names);
