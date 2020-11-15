@@ -17,20 +17,49 @@
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
-    char* s = string_make_2("C:\\Program Files\\", diff_program);
-    /*
+    /* Windows */
+    const char* s = string_make_2("C:\\Program Files\\", diff_program);
+    if (approvals_file_exists(s)) {
+        return s;
+    }
 
-    paths.add(System.getenv("ProgramFiles(x86)")); // getenv("MY_ENV_VAR");
-    paths.add(System.getenv("ProgramFiles"));
-    paths.add(System.getenv("ProgramW6432"));
-    if paths != null
+    const char* pf = getenv("ProgramFiles(x86)");
+    if (pf) {
+        s = string_make_3(pf, "\\", diff_program);
+        if (approvals_file_exists(s)) {
+            return s;
+        }
+    }
 
-    if path+diff_program exists
-      return path+diff_program
+    pf = getenv("ProgramFiles");
+    if (pf) {
+        s = string_make_3(pf, "\\", diff_program);
+        if (approvals_file_exists(s)) {
+            return s;
+        }
+    }
 
-    return null
-    */
-    return s;
+    pf = getenv("ProgramW6432");
+    if (pf) {
+        s = string_make_3(pf, "\\", diff_program);
+        if (approvals_file_exists(s)) {
+            return s;
+        }
+    }
+
+    /* Mac */
+    s = string_make_2("/Applications/", diff_program);
+    if (approvals_file_exists(s)) {
+        return s;
+    }
+
+    /* Linux */
+    s = string_make_2("/usr/bin/", diff_program);
+    if (approvals_file_exists(s)) {
+        return s;
+    }
+
+    return 0;
 }
 
 /* TODO rename to create resolved program_path */
@@ -49,6 +78,7 @@ const char* aprovals_resolve_program_path(const char* diff_program)
 
     if (approvals_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
+        /* TODO use string_make_1 for that */
         size_t length = strlen(diff_program) + 1;
         char* resolved_program = (char*)malloc(length);
         strcpy(resolved_program, diff_program);

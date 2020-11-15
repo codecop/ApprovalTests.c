@@ -49,3 +49,23 @@ const char* string_make_2(const char* s1, const char* s2)
 
     return s;
 }
+
+const char* string_make_3(const char* s1, const char* s2, const char* s3)
+{
+    size_t length = 0;
+    length += strlen(s1);
+    length += strlen(s2);
+    length += strlen(s3);
+    length += 1; /* \0 */
+    char* s = (char*)malloc(length);
+
+    char* offset = s;
+    strcpy(offset, s1);
+    offset += strlen(s1);
+    strcpy(offset, s2);
+    offset += strlen(s2);
+    strcpy(offset, s3); /* includes \0 */
+    offset += strlen(s3);
+
+    return s;
+}

@@ -11,6 +11,7 @@
 
 static const char* create_approvals_file_name_for(struct ApprovalBaseName name, const char* suffix)
 {
+    /* TODO create string_make with varargs all strings and do this code here */
     size_t length = 0;
     length += strlen(name.base_name);
     length += 1;              /* . */
