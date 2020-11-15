@@ -12,6 +12,8 @@
 static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     fprintf(stdout, diff.parameters, file_names.received, file_names.approved);
+    /* TODO implement diff report using exec_utils. */
+
     /*
   public boolean checkFileExists()
   {
