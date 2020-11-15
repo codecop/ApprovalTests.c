@@ -23,6 +23,10 @@ int string_starts_with(const char* s, const char* prefix)
 
 const char* string_substring(const char* s, int start, size_t length)
 {
+    assert(s != 0);
+    assert(start >= 0);
+    assert(start + length <= strlen(s));
+
     char* substring = (char*)malloc(length + 1);
     strncpy(substring, s + start, length);
     substring[length] = '\0';

@@ -27,11 +27,37 @@ static void string_does_not_starts_with_other_string(void** state)
     assert_false(string_starts_with("foo", "o"));
 }
 
+static void string_with_different_substrings(void** state)
+{
+    (void)state; /* unused */
+
+    const char* s = string_substring("", 0, 0);
+    assert_string_equal("", s);
+    free((void*)s);
+
+    s = string_substring("abc", 0, 0);
+    assert_string_equal("", s);
+    free((void*)s);
+
+    s = string_substring("abc", 0, 1);
+    assert_string_equal("a", s);
+    free((void*)s);
+
+    s = string_substring("abc", 1, 1);
+    assert_string_equal("b", s);
+    free((void*)s);
+
+    s = string_substring("abc", 0, 3);
+    assert_string_equal("abc", s);
+    free((void*)s);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(string_starts_with_other_string),          /* */
         cmocka_unit_test(string_does_not_starts_with_other_string), /* */
+        cmocka_unit_test(string_with_different_substrings),         /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
