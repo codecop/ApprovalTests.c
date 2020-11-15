@@ -73,6 +73,17 @@ def included_files(source_file)
       find_all { |file| File.exist?(file) }
 end
 
+def recursive_included_files(to_compile, source_file)
+    to_compile << source_file
+    included = included_files(source_file)
+
+    while included.size > 0
+        inc = included.pop
+        next if to_compile.include?(inc)
+        recursive_included_files(to_compile, inc)
+    end
+end
+
 def check_exit_status
     if $? and $?.exitstatus != 0
         status = $?.exitstatus
@@ -135,15 +146,11 @@ if __FILE__ == $0
 
     source_file = to_source_file(source)
     assert(File.exist?(source_file))
-    to_compile << source_file
-
-    to_compile += included_files(source_file)
+    recursive_included_files(to_compile, source_file)
 
     test_file = test_file_from_source_file(source_file)
     assert(File.exist?(test_file))
-    to_compile << test_file
-
-    to_compile += included_files(test_file)
+    recursive_included_files(to_compile, test_file)
 
     test_exe = test_file_from_source_file(source_file)[0..-3] + '.exe'
 
