@@ -3,4 +3,4 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-const char* aprovals_resolve_program_path(const char* diff_program);
+extern const char* aprovals_resolve_program_path(const char* diff_program);

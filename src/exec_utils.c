@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "file_utils.h"
+#include "string_utils.h"
 /*
   1. diff exe ************************************************
 
@@ -16,7 +17,7 @@
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
-    char* s = (char*)malloc(100+1);
+    char* s = (char*)malloc(100 + 1);
 
     char* offset = s;
     strcpy(offset, "C:\\Program Files\\");
@@ -39,32 +40,15 @@ static const char* get_path_in_program_files(const char* diff_program)
     return s;
 }
 
-static int string_starts_with(const char* s, const char* prefix)
-{
-    const char* si = s;
-    const char* pi = prefix;
-    while (si != 0 && pi != 0 && *si == *pi) {
-        si += 1;
-        pi += 1;
-    }
-    return pi == 0;
-}
-
-static const char* string_substring(const char* s, int start, size_t length)
-{
-    char* substring = (char*)malloc(length + 1);
-    strncpy(substring, s + start, length);
-    substring[length] = '\0';
-    return substring;
-}
-
 /* TODO rename to create resolved program_path */
 const char* aprovals_resolve_program_path(const char* diff_program)
 {
     const char* tag = "{ProgramFiles}";
     if (string_starts_with(diff_program, tag)) {
-        printf("string_starts_with");
-        const char* remaining_name = string_substring(diff_program, 0, strlen(tag));
+        int substring_start = strlen(tag);
+        size_t substring_length = strlen(diff_program) - strlen(tag);
+        const char* remaining_name =
+            string_create_substring(diff_program, substring_start, substring_length);
         const char* resolved_program = get_path_in_program_files(remaining_name);
         free((void*)remaining_name);
         return resolved_program; /* resolved or null */
