@@ -17,14 +17,7 @@
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
-    char* s = (char*)malloc(100 + 1);
-
-    char* offset = s;
-    strcpy(offset, "C:\\Program Files\\");
-    offset += strlen("C:\\Program Files\\");
-    strcpy(offset, diff_program);
-    offset += strlen(diff_program);
-    offset += 1; /* copied /0 */
+    char* s = string_make_2("C:\\Program Files\\", diff_program);
     /*
 
     paths.add(System.getenv("ProgramFiles(x86)")); // getenv("MY_ENV_VAR");

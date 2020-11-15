@@ -32,3 +32,20 @@ const char* string_create_substring(const char* s, int start, size_t length)
     substring[length] = '\0';
     return substring;
 }
+
+const char* string_make_2(const char* s1, const char* s2)
+{
+    size_t length = 0;
+    length += strlen(s1);
+    length += strlen(s2);
+    length += 1; /* \0 */
+    char* s = (char*)malloc(length);
+
+    char* offset = s;
+    strcpy(offset, s1);
+    offset += strlen(s1);
+    strcpy(offset, s2); /* includes \0 */
+    offset += strlen(s2);
+
+    return s;
+}
