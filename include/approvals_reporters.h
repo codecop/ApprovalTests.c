@@ -39,9 +39,39 @@ struct DiffInfo {
     const char* parameters;
 };
 
-static struct DiffInfo WINDOWS_KDIFF3 = {"{ProgramFiles}KDiff3\\kdiff3.exe", "%s %s"};
+/* Diff tools copied from DiffPrograms.java, https://github.com/approvals/ApprovalTests.Java */
+static struct DiffInfo MAC_DIFF_MERGE = {
+    "/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s "};
+static struct DiffInfo MAC_BEYOND_COMPARE = {
+    "/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "%s %s"};
+static struct DiffInfo MAC_KALEIDOSCOPE = {
+    "/Applications/Kaleidoscope.app/Contents/MacOS/ksdiff", "%s %s"};
+static struct DiffInfo MAC_KDIFF3 = {
+    "/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m"};
+static struct DiffInfo MAC_TK_DIFF = {
+    "/Applications/TkDiff.app/Contents/MacOS/tkdiff", "%s %s"};
+static struct DiffInfo MAC_VISUAL_STUDIO_CODE = {
+    "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "-d %s %s"};
+
+static struct DiffInfo WINDOWS_BEYOND_COMPARE_3 = {
+    "{ProgramFiles}Beyond Compare 3\\BCompare.exe", "%s %s"};
+static struct DiffInfo WINDOWS_BEYOND_COMPARE_4 = {
+    "{ProgramFiles}Beyond Compare 4\\BCompare.exe", "%s %s"};
+static struct DiffInfo WINDOWS_TORTOISE_TEXT_DIFF = {
+    "{ProgramFiles}TortoiseSVN\\bin\\TortoiseMerge.exe", "%s %s"};
+static struct DiffInfo WINDOWS_WIN_MERGE_REPORTER = {
+    "{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"};
+static struct DiffInfo WINDOWS_ARAXIS_MERGE = {
+    "{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"};
+static struct DiffInfo WINDOWS_CODE_COMPARE = {
+    "{ProgramFiles}Devart\\Code Compare\\CodeCompare.exe", "%s %s"};
+static struct DiffInfo WINDOWS_KDIFF3 = {
+    "{ProgramFiles}KDiff3\\kdiff3.exe", "%s %s"};
 static struct DiffInfo WINDOWS_VISUAL_STUDIO_CODE = {
     "{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"};
+
+static struct DiffInfo LINUX_DIFF_MERGE = {"/usr/bin/diffmerge", "--nosplash %s %s "};
+static struct DiffInfo LINUX_MELD_MERGE = {"/usr/bin/meld", "%s %s "};
 
 /*
  * A reporter which opens the diff between the received file as the approve file.
