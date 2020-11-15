@@ -6,4 +6,4 @@
 #include <stdlib.h>
 
 extern int string_starts_with(const char* s, const char* prefix);
-extern const char* string_substring(const char* s, int start, size_t length);
+extern const char* string_create_substring(const char* s, int start, size_t length);

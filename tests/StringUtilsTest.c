@@ -31,23 +31,23 @@ static void string_with_different_substrings(void** state)
 {
     (void)state; /* unused */
 
-    const char* s = string_substring("", 0, 0);
+    const char* s = string_create_substring("", 0, 0);
     assert_string_equal("", s);
     free((void*)s);
 
-    s = string_substring("abc", 0, 0);
+    s = string_create_substring("abc", 0, 0);
     assert_string_equal("", s);
     free((void*)s);
 
-    s = string_substring("abc", 0, 1);
+    s = string_create_substring("abc", 0, 1);
     assert_string_equal("a", s);
     free((void*)s);
 
-    s = string_substring("abc", 1, 1);
+    s = string_create_substring("abc", 1, 1);
     assert_string_equal("b", s);
     free((void*)s);
 
-    s = string_substring("abc", 0, 3);
+    s = string_create_substring("abc", 0, 3);
     assert_string_equal("abc", s);
     free((void*)s);
 }
