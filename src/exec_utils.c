@@ -16,9 +16,16 @@
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
-    (void)diff_program; /* unused */
+    char* s = (char*)malloc(100+1);
+
+    char* offset = s;
+    strcpy(offset, "C:\\Program Files\\");
+    offset += strlen("C:\\Program Files\\");
+    strcpy(offset, diff_program);
+    offset += strlen(diff_program);
+    offset += 1; /* copied /0 */
     /*
-    "C:\\Program Files\\"
+
     paths.add(System.getenv("ProgramFiles(x86)")); // getenv("MY_ENV_VAR");
     paths.add(System.getenv("ProgramFiles"));
     paths.add(System.getenv("ProgramW6432"));
@@ -29,14 +36,39 @@ static const char* get_path_in_program_files(const char* diff_program)
 
     return null
     */
-    return 0;
+    return s;
+}
+
+static int string_starts_with(const char* s, const char* prefix)
+{
+    const char* si = s;
+    const char* pi = prefix;
+    while (si != 0 && pi != 0 && *si == *pi) {
+        si += 1;
+        pi += 1;
+    }
+    return pi == 0;
+}
+
+static const char* string_substring(const char* s, int start, size_t length)
+{
+    char* substring = (char*)malloc(length + 1);
+    strncpy(substring, s + start, length);
+    substring[length] = '\0';
+    return substring;
 }
 
 /* TODO rename to create resolved program_path */
 const char* aprovals_resolve_program_path(const char* diff_program)
 {
-    (void)diff_program; /* unused */
-    get_path_in_program_files(diff_program);
+    const char* tag = "{ProgramFiles}";
+    if (string_starts_with(diff_program, tag)) {
+        printf("string_starts_with");
+        const char* remaining_name = string_substring(diff_program, 0, strlen(tag));
+        const char* resolved_program = get_path_in_program_files(remaining_name);
+        free((void*)remaining_name);
+        return resolved_program; /* resolved or null */
+    }
 
     if (approvals_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
@@ -45,21 +77,7 @@ const char* aprovals_resolve_program_path(const char* diff_program)
         strcpy(resolved_program, diff_program);
         return resolved_program;
     }
-    /*
-    #only if OSWindows
-    String tag = "{ProgramFiles}";
-    if (diffProgram.startsWith(tag))
-    {
-      diffProgram = getPathInProgramFilesX86(diffProgram.substring(tag.length()));
-      // null or exists
-    }
-    #end
-    if exists diffProgram {
-        diffProgram = copy
-        return
-    }
-    return null
-    */
+
     return 0;
 }
 
