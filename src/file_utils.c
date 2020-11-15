@@ -22,6 +22,31 @@ int approvals_file_exists(const char* filename)
     return 1;
 }
 
+long approvals_file_size(const char* filename)
+{
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        fprintf(stderr, "Could not open file %s.\n", filename);
+        return 0;
+    }
+
+    int error_seek = fseek(file, 0, SEEK_END);
+    if (error_seek) {
+        fprintf(stderr, "Could not go to end of file %s, error %d.\n", filename, error_seek);
+        fclose(file);
+        return 0;
+    }
+
+    long file_size = ftell(file);
+
+    int error_close = fclose(file);
+    if (error_close) {
+        fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
+    }
+
+    return file_size;
+}
+
 const char* approvals_load_text_file(const char* filename)
 {
     FILE* file = fopen(filename, "r");
