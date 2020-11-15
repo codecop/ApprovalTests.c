@@ -20,6 +20,15 @@ Gcc = %w|
     -o %s
   |.join(' ').strip
 
+def norm(path)
+    full_path = File.expand_path(path)
+    # relative to working dir
+    remove = Dir.pwd.length + 1
+    relative_path = full_path[remove..-1]
+    # normalise /
+    relative_path.gsub(/\\/, File::SEPARATOR)
+end
+
 def to_source_file(name)
     # normalize separators
     source_file = name.gsub(/\\/, File::SEPARATOR)
@@ -34,13 +43,13 @@ def to_source_file(name)
         source_file += '.c'
     end
 
-    source_file
+    norm(source_file)
 end
 
 def test_file_from_source_file(source_file)
     assert(File.exist?(source_file))
 
-    file_name = source_file[/#{File::SEPARATOR}[^#{File::SEPARATOR}\.]+/][1..-1]
+    file_name = source_file[/#{File::SEPARATOR}[^#{File::SEPARATOR}\.]+\.c$/][1..-3]
     # replace snake case with camel case
     test_name = '_' + file_name
     while test_name =~ /_(.)/
@@ -51,7 +60,7 @@ def test_file_from_source_file(source_file)
     # add tests/
     test_file = "#{Test_dir}#{File::SEPARATOR}#{test_name}.c"
 
-    test_file
+    norm(test_file)
 end
 
 def included_files(source_file)
@@ -113,6 +122,9 @@ def run_tests(test_exe)
     assert(File.exist?(test_exe))
     command = "run #{test_exe}"
     run_command(command) { `"#{test_exe}" 2>&1` }
+
+    File.delete(test_exe)
+    assert(!File.exist?(test_exe))
 end
 
 if __FILE__ == $0
@@ -124,17 +136,23 @@ if __FILE__ == $0
     source_file = to_source_file(source)
     assert(File.exist?(source_file))
     to_compile << source_file
+    p to_compile
 
-    includes = included_files(source_file)
-    to_compile += includes
+    to_compile += included_files(source_file)
+    p to_compile
 
     test_file = test_file_from_source_file(source_file)
+    p test_file
     assert(File.exist?(test_file))
     to_compile << test_file
+    p to_compile
+
+    to_compile += included_files(test_file)
+    p to_compile
 
     test_exe = test_file_from_source_file(source_file)[0..-3] + '.exe'
 
     clean(test_exe)
-    compile(to_compile, test_exe)
+    compile(to_compile.uniq, test_exe)
     run_tests(test_exe)
 end
