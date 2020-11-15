@@ -136,19 +136,14 @@ if __FILE__ == $0
     source_file = to_source_file(source)
     assert(File.exist?(source_file))
     to_compile << source_file
-    p to_compile
 
     to_compile += included_files(source_file)
-    p to_compile
 
     test_file = test_file_from_source_file(source_file)
-    p test_file
     assert(File.exist?(test_file))
     to_compile << test_file
-    p to_compile
 
     to_compile += included_files(test_file)
-    p to_compile
 
     test_exe = test_file_from_source_file(source_file)[0..-3] + '.exe'
 
