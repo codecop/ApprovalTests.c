@@ -3,6 +3,9 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdlib.h>
+#include <string.h>
+
 #include "file_utils.h"
 /*
   1. diff exe ************************************************
@@ -29,10 +32,18 @@ static const char* get_path_in_program_files(const char* diff_program)
     return 0;
 }
 
+/* TODO rename to create resolved program_path */
 const char* aprovals_resolve_program_path(const char* diff_program)
 {
     (void)diff_program; /* unused */
     get_path_in_program_files(diff_program);
+
+    if (approvals_file_exists(diff_program)) {
+        size_t length = strlen(diff_program) + 1;
+        char* resolved_program = (char*)malloc(length);
+        strcpy(resolved_program, diff_program);
+        return resolved_program;
+    }
     /*
     #only if OSWindows
     String tag = "{ProgramFiles}";
