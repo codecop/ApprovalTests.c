@@ -1,8 +1,8 @@
 require('lib/ansi_term')
 
-def assert(condition)
+def assert(condition, cause='')
     unless condition
-        raise "Failed"
+        raise "Failed #{cause}"
     end
 end
 
@@ -10,7 +10,7 @@ end
 Src_dir = 'src'
 Test_dir = 'tests'
 
-Command = %w|
+Gcc = %w|
   gcc
     -g -std=c99 -O
     -Werror -Wall -Wextra -pedantic
@@ -64,11 +64,63 @@ def included_files(source_file)
       find_all { |file| File.exist?(file) }
 end
 
+def check_exit_status
+    if $? and $?.exitstatus != 0
+        status = $?.exitstatus
+        Ansi.puts_with_color(Ansi::RED, "FAILED #{status}")
+        exit(status)
+    end
+end
+
+def run_command(command)
+    puts
+    Ansi.puts_with_color(Ansi::WHITE, command)
+
+    if block_given?
+        result = yield
+        if result
+            result.split(/\n/).each do |line|
+                if line =~ /failed|error/i
+                    Ansi.puts_with_color(Ansi::RED, line)
+                elsif line =~ /warning/i
+                    Ansi.puts_with_color(Ansi::YELLOW, line)
+                elsif line =~ /passed|ok/i
+                    Ansi.puts_with_color(Ansi::GREEN, line)
+                else
+                    puts line
+                end
+            end
+        end
+        check_exit_status
+    end
+end
+
+def clean(test_exe)
+    if File.exist?(test_exe)
+        run_command("del #{test_exe}") do
+            File.delete(test_exe)
+            assert(!File.exist?(test_exe))
+        end
+    end
+end
+
+def compile(to_compile, test_exe)
+    command = sprintf(Gcc, to_compile.join(' '), test_exe)
+    run_command(command) { `#{command} 2>&1` }
+end
+
+def run_tests(test_exe)
+    assert(File.exist?(test_exe))
+    command = "run #{test_exe}"
+    run_command(command) { `#{test_exe}` }
+end
+
 if __FILE__ == $0
 
     source = ARGV[0]
 
     to_compile = []
+
     source_file = to_source_file(source)
     assert(File.exist?(source_file))
     to_compile << source_file
@@ -82,24 +134,7 @@ if __FILE__ == $0
 
     test_exe = test_file_from_source_file(source_file)[0..-3] + '.exe'
 
-    if File.exist?(test_exe)
-        puts "del #{test_exe}"
-        File.delete(test_exe)
-    end
-
-    c = sprintf(Command, to_compile.join(' '), test_exe)
-
-    puts c
-    puts `#{c}`
-    if $?.exitstatus != 0
-        puts "FAILED #{$?.exitstatus}"
-        exit($?.exitstatus)
-    end
-
-    puts "#{test_exe}"
-    puts `#{test_exe}`
-    if $?.exitstatus != 0
-        puts "FAILED #{$?.exitstatus}"
-        exit($?.exitstatus)
-    end
+    clean(test_exe)
+    compile(to_compile, test_exe)
+    run_tests(test_exe)
 end
