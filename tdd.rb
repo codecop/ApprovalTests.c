@@ -80,7 +80,7 @@ def run_command(command)
         result = yield
         if result
             result.split(/\n/).each do |line|
-                if line =~ /failed|error/i
+                if line =~ /failed|error|failure/i
                     Ansi.puts_with_color(Ansi::RED, line)
                 elsif line =~ /warning/i
                     Ansi.puts_with_color(Ansi::YELLOW, line)
@@ -112,7 +112,7 @@ end
 def run_tests(test_exe)
     assert(File.exist?(test_exe))
     command = "run #{test_exe}"
-    run_command(command) { `#{test_exe}` }
+    run_command(command) { `"#{test_exe}" 2>&1` }
 end
 
 if __FILE__ == $0
