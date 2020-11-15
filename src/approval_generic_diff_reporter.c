@@ -7,26 +7,22 @@
 #include <stdlib.h>
 
 #include "../include/approvals_reporters.h"
+#include "exec_utils.h"
 #include "system_utils.h"
 
 static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
+    const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
+    if (diff_program == 0) {
+        /* This tool is not available. */
+        return FailureReport_tool_missing;
+    }
+
     fprintf(stdout, diff.parameters, file_names.received, file_names.approved);
     /* TODO implement diff report using exec_utils. */
 
     /*
-  public boolean checkFileExists()
-  {
-    boolean exists = new File(diffProgram).exists();
-    if (REPORT_MISSING_FILES && !exists)
-    {
-      System.out.println(String.format("%s can't find '%s'", this.getClass().getSimpleName(), diffProgram));
-    }
-    return exists;
-  }
-
     FileUtils.createIfNeeded(approved);
-    launch(received, approved);
 
     String full = String.format(arguments, "{received}", "{approved}");
     List<String> argsSplitOnSpace = Arrays.stream(full.split(" "))
@@ -37,10 +33,11 @@ static FailureReporterResult open_diff_tool(struct DiffInfo diff, struct Approva
     System.out.println(commands);
     return commands.toArray(new String[0]);
 
+    launch(received, approved);
+
       ProcessBuilder builder = new ProcessBuilder(getCommandLine(received, approved));
       preventProcessFromClosing(builder);
       builder.start();
-
     */
     return FailureReport_continue;
 }

@@ -11,8 +11,9 @@
  */
 
 typedef enum FailureReporterResult {
-    FailureReport_continue = 0, /* */
-    FailureReport_abort = 1     /* */
+    FailureReport_continue = 0,     /* */
+    FailureReport_abort = 1,        /* */
+    FailureReport_tool_missing = 2, /* */
 } FailureReporterResult;
 
 struct ApprovalFileNames {
