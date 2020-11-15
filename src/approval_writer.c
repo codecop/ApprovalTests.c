@@ -32,9 +32,7 @@ const char* approval_writer_create_received_file_name(struct ApprovalBaseName na
 void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
 {
     const char* received_name = approval_writer_create_received_file_name(name);
-
     approvals_save_text_file(received_name, received);
-
     free((void*)received_name);
 }
 
