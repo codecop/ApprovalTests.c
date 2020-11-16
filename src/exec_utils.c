@@ -89,14 +89,23 @@ const char* approvals_create_command_line(const char* diff_program,
                                           const char* args2)
 {
     size_t length = string_count_joined(4, diff_program, parameters, args1, args2) /* */
+                    + 2  /* maybe quotes around diff tool */
                     + 1  /* space after diff program */
                     + 4; /* maybe quotes around arguments */
     char* command = (char*)malloc(length + 1);
 
     char* offset = command;
+#ifdef OS_WINDOWS
+    *offset = '"';
+    offset += 1;
+#endif
     strcpy(offset, diff_program);
     offset += strlen(diff_program);
-    strcpy(offset, " ");
+#ifdef OS_WINDOWS
+    *offset = '"';
+    offset += 1;
+#endif
+    *offset = ' ';
     offset += 1;
     sprintf(offset, parameters, args1, args2);
 

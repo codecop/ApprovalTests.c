@@ -8,6 +8,7 @@
 
 #include "../src/exec_utils.h"
 #include "../src/file_utils.h"
+#include "../src/system_utils.h"
 
 /* My local installations */
 const char* tortoiseHg = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
@@ -105,7 +106,11 @@ static void create_command_line(void** state)
         "kdiff3.exe", "%s %s", "received.file", "approved_file");
 
     assert_non_null(command_line);
+#ifdef OS_WINDOWS
+    assert_string_equal("\"kdiff3.exe\" received.file approved_file", command_line);
+#else
     assert_string_equal("kdiff3.exe received.file approved_file", command_line);
+#endif
 
     if (command_line) {
         free((void*)command_line);
