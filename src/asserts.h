@@ -3,8 +3,8 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#ifndef Asserts
-#define Asserts
+#ifndef Asserts_H_
+#define Asserts_H_
 
 #include <assert.h>
 
