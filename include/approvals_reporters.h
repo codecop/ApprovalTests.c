@@ -68,6 +68,8 @@ static struct DiffInfo WINDOWS_CODE_COMPARE = {
     "{ProgramFiles}Devart\\Code Compare\\CodeCompare.exe", "%s %s"};
 static struct DiffInfo WINDOWS_KDIFF3 = {
     "{ProgramFiles}KDiff3\\kdiff3.exe", "%s %s"};
+static struct DiffInfo WINDOWS_TORTOISE_KDIFF3 = {
+    "{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe", "%s %s"};
 static struct DiffInfo WINDOWS_VISUAL_STUDIO_CODE = {
     "{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"};
 
