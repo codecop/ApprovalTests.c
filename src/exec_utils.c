@@ -3,11 +3,11 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "asserts.h"
 #include "file_utils.h"
 #include "string_utils.h"
 #include "system_utils.h"
@@ -34,8 +34,7 @@ static size_t count_windows_program_files_env()
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
-    assert(diff_program != 0);
-    assert(strlen(diff_program) > 0);
+    assert_str_not_empty(diff_program);
 
     size_t i;
 
@@ -65,8 +64,7 @@ static const char* tag = "{ProgramFiles}";
 
 static const char* strip_tag(const char* diff_program)
 {
-    assert(diff_program != 0);
-    assert(strlen(diff_program) > strlen(tag));
+    assert_str_longer_than(diff_program, strlen(tag));
 
     int substring_start = strlen(tag);
     size_t substring_length = strlen(diff_program) - strlen(tag);
@@ -75,8 +73,7 @@ static const char* strip_tag(const char* diff_program)
 
 const char* aprovals_create_resolved_path(const char* diff_program)
 {
-    assert(diff_program != 0);
-    assert(strlen(diff_program) > 0);
+    assert_str_not_empty(diff_program);
 
     if (approvals_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
@@ -98,14 +95,10 @@ const char* approvals_create_command_line(const char* diff_program,
                                           const char* args1,
                                           const char* args2)
 {
-    assert(diff_program != 0);
-    assert(strlen(diff_program) > 0);
-    assert(parameters != 0);
-    assert(strlen(parameters) > 0);
-    assert(args1 != 0);
-    assert(strlen(args1) > 0);
-    assert(args2 != 0);
-    assert(strlen(args2) > 0);
+    assert_str_not_empty(diff_program);
+    assert_str_not_empty(parameters);
+    assert_str_not_empty(args1);
+    assert_str_not_empty(args2);
 
     size_t length = string_count_joined(4, diff_program, parameters, args1, args2) /* */
                     + 2  /* maybe quotes around diff tool */

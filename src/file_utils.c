@@ -3,17 +3,16 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "asserts.h"
 #include "x86_x64.h"
 
 int approvals_file_exists(const char* filename)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
+    assert_str_not_empty(filename);
 
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -28,8 +27,7 @@ int approvals_file_exists(const char* filename)
 
 long approvals_file_size(const char* filename)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
+    assert_str_not_empty(filename);
 
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -56,8 +54,7 @@ long approvals_file_size(const char* filename)
 
 const char* approvals_load_text_file(const char* filename)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
+    assert_str_not_empty(filename);
 
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -113,9 +110,8 @@ const char* approvals_load_text_file(const char* filename)
 
 void approvals_save_text_file(const char* filename, const char* data)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
-    assert(data != 0);
+    assert_str_not_empty(filename);
+    assert_not_null(data);
 
     FILE* file = fopen(filename, "w");
     if (file == NULL) {
@@ -140,8 +136,7 @@ void approvals_save_text_file(const char* filename, const char* data)
 
 void approvals_delete_file(const char* filename)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
+    assert_str_not_empty(filename);
 
     int error_remove = remove(filename);
     if (error_remove) {
@@ -151,8 +146,7 @@ void approvals_delete_file(const char* filename)
 
 int approvals_create_if_needed(const char* filename)
 {
-    assert(filename != 0);
-    assert(strlen(filename) > 0);
+    assert_str_not_empty(filename);
 
     if (approvals_file_exists(filename)) {
         return 0;

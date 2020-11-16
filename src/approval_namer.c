@@ -3,15 +3,15 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "asserts.h"
 #include "system_utils.h"
 
 static void to_path(char* path)
 {
-    assert(path != 0);
+    assert_not_null(path);
 
 #ifdef OS_WINDOWS
     char* slash = strrchr(path, '/');
@@ -24,10 +24,8 @@ static void to_path(char* path)
 
 const char* approval_namer_create_approval_name(const char* full_file_name, const char* test_name)
 {
-    assert(full_file_name != 0);
-    assert(strlen(full_file_name) > 0);
-    assert(test_name != 0);
-    assert(strlen(test_name) > 0);
+    assert_str_not_empty(full_file_name);
+    assert_str_not_empty(test_name);
 
     const char* last_dot = strrchr(full_file_name, '.');
     size_t length_file_name = 0;

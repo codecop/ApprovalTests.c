@@ -3,15 +3,16 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <assert.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "asserts.h"
+
 int string_starts_with(const char* s, const char* prefix)
 {
-    assert(s != 0);
-    assert(prefix != 0);
+    assert_not_null(s);
+    assert_not_null(prefix);
 
     const char* si = s;
     const char* pi = prefix;
@@ -22,10 +23,9 @@ int string_starts_with(const char* s, const char* prefix)
     return *pi == '\0';
 }
 
-const char* string_create_substring(const char* s, int start, size_t length)
+const char* string_create_substring(const char* s, unsigned int start, size_t length)
 {
-    assert(s != 0);
-    assert(start >= 0);
+    assert_not_null(s);
     assert(start + length <= strlen(s));
 
     char* substring = (char*)malloc(length + 1);
