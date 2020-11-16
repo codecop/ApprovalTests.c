@@ -7,13 +7,13 @@
 
 #include "../src/approval_failure_reporter.h"
 
-static void show_quiet_reporter(void** state)
+/* show is not testing - check test output */
+static void show_quiet_reporter_prints_copy_command(void** state)
 {
     (void)state; /* unused */
 
     approvals_use_reporter(approval_report_failure_quiet);
 
-    /* ! check system out */
     printf("On Windows system expect output of\n%s\n",
            ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
     approval_report_failure(
@@ -43,7 +43,7 @@ FailureReporterResult fakeReportC(struct ApprovalFileNames file_names)
     return FailureReport_continue;
 }
 
-static void test_report_sequence_of_reporters(void** state)
+static void test_abort_sequence_of_reporters(void** state)
 {
     (void)state; /* unused */
 
@@ -71,8 +71,8 @@ static int reset_reporters(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test_teardown(show_quiet_reporter, reset_reporters), /* */
-        cmocka_unit_test_teardown(test_report_sequence_of_reporters, reset_reporters), /* */
+        cmocka_unit_test_teardown(show_quiet_reporter_prints_copy_command, reset_reporters), /* */
+        cmocka_unit_test_teardown(test_abort_sequence_of_reporters, reset_reporters), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

@@ -1,1 +1,2 @@
+This is the received file.
 abc123

@@ -3,12 +3,11 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
-#include <stdio.h>
 
 #include "../src/approval_failure_reporter.h"
 #include "../src/approval_generic_diff_reporter.h"
-#include "../src/file_utils.h"
 
+/* show is not testing - check test output */
 static void show_windows_diff_reporter(void** state)
 {
     (void)state; /* unused */

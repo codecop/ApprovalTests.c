@@ -13,6 +13,8 @@ static void test_approvals_verify(void** state)
 
     const char* approved = __approvals_approve("abc123", __FILE__, __func__, "txt");
     assert_string_equal(approved, "abc123");
+
+    free((void*)approved);
 }
 
 static void test_verify_txt(void** state)

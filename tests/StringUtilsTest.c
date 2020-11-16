@@ -3,12 +3,11 @@
 #include <stddef.h> /* size_t for mocka */
 
 #include <cmocka.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "../src/string_utils.h"
 
-static void string_starts_with_other_string(void** state)
+static void test_string_starts_with_other_string(void** state)
 {
     (void)state; /* unused */
 
@@ -19,7 +18,7 @@ static void string_starts_with_other_string(void** state)
     assert_true(string_starts_with("foo", "foo"));
 }
 
-static void string_does_not_starts_with_other_string(void** state)
+static void test_string_not_starting_with_string(void** state)
 {
     (void)state; /* unused */
 
@@ -27,7 +26,7 @@ static void string_does_not_starts_with_other_string(void** state)
     assert_false(string_starts_with("foo", "o"));
 }
 
-static void string_with_different_substrings(void** state)
+static void test_string_with_different_substrings(void** state)
 {
     (void)state; /* unused */
 
@@ -52,43 +51,47 @@ static void string_with_different_substrings(void** state)
     free((void*)s);
 }
 
-static void string_joining_none(void** state)
+static void test_string_joining_none(void** state)
 {
     (void)state; /* unused */
 
     const char* s = string_create_joined(0);
+
     assert_string_equal("", s);
     free((void*)s);
 }
 
-static void string_joining_single(void** state)
+static void test_string_joining_single(void** state)
 {
     (void)state; /* unused */
 
     const char* s = string_create_joined(1, "abcd");
+
     assert_string_equal("abcd", s);
     free((void*)s);
 }
 
-static void string_joining_two(void** state)
+static void test_string_joining_two(void** state)
 {
     (void)state; /* unused */
 
     const char* s = string_create_joined(2, "ab", "cd");
+
     assert_string_equal("abcd", s);
     free((void*)s);
 }
 
-static void string_joining_multiple(void** state)
+static void test_string_joining_multiple(void** state)
 {
     (void)state; /* unused */
 
     const char* s = string_create_joined(8, "a", "b", "c", "d", "a", "b", "c", "d");
+
     assert_string_equal("abcdabcd", s);
     free((void*)s);
 }
 
-static void string_joining(void** state)
+static void test_string_joining(void** state)
 {
     (void)state; /* unused */
 
@@ -103,14 +106,14 @@ static void string_joining(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(string_starts_with_other_string),          /* */
-        cmocka_unit_test(string_does_not_starts_with_other_string), /* */
-        cmocka_unit_test(string_with_different_substrings),         /* */
-        cmocka_unit_test(string_joining_none),                      /* */
-        cmocka_unit_test(string_joining_single),                    /* */
-        cmocka_unit_test(string_joining_two),                       /* */
-        cmocka_unit_test(string_joining_multiple),                  /* */
-        cmocka_unit_test(string_joining),                           /* */
+        cmocka_unit_test(test_string_starts_with_other_string),  /* */
+        cmocka_unit_test(test_string_not_starting_with_string),  /* */
+        cmocka_unit_test(test_string_with_different_substrings), /* */
+        cmocka_unit_test(test_string_joining_none),              /* */
+        cmocka_unit_test(test_string_joining_single),            /* */
+        cmocka_unit_test(test_string_joining_two),               /* */
+        cmocka_unit_test(test_string_joining_multiple),          /* */
+        cmocka_unit_test(test_string_joining),                   /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

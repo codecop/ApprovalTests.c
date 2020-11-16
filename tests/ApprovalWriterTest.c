@@ -15,12 +15,12 @@ static void test_create_approved_file_name(void** state)
     const struct ApprovalBaseName name = {
         "tests/ApprovalWriterTest.test_create_approved_file_name", "txt"};
 
-    const char* s = approval_writer_create_approved_file_name(name);
+    const char* file_name = approval_writer_create_approved_file_name(name);
 
     assert_string_equal(
-        "tests/ApprovalWriterTest.test_create_approved_file_name.approved.txt", s);
+        "tests/ApprovalWriterTest.test_create_approved_file_name.approved.txt", file_name);
 
-    free((void*)s);
+    free((void*)file_name);
 }
 
 static void test_create_received_file_name(void** state)
@@ -30,12 +30,12 @@ static void test_create_received_file_name(void** state)
     const struct ApprovalBaseName name = {
         "tests/ApprovalWriterTest.test_create_received_file_name", "txt"};
 
-    const char* s = approval_writer_create_received_file_name(name);
+    const char* file_name = approval_writer_create_received_file_name(name);
 
     assert_string_equal(
-        "tests/ApprovalWriterTest.test_create_received_file_name.received.txt", s);
+        "tests/ApprovalWriterTest.test_create_received_file_name.received.txt", file_name);
 
-    free((void*)s);
+    free((void*)file_name);
 }
 
 static void test_write_received_file(void** state)

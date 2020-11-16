@@ -24,7 +24,7 @@ static int has_file(const char* file, const char* test)
     return 0;
 }
 
-static void resolve_existing_file(void** state)
+static void test_resolve_existing_file(void** state)
 {
     (void)state; /* unused */
     if (!has_file(tortoiseHg, __func__)) {
@@ -42,7 +42,7 @@ static void resolve_existing_file(void** state)
     }
 }
 
-static void not_resolve_missing_file(void** state)
+static void test_not_resolve_missing_file(void** state)
 {
     (void)state; /* unused */
 
@@ -52,7 +52,7 @@ static void not_resolve_missing_file(void** state)
     assert_null(resolved);
 }
 
-static void resolve_windows_program_files(void** state)
+static void test_resolve_windows_program_files(void** state)
 {
     (void)state; /* unused */
     if (!has_file(tortoiseHg, __func__)) {
@@ -70,7 +70,7 @@ static void resolve_windows_program_files(void** state)
     }
 }
 
-static void resolve_windows_x86_program_files(void** state)
+static void test_resolve_windows_x86_program_files(void** state)
 {
     (void)state; /* unused */
     if (!has_file(kdiff3, __func__)) {
@@ -88,7 +88,7 @@ static void resolve_windows_x86_program_files(void** state)
     }
 }
 
-static void not_resolve_missing_windows_file(void** state)
+static void test_not_resolve_missing_windows_file(void** state)
 {
     (void)state; /* unused */
 
@@ -98,7 +98,7 @@ static void not_resolve_missing_windows_file(void** state)
     assert_null(resolved);
 }
 
-static void create_command_line(void** state)
+static void test_create_command_line(void** state)
 {
     (void)state; /* unused */
 
@@ -120,12 +120,12 @@ static void create_command_line(void** state)
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(resolve_existing_file),             /* */
-        cmocka_unit_test(not_resolve_missing_file),          /* */
-        cmocka_unit_test(resolve_windows_program_files),     /* */
-        cmocka_unit_test(resolve_windows_x86_program_files), /* */
-        cmocka_unit_test(not_resolve_missing_windows_file),  /* */
-        cmocka_unit_test(create_command_line),               /* */
+        cmocka_unit_test(test_resolve_existing_file),             /* */
+        cmocka_unit_test(test_not_resolve_missing_file),          /* */
+        cmocka_unit_test(test_resolve_windows_program_files),     /* */
+        cmocka_unit_test(test_resolve_windows_x86_program_files), /* */
+        cmocka_unit_test(test_not_resolve_missing_windows_file),  /* */
+        cmocka_unit_test(test_create_command_line),               /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
