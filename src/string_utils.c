@@ -34,7 +34,7 @@ const char* string_create_substring(const char* s, int start, size_t length)
     return substring;
 }
 
-static size_t string_count_joined(size_t count, va_list strings)
+static size_t vstring_count_joined(size_t count, va_list strings)
 {
     size_t length = 0;
 
@@ -47,12 +47,23 @@ static size_t string_count_joined(size_t count, va_list strings)
     return length;
 }
 
+size_t string_count_joined(size_t count, ...)
+{
+    va_list strings;
+
+    va_start(strings, count);
+    size_t total_length = vstring_count_joined(count, strings) + 1; /* \0 */
+    va_end(strings);
+
+    return total_length;
+}
+
 const char* string_create_joined(size_t count, ...)
 {
     va_list strings;
 
     va_start(strings, count);
-    size_t total_length = string_count_joined(count, strings) + 1; /* \0 */
+    size_t total_length = vstring_count_joined(count, strings) + 1; /* \0 */
     va_end(strings);
 
     char* s = (char*)malloc(total_length);
