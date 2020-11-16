@@ -20,23 +20,13 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
 
     approvals_create_if_needed(file_names.approved);
 
-    fprintf(stdout, diff.parameters, file_names.received, file_names.approved);
-    /* TODO implement diff report using exec_utils. */
+    const char* command_line = approvals_create_command_line(
+        diff_program, diff.parameters, file_names.received, file_names.approved);
 
-    /*
+    int result = system(command_line);
 
-    ArrayList<String> commands = new ArrayList<String>();
-    commands.add(diffProgram);
-    commands.addAll(argsSplitOnSpace);
-    System.out.println(commands);
-    return commands.toArray(new String[0]);
-
-    launch(received, approved);
-
-      ProcessBuilder builder = new ProcessBuilder(getCommandLine(received, approved));
-      preventProcessFromClosing(builder);
-      builder.start();
-    */
+    free((void*)command_line);
+    free((void*)diff_program);
     return FailureReport_continue;
 }
 
@@ -47,7 +37,7 @@ static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 #define open_diff_tool_for(i)                                                                    \
     static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names) \
     {                                                                                            \
-        return approval_open_diff_tool(used_diffs[i], file_names);                                        \
+        return approval_open_diff_tool(used_diffs[i], file_names);                               \
     }
 
 open_diff_tool_for(0)
