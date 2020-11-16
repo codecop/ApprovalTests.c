@@ -97,6 +97,21 @@ static void not_resolve_missing_windows_file(void** state)
     assert_null(resolved);
 }
 
+static void create_command_line(void** state)
+{
+    (void)state; /* unused */
+
+    const char* command_line = approvals_create_command_line(
+        "kdiff3.exe", "%s %s", "received.file", "approved_file");
+
+    assert_non_null(command_line);
+    assert_string_equal("kdiff3.exe received.file approved_file", command_line);
+
+    if (command_line) {
+        free((void*)command_line);
+    }
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -105,6 +120,7 @@ int main(void)
         cmocka_unit_test(resolve_windows_program_files),     /* */
         cmocka_unit_test(resolve_windows_x86_program_files), /* */
         cmocka_unit_test(not_resolve_missing_windows_file),  /* */
+        cmocka_unit_test(create_command_line),               /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

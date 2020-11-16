@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -82,33 +83,31 @@ const char* aprovals_create_resolved_path(const char* diff_program)
     return 0;
 }
 
-/* FileUtils.create_if_needed(approved); */
-
-const char* get_command_line(const char* parameters, const char* args1, const char* args2)
+const char* approvals_create_command_line(const char* diff_program,
+                                          const char* parameters,
+                                          const char* args1,
+                                          const char* args2)
 {
-    (void)parameters; /* unused */
-    (void)args1;      /* unused */
-    (void)args2;      /* unused */
-    /*
-      2. command line ****************************************************
-      getCommandLine
-    String full = String.format(arguments, "{received}", "{approved}");
-    List<String> argsSplitOnSpace = Arrays.stream(full.split(" "))
-        .map(t -> t.replace("{received}", received).replace("{approved}",
-    approved)).collect(Collectors.toList()); ArrayList<String> commands = new
-    ArrayList<String>(); commands.add(diffProgram); commands.addAll(argsSplitOnSpace);
-    System.out.println(commands);
-    return commands.toArray(new String[0]);
+    size_t length = string_count_joined(4, diff_program, parameters, args1, args2) /* */
+                    + 1  /* space after diff program */
+                    + 4; /* maybe quotes around arguments */
+    char* command = (char*)malloc(length + 1);
 
-    */
-    return 0;
+    char* offset = command;
+    strcpy(offset, diff_program);
+    offset += strlen(diff_program);
+    strcpy(offset, " ");
+    offset += 1;
+    sprintf(offset, parameters, args1, args2);
+
+    return command;
 }
 
 /*
 3. launch ***********************************************************
 
 launch(command, parameters);
-
+    https://stackoverflow.com/questions/3736210/how-to-execute-a-shell-script-from-c-in-linux
 
   ProcessBuilder builder = new ProcessBuilder(getCommandLine(received, approved));
   preventProcessFromClosing(builder);
