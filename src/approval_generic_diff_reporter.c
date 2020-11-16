@@ -7,11 +7,20 @@
 #include <stdlib.h>
 
 #include "../include/approvals_reporters.h"
+#include "asserts.h"
 #include "exec_utils.h"
 #include "file_utils.h"
 
+static void assert_diff_info(struct DiffInfo diff)
+{
+    assert_str_not_empty(diff.diff_program);
+    assert_str_not_empty(diff.parameters);
+}
+
 FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
+    assert_diff_info(diff);
+
     const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
     if (diff_program == 0) {
         /* This tool is not available. */
@@ -66,6 +75,8 @@ static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
 
 FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
 {
+    assert_diff_info(diff);
+
     unsigned int i = 0;
     while (used_diffs[i].diff_program && i < (MAX_DIFF_REPORTERS - 1)) {
         i += 1;

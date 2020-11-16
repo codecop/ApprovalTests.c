@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "../include/approvals_reporters.h"
+#include "asserts.h"
 #include "system_utils.h"
 
 #define MAX_REPORTERS 10
@@ -14,6 +15,8 @@ static FailureReporter used_reporter[MAX_REPORTERS];
 
 void approvals_use_reporter(FailureReporter reporter)
 {
+    assert_not_null(reporter);
+
     unsigned int i = 0;
     while (used_reporter[i] && i < (MAX_REPORTERS - 1)) {
         i += 1;
@@ -30,8 +33,16 @@ void approvals_clear_reporters()
     }
 }
 
+static void assert_approval_file_names(struct ApprovalFileNames file_names)
+{
+    assert_str_not_empty(file_names.approved);
+    assert_str_not_empty(file_names.received);
+}
+
 void approval_report_failure(struct ApprovalFileNames file_names)
 {
+    assert_approval_file_names(file_names);
+
     unsigned int i = 0;
     while (used_reporter[i] && i < MAX_REPORTERS) {
         FailureReporterResult result = (*used_reporter[i])(file_names);
@@ -44,6 +55,8 @@ void approval_report_failure(struct ApprovalFileNames file_names)
 
 FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names)
 {
+    assert_approval_file_names(file_names);
+
 #ifdef OS_WINDOWS
     fprintf(stdout, "move /Y \"%s\" \"%s\"\n", file_names.received, file_names.approved);
 #else

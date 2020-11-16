@@ -11,8 +11,15 @@
 #include "file_utils.h"
 #include "string_utils.h"
 
+static void assert_approval_base_name(struct ApprovalBaseName name)
+{
+    assert_str_not_empty(name.base_name);
+    assert_not_null(name.extension_no_dot);
+}
+
 static const char* create_approvals_file_name_for(struct ApprovalBaseName name, const char* suffix)
 {
+    assert_approval_base_name(name);
     assert_str_not_empty(suffix);
 
     return string_create_joined(5, name.base_name, /* */
@@ -34,6 +41,7 @@ const char* approval_writer_create_received_file_name(struct ApprovalBaseName na
 
 void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
 {
+    assert_approval_base_name(name);
     assert_not_null(received);
 
     const char* received_name = approval_writer_create_received_file_name(name);
@@ -43,6 +51,8 @@ void approval_writer_write_received_file(struct ApprovalBaseName name, const cha
 
 void approval_writer_delete_received_file(struct ApprovalBaseName name)
 {
+    assert_approval_base_name(name);
+
     const char* received_name = approval_writer_create_received_file_name(name);
     approvals_delete_file(received_name);
     free((void*)received_name);
