@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "StringBuilder.h"
+#include "string_builder.h"
 
 static void xml_newline(struct StringBuilder* sb, unsigned int intent)
 {

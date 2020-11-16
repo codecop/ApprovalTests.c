@@ -26,7 +26,7 @@ See `ExampleTest` in `./example`.
 Compile and run a test using the sources with:
 
     gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
-        ..\src\approvals.c ..\src\approvals_xml.c ..\src\StringBuilder.c AppTest.c ^
+        ..\src\approvals.c ..\src\approvals_xml.c ..\src\string_builder.c AppTest.c ^
         -l cmocka ^
         -o AppTest.exe
     ./AppTest.exe

@@ -5,7 +5,7 @@
 #include <cmocka.h>
 #include <stdlib.h>
 
-#include "../src/StringBuilder.h"
+#include "../src/string_builder.h"
 
 static void test_string_builder_empty(void** state)
 {
