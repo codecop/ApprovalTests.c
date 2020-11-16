@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -22,6 +23,9 @@ static const char* read_approved(struct ApprovalBaseName name)
 
 static int text_is_approved(const char* approved, const char* received)
 {
+    assert(approved != 0);
+    assert(received != 0);
+
     return strcmp(approved, received) == 0;
 }
 
@@ -40,6 +44,14 @@ const char* __approvals_approve(const char* received,
                                 const char* test_name,
                                 const char* extension_no_dot)
 {
+    assert(received != 0);
+    assert(full_file_name != 0);
+    assert(strlen(full_file_name) > 0);
+    assert(test_name != 0);
+    assert(strlen(test_name) > 0);
+    assert(extension_no_dot != 0);
+    assert(strlen(extension_no_dot) > 0);
+
     const char* base_name = approval_namer_create_approval_name(full_file_name, test_name);
     const struct ApprovalBaseName name = {base_name, extension_no_dot};
     const char* approved = read_approved(name);

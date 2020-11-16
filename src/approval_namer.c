@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -10,19 +11,24 @@
 
 static void to_path(char* path)
 {
+    assert(path != 0);
+
 #ifdef OS_WINDOWS
     char* slash = strrchr(path, '/');
     while (slash) {
         *slash = '\\';
         slash = strrchr(path, '/');
     }
-#else
-    (void)path; /* unused */
 #endif
 }
 
 const char* approval_namer_create_approval_name(const char* full_file_name, const char* test_name)
 {
+    assert(full_file_name != 0);
+    assert(strlen(full_file_name) > 0);
+    assert(test_name != 0);
+    assert(strlen(test_name) > 0);
+
     const char* last_dot = strrchr(full_file_name, '.');
     size_t length_file_name = 0;
     if (last_dot) {

@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -12,6 +13,9 @@
 
 static const char* create_approvals_file_name_for(struct ApprovalBaseName name, const char* suffix)
 {
+    assert(suffix != 0);
+    assert(strlen(suffix) > 0);
+
     return string_create_joined(5, name.base_name, /* */
                                 ".",               /* */
                                 suffix,            /* "approved" or "received" */
@@ -31,6 +35,8 @@ const char* approval_writer_create_received_file_name(struct ApprovalBaseName na
 
 void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
 {
+    assert(received != 0);
+
     const char* received_name = approval_writer_create_received_file_name(name);
     approvals_save_text_file(received_name, received);
     free((void*)received_name);

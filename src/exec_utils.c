@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +34,9 @@ static size_t count_windows_program_files_env()
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
+    assert(diff_program != 0);
+    assert(strlen(diff_program) > 0);
+
     size_t i;
 
     for (i = 0; i < count_program_files(); i++) {
@@ -61,6 +65,9 @@ static const char* tag = "{ProgramFiles}";
 
 static const char* strip_tag(const char* diff_program)
 {
+    assert(diff_program != 0);
+    assert(strlen(diff_program) > strlen(tag));
+
     int substring_start = strlen(tag);
     size_t substring_length = strlen(diff_program) - strlen(tag);
     return string_create_substring(diff_program, substring_start, substring_length);
@@ -68,6 +75,9 @@ static const char* strip_tag(const char* diff_program)
 
 const char* aprovals_create_resolved_path(const char* diff_program)
 {
+    assert(diff_program != 0);
+    assert(strlen(diff_program) > 0);
+
     if (approvals_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
         return string_create_joined(1, diff_program);
@@ -88,6 +98,15 @@ const char* approvals_create_command_line(const char* diff_program,
                                           const char* args1,
                                           const char* args2)
 {
+    assert(diff_program != 0);
+    assert(strlen(diff_program) > 0);
+    assert(parameters != 0);
+    assert(strlen(parameters) > 0);
+    assert(args1 != 0);
+    assert(strlen(args1) > 0);
+    assert(args2 != 0);
+    assert(strlen(args2) > 0);
+
     size_t length = string_count_joined(4, diff_program, parameters, args1, args2) /* */
                     + 2  /* maybe quotes around diff tool */
                     + 1  /* space after diff program */
@@ -111,15 +130,3 @@ const char* approvals_create_command_line(const char* diff_program,
 
     return command;
 }
-
-/*
-3. launch ***********************************************************
-
-launch(command, parameters);
-    https://stackoverflow.com/questions/3736210/how-to-execute-a-shell-script-from-c-in-linux
-
-  ProcessBuilder builder = new ProcessBuilder(getCommandLine(received, approved));
-  preventProcessFromClosing(builder);
-  builder.start();
-
-*/
