@@ -76,3 +76,9 @@ Binaries_*.zip
 
 # Porting code
 *.java
+
+# Coverage
+gcov/
+*.gcno
+*.gcda
+*.gov

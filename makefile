@@ -2,10 +2,11 @@ SRC_DIR := ./src
 TEST_DIR := ./tests
 LIB_DIR := ./lib
 EXAMPLE_DIR := ./example
+COV_DIR := ./gcov
 
 CC := gcc
 STD := c99
-CFLAGS := -g -std=$(STD) -O -Werror -Wall -Wextra -pedantic -Wno-error=format -Wno-error=unused-variable
+CFLAGS := -g -std=$(STD) -Werror -Wall -Wextra -pedantic -Wno-error=format -Wno-error=unused-variable
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
 SHARED_FLAGS := -shared
 CMOCKA := -lcmocka
@@ -24,8 +25,17 @@ else
 	CFLAGS += -fPIC
 endif
 
+ifeq ($(GCOV),on)
+	CFLAGS += --coverage
+else
+	CFLAGS += -O
+endif
+
 SRC_SRC := $(wildcard $(SRC_DIR)/*.c)
 SRC_OBJ := $(SRC_SRC:.c=.o)
+
+SRC_COV := $(SRC_SRC:.c=.c.gcov)
+COV_DAT := $(SRC_COV:$(SRC_DIR)/%=$(COV_DIR)/%)
 
 TEST_SRC := $(wildcard $(TEST_DIR)/*Test.c)
 TEST_EXE := $(TEST_SRC:.c=$(EXE))
@@ -44,6 +54,21 @@ $(TEST_DIR)/%$(EXE): $(TEST_DIR)/%.c ${SRC_OBJ}
 .PHONY: test
 test: ${TEST_EXE}
 	for exe in ${TEST_EXE}; do $$exe || exit; done
+ifeq ($(GCOV),on)
+    # no need for coverage on tests
+	rm -f ./*Test.gcno ./*Test.gcda
+endif
+
+$(COV_DIR)/%.c.gcov: $(SRC_DIR)/%.c $(COV_DIR)
+	gcov $<
+	# https://gcc.gnu.org/onlinedocs/gcc/Invoking-Gcov.html#Invoking-Gcov
+	mv *.c.gcov ${COV_DIR}/
+
+$(COV_DIR):
+	mkdir $(COV_DIR)
+
+coverage: test ${COV_DAT}
+	rm -f $(SRC_DIR)/*.gcno $(SRC_DIR)/*.gcda
 
 ${DLL}: ${SRC_OBJ}
 	$(CC) $(CFLAGS) $(SHARED_FLAGS) $^ -o ${DLL}
@@ -55,6 +80,10 @@ clean:
 	rm -f $(SRC_DIR)/*.o
 	rm -f $(TEST_DIR)/*.o $(TEST_DIR)/*$(EXE) $(TEST_DIR)/*.received.*
 	rm -f ${EXAMPLE_DIR}/*.o ${EXAMPLE_DIR}/*$(EXE) ${EXAMPLE_DIR}/*.received.*
+	rm -f $(SRC_DIR)/*.gcno
+	rm -f $(SRC_DIR)/*.gcda
+	rm -r -f ${COV_DIR}
+#   Eclipse folder
 	rm -r -f Default
 
 .PHONY: clean_all
