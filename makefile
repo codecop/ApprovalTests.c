@@ -47,9 +47,6 @@ C_BASE_FLAGS += -fPIC
 endif
 
 C_COMPILE_FLAGS = $(C_BASE_FLAGS) -c ${CFLAGS}
-ifeq ($(GCOV),on)
-	C_COMPILE_FLAGS += --coverage
-endif
 
 C_TEST_FLAGS = $(C_BASE_FLAGS) ${CFLAGS}
 CMOCKA := -lcmocka
@@ -70,15 +67,11 @@ $(src_dir)/%.o: $(src_dir)/%.c
 ##### test targets
 
 $(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
-	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(CMOCKA) -o $@
+	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(CMOCKA) -lgcov -o $@
 
 .PHONY: test
 test: ${test_run_files}
 	for exe in ${test_run_files}; do $$exe || exit; done
-ifeq ($(GCOV),on)
-    # no need for coverage on tests
-	# rm -f ./*Test.gcno ./*Test.gcda
-endif
 
 .PHONY: check
 check: test
@@ -92,7 +85,8 @@ $(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
 	${COV} $<
 	mv *.c.gcov ${cov_dir}/
 
-coverage: test ${cov_files}
+coverage: C_COMPILE_FLAGS += --coverage
+coverage: clean test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
 ##### library targets
