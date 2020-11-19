@@ -49,7 +49,7 @@ endif
 C_COMPILE_FLAGS = $(C_BASE_FLAGS) -c ${CFLAGS}
 
 C_TEST_FLAGS = $(C_BASE_FLAGS) ${CFLAGS}
-CMOCKA := -lcmocka
+LD_TEST_FLAGS = -lcmocka
 
 C_LIBRARY_FLAGS := $(C_BASE_FLAGS) ${CFLAGS} -shared
 ifeq ($(OS),Windows_NT)
@@ -61,13 +61,15 @@ APPROVALS := -l$(library_name)
 
 ##### compile targets
 
+all: build test example
+
 $(src_dir)/%.o: $(src_dir)/%.c
 	$(CC) $(C_COMPILE_FLAGS) $< -o $@
 
 ##### test targets
 
 $(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
-	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(CMOCKA) -lgcov -o $@
+	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(LD_TEST_FLAGS) -o $@
 
 .PHONY: test
 test: ${test_run_files}
@@ -86,6 +88,7 @@ $(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
 	mv *.c.gcov ${cov_dir}/
 
 coverage: C_COMPILE_FLAGS += --coverage
+coverage: LD_TEST_FLAGS += -lgcov
 coverage: clean test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
@@ -117,7 +120,7 @@ very-clean: clean
 ##### example targets
 
 $(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
-	$(CC) $(C_TEST_FLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
+	$(CC) $(C_TEST_FLAGS) $< $(LD_TEST_FLAGS) $(APPROVALS) -o $@
 
 .PHONY: example
 example: ${example_run_files}
