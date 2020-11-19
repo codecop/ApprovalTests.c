@@ -1,62 +1,69 @@
-# Variables which are not special to make or inherited from the environment should be in lowercase. Words should be separated with underscore symbol ‘_’
-
-# folders
+##### folders
 src_dir 	:= ./src
 test_dir 	:= ./tests
+cov_dir 	:= ./gcov
 lib_dir 	:= ./lib
 example_dir := ./example
-cov_dir 	:= ./gcov
 
-# files
+##### files
+src_files 	:= $(wildcard $(src_dir)/*.c)
+obj_files 	:= $(src_files:.c=.o)
 
+ifeq ($(OS),Windows_NT)
+	exec_extension := .exe
+else
+	exec_extension := .
+endif
+
+test_sources := $(wildcard $(test_dir)/*Test.c)
+test_runners := $(test_sources:.c=$(exec_extension))
+
+cov_sources := $(src_files:.c=.c.gcov)
+cov_files 	:= $(cov_sources:$(src_dir)/%=$(cov_dir)/%)
+
+example_sources := $(wildcard $(example_dir)/*Test.c)
+example_runners := $(example_sources:.c=$(exec_extension))
+
+##### tools
 CC := gcc
+COV := gcov
+
+##### flags
 STD := c99
-CFLAGS := -g -std=$(STD) -Werror -Wall -Wextra -pedantic -Wno-error=format -Wno-error=unused-variable
+BASE_FLAGS = -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors -Wno-error=format -Wno-error=unused-variable
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-SHARED_FLAGS := -shared
+CFLAGS := -g
+# user can override with -O
+COMPILE_FLAGS = $(BASE_FLAGS) -c
+# -c ... Compile and assemble, but do not link.
+TEST_FLAGS = $(BASE_FLAGS)
+SHARED_FLAGS := $(BASE_FLAGS) -shared
+
 CMOCKA := -lcmocka
 APPROVALS := -lapprovals
-COV := gcov
 
 ifeq ($(OS),Windows_NT)
     detected_OS := Windows
-	EXE := .exe
 	DLL := ./bin/approvals.dll
     # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
 	SHARED_FLAGS += -Wl,--out-implib,${lib_dir}/libapprovals.a
 else
     detected_OS := $(shell uname)
-	EXE := .
 	DLL := ${lib_dir}/libapprovals.so
-	CFLAGS += -fPIC
+	BASE_FLAGS += -fPIC
 endif
 
 ifeq ($(GCOV),on)
-	CFLAGS += --coverage
-else
-	CFLAGS += -O
+	COMPILE_FLAGS += --coverage
 endif
 
-SRC_SRC := $(wildcard $(src_dir)/*.c)
-SRC_OBJ := $(SRC_SRC:.c=.o)
-
-SRC_COV := $(SRC_SRC:.c=.c.gcov)
-COV_DAT := $(SRC_COV:$(src_dir)/%=$(cov_dir)/%)
-
-TEST_SRC := $(wildcard $(test_dir)/*Test.c)
-TEST_EXE := $(TEST_SRC:.c=$(EXE))
-
-EXAMPLE_SRC := $(wildcard $(example_dir)/*Test.c)
-EXAMPLE_EXE := $(EXAMPLE_SRC:.c=$(EXE))
-
 $(src_dir)/%.o: $(src_dir)/%.c
-	$(CC) -c $(CFLAGS) $< -o $@
-# -c                       Compile and assemble, but do not link
-# .SECONDARY: $(SRC_OBJ)
+	$(CC) $(COMPILE_FLAGS) ${CFLAGS} $< -o $@
+
 # https://stackoverflow.com/questions/15189704/makefile-removes-object-files-for-no-reason
 
-$(test_dir)/%$(EXE): $(test_dir)/%.c ${SRC_OBJ}
-	$(CC) $(CFLAGS) ${SRC_OBJ} $< $(CMOCKA) -o $@
+$(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
+	$(CC) $(TEST_FLAGS) ${CFLAGS} ${obj_files} $< $(CMOCKA) -o $@
 
 # $< will represent the source file wherever it is
 
@@ -66,8 +73,8 @@ $(test_dir)/%$(EXE): $(test_dir)/%.c ${SRC_OBJ}
 check: test
 
 .PHONY: test
-test: ${TEST_EXE}
-	for exe in ${TEST_EXE}; do $$exe || exit; done
+test: ${test_runners}
+	for exe in ${test_runners}; do $$exe || exit; done
 ifeq ($(GCOV),on)
     # no need for coverage on tests
 	rm -f ./*Test.gcno ./*Test.gcda
@@ -81,11 +88,11 @@ $(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
 $(cov_dir):
 	mkdir $(cov_dir)
 
-coverage: test ${COV_DAT}
+coverage: test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
-${DLL}: ${SRC_OBJ}
-	$(CC) $(CFLAGS) $(SHARED_FLAGS) $^ -o ${DLL}
+${DLL}: ${obj_files}
+	$(CC) $(SHARED_FLAGS) $(CFLAGS) $^ -o ${DLL}
 
 lib: build
 # alias "to create the libraries"
@@ -94,8 +101,8 @@ build: very-clean ${DLL}
 .PHONY: clean
 clean:
 	rm -f $(src_dir)/*.o
-	rm -f $(test_dir)/*.o $(test_dir)/*$(EXE) $(test_dir)/*.received.*
-	rm -f ${example_dir}/*.o ${example_dir}/*$(EXE) ${example_dir}/*.received.*
+	rm -f $(test_dir)/*.o $(test_dir)/*$(exec_extension) $(test_dir)/*.received.*
+	rm -f ${example_dir}/*.o ${example_dir}/*$(exec_extension) ${example_dir}/*.received.*
 	rm -f $(src_dir)/*.gcno
 	rm -f $(src_dir)/*.gcda
 	rm -r -f ${cov_dir}
@@ -107,9 +114,9 @@ very-clean: clean
 	rm -f ${DLL}
 	rm -f $(lib_dir)/*.a
 
-$(example_dir)/%$(EXE): $(example_dir)/%.c ${DLL}
-	$(CC) $(CFLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
+$(example_dir)/%$(exec_extension): $(example_dir)/%.c ${DLL}
+	$(CC) $(TEST_FLAGS) $(CFLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
 
 .PHONY: example
-example: ${EXAMPLE_EXE}
-	for exe in ${EXAMPLE_EXE}; do $$exe || exit; done
+example: ${example_runners}
+	for exe in ${example_runners}; do $$exe || exit; done
