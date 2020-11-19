@@ -10,9 +10,9 @@ src_files 	:= $(wildcard $(src_dir)/*.c)
 obj_files 	:= $(src_files:.c=.o)
 
 ifeq ($(OS),Windows_NT)
-	exec_extension := .exe
+exec_extension := .exe
 else
-	exec_extension := .
+exec_extension := .
 endif
 
 test_sources := $(wildcard $(test_dir)/*Test.c)
@@ -20,6 +20,12 @@ test_runners := $(test_sources:.c=$(exec_extension))
 
 cov_sources := $(src_files:.c=.c.gcov)
 cov_files 	:= $(cov_sources:$(src_dir)/%=$(cov_dir)/%)
+
+ifeq ($(OS),Windows_NT)
+library := ./bin/approvals.dll
+else
+library := ${lib_dir}/libapprovals.so
+endif
 
 example_sources := $(wildcard $(example_dir)/*Test.c)
 example_runners := $(example_sources:.c=$(exec_extension))
@@ -32,6 +38,11 @@ COV := gcov
 STD := c99
 BASE_FLAGS = -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors -Wno-error=format -Wno-error=unused-variable
 # add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
+
+ifneq ($(OS),Windows_NT)
+BASE_FLAGS += -fPIC
+endif
+
 CFLAGS := -g
 # user can override with -O
 COMPILE_FLAGS = $(BASE_FLAGS) -c
@@ -39,19 +50,14 @@ COMPILE_FLAGS = $(BASE_FLAGS) -c
 TEST_FLAGS = $(BASE_FLAGS)
 SHARED_FLAGS := $(BASE_FLAGS) -shared
 
+ifeq ($(OS),Windows_NT)
+    # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
+	SHARED_FLAGS += -Wl,--out-implib,${lib_dir}/libapprovals.a
+endif
+
 CMOCKA := -lcmocka
 APPROVALS := -lapprovals
 
-ifeq ($(OS),Windows_NT)
-    detected_OS := Windows
-	DLL := ./bin/approvals.dll
-    # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
-	SHARED_FLAGS += -Wl,--out-implib,${lib_dir}/libapprovals.a
-else
-    detected_OS := $(shell uname)
-	DLL := ${lib_dir}/libapprovals.so
-	BASE_FLAGS += -fPIC
-endif
 
 ifeq ($(GCOV),on)
 	COMPILE_FLAGS += --coverage
@@ -91,12 +97,12 @@ $(cov_dir):
 coverage: test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
-${DLL}: ${obj_files}
-	$(CC) $(SHARED_FLAGS) $(CFLAGS) $^ -o ${DLL}
+${library}: ${obj_files}
+	$(CC) $(SHARED_FLAGS) $(CFLAGS) $^ -o ${library}
 
 lib: build
 # alias "to create the libraries"
-build: very-clean ${DLL}
+build: very-clean ${library}
 
 .PHONY: clean
 clean:
@@ -111,10 +117,10 @@ clean:
 
 .PHONY: very-clean
 very-clean: clean
-	rm -f ${DLL}
+	rm -f ${library}
 	rm -f $(lib_dir)/*.a
 
-$(example_dir)/%$(exec_extension): $(example_dir)/%.c ${DLL}
+$(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
 	$(CC) $(TEST_FLAGS) $(CFLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
 
 .PHONY: example
