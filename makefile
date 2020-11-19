@@ -109,13 +109,11 @@ lib: build
 .PHONY: clean
 clean:
 	rm -f $(src_dir)/*.o
-	rm -f $(test_dir)/*.o $(test_dir)/*$(exec_extension) $(test_dir)/*.received.*
-	rm -f ${example_dir}/*.o ${example_dir}/*$(exec_extension) ${example_dir}/*.received.*
-	rm -f $(src_dir)/*.gcno
-	rm -f $(src_dir)/*.gcda
-	rm -r -f ${cov_dir}
+	rm -f $(test_dir)/*$(exec_extension) $(test_dir)/*.received.*
+	rm -f ${example_dir}/*$(exec_extension) ${example_dir}/*.received.*
+	rm -f -r ${cov_dir}
 #   Eclipse folder
-	rm -r -f ./Default
+	rm -f -r ./Default
 
 .PHONY: very-clean
 very-clean: clean
