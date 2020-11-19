@@ -33,6 +33,7 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
         diff_program, diff.parameters, file_names.received, file_names.approved);
 
     int result = system(command_line);
+    /* TODO result is unused */
 
     free((void*)command_line);
     free((void*)diff_program);
