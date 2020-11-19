@@ -62,46 +62,49 @@ endif
 
 APPROVALS := -l$(library_name)
 
-##### targets
+##### compile targets
 
 $(src_dir)/%.o: $(src_dir)/%.c
 	$(CC) $(C_COMPILE_FLAGS) $< -o $@
 
-# https://stackoverflow.com/questions/15189704/makefile-removes-object-files-for-no-reason
+##### test targets
 
 $(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
 	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(CMOCKA) -o $@
-
-# $< will represent the source file wherever it is
-
-.PHONY: check
-check: test
 
 .PHONY: test
 test: ${test_run_files}
 	for exe in ${test_run_files}; do $$exe || exit; done
 ifeq ($(GCOV),on)
     # no need for coverage on tests
-	rm -f ./*Test.gcno ./*Test.gcda
+	# rm -f ./*Test.gcno ./*Test.gcda
 endif
 
-$(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
-	${COV} $<
-	# https://gcc.gnu.org/onlinedocs/gcc/Invoking-Gcov.html#Invoking-Gcov
-	mv *.c.gcov ${cov_dir}/
+.PHONY: check
+check: test
+
+##### coverage targets
 
 $(cov_dir):
 	mkdir $(cov_dir)
 
+$(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
+	${COV} $<
+	mv *.c.gcov ${cov_dir}/
+
 coverage: test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
+
+##### library targets
 
 ${library}: ${obj_files}
 	$(CC) $(C_LIBRARY_FLAGS) $^ -o ${library}
 
-lib: build
-# alias "to create the libraries"
 build: very-clean ${library}
+
+lib: build
+
+##### clean targets
 
 .PHONY: clean
 clean:
@@ -118,6 +121,8 @@ clean:
 very-clean: clean
 	rm -f ${library}
 	rm -f $(lib_dir)/*.a
+
+##### example targets
 
 $(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
 	$(CC) $(C_TEST_FLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
