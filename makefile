@@ -1,3 +1,5 @@
+library_name := approvals
+
 ##### folders
 src_dir 	:= ./src
 test_dir 	:= ./tests
@@ -15,72 +17,69 @@ else
 exec_extension := .
 endif
 
-test_sources := $(wildcard $(test_dir)/*Test.c)
-test_runners := $(test_sources:.c=$(exec_extension))
+test_src_files := $(wildcard $(test_dir)/*Test.c)
+test_run_files := $(test_src_files:.c=$(exec_extension))
 
 cov_sources := $(src_files:.c=.c.gcov)
 cov_files 	:= $(cov_sources:$(src_dir)/%=$(cov_dir)/%)
 
 ifeq ($(OS),Windows_NT)
-library := ./bin/approvals.dll
+library := ./bin/$(library_name).dll
 else
-library := ${lib_dir}/libapprovals.so
+library := ${lib_dir}/lib$(library_name).so
 endif
 
-example_sources := $(wildcard $(example_dir)/*Test.c)
-example_runners := $(example_sources:.c=$(exec_extension))
+example_src_files := $(wildcard $(example_dir)/*Test.c)
+example_run_files := $(example_src_files:.c=$(exec_extension))
 
 ##### tools
 CC := gcc
 COV := gcov
 
 ##### flags
-STD := c99
-BASE_FLAGS = -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors -Wno-error=format -Wno-error=unused-variable
-# add more from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
-
-ifneq ($(OS),Windows_NT)
-BASE_FLAGS += -fPIC
-endif
-
 CFLAGS := -g
 # user can override with -O
-COMPILE_FLAGS = $(BASE_FLAGS) -c
-# -c ... Compile and assemble, but do not link.
-TEST_FLAGS = $(BASE_FLAGS)
-SHARED_FLAGS := $(BASE_FLAGS) -shared
 
-ifeq ($(OS),Windows_NT)
-    # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
-	SHARED_FLAGS += -Wl,--out-implib,${lib_dir}/libapprovals.a
+STD := c99
+C_BASE_FLAGS = -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors -Wno-error=format -Wno-error=unused-variable
+ifneq ($(OS),Windows_NT)
+C_BASE_FLAGS += -fPIC
 endif
 
-CMOCKA := -lcmocka
-APPROVALS := -lapprovals
-
-
+C_COMPILE_FLAGS = $(C_BASE_FLAGS) -c ${CFLAGS}
 ifeq ($(GCOV),on)
-	COMPILE_FLAGS += --coverage
+	C_COMPILE_FLAGS += --coverage
 endif
+
+C_TEST_FLAGS = $(C_BASE_FLAGS) ${CFLAGS}
+CMOCKA := -lcmocka
+
+C_LIBRARY_FLAGS := $(C_BASE_FLAGS) ${CFLAGS} -shared
+ifeq ($(OS),Windows_NT)
+C_LIBRARY_FLAGS += -Wl,--out-implib,${lib_dir}/lib$(library_name).a
+# https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
+endif
+
+APPROVALS := -l$(library_name)
+
+##### targets
 
 $(src_dir)/%.o: $(src_dir)/%.c
-	$(CC) $(COMPILE_FLAGS) ${CFLAGS} $< -o $@
+	$(CC) $(C_COMPILE_FLAGS) $< -o $@
 
 # https://stackoverflow.com/questions/15189704/makefile-removes-object-files-for-no-reason
 
 $(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
-	$(CC) $(TEST_FLAGS) ${CFLAGS} ${obj_files} $< $(CMOCKA) -o $@
+	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(CMOCKA) -o $@
 
 # $< will represent the source file wherever it is
-
-# Target names should use lower case letters. Words are separated with a hyphen
 
 .PHONY: check
 check: test
 
 .PHONY: test
-test: ${test_runners}
-	for exe in ${test_runners}; do $$exe || exit; done
+test: ${test_run_files}
+	for exe in ${test_run_files}; do $$exe || exit; done
 ifeq ($(GCOV),on)
     # no need for coverage on tests
 	rm -f ./*Test.gcno ./*Test.gcda
@@ -98,7 +97,7 @@ coverage: test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
 ${library}: ${obj_files}
-	$(CC) $(SHARED_FLAGS) $(CFLAGS) $^ -o ${library}
+	$(CC) $(C_LIBRARY_FLAGS) $^ -o ${library}
 
 lib: build
 # alias "to create the libraries"
@@ -121,8 +120,8 @@ very-clean: clean
 	rm -f $(lib_dir)/*.a
 
 $(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
-	$(CC) $(TEST_FLAGS) $(CFLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
+	$(CC) $(C_TEST_FLAGS) $< $(CMOCKA) $(APPROVALS) -o $@
 
 .PHONY: example
-example: ${example_runners}
-	for exe in ${example_runners}; do $$exe || exit; done
+example: ${example_run_files}
+	for exe in ${example_run_files}; do $$exe || exit; done
