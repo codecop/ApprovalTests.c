@@ -40,7 +40,10 @@ struct DiffInfo {
     const char* parameters;
 };
 
-/* Diff tools copied from DiffPrograms.java, https://github.com/approvals/ApprovalTests.Java */
+/*
+ * Diff tools to use with `approval_report_failure_generic_diff`.
+ * Copied from `DiffPrograms.java`, https://github.com/approvals/ApprovalTests.Java
+ */
 static struct MacDiffInfos {
     struct DiffInfo BEYOND_COMPARE;
     struct DiffInfo DIFF_MERGE;
@@ -48,6 +51,7 @@ static struct MacDiffInfos {
     struct DiffInfo KDIFF3;
     struct DiffInfo TK_DIFF;
     struct DiffInfo VISUAL_STUDIO_CODE;
+    struct DiffInfo _NULL_TERMINATED;
 } MAC_DIFFS = {
     {"/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "%s %s"},
     {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s"},
@@ -55,6 +59,7 @@ static struct MacDiffInfos {
     {"/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m"},
     {"/Applications/TkDiff.app/Contents/MacOS/tkdiff", "%s %s"},
     {"/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "-d %s %s"},
+    {0, 0},
 };
 
 static struct WindowsDiffInfos {
@@ -68,6 +73,7 @@ static struct WindowsDiffInfos {
     struct DiffInfo VISUAL_STUDIO_CODE;
     struct DiffInfo WIN_DIFF;
     struct DiffInfo WIN_MERGE;
+    struct DiffInfo _NULL_TERMINATED;
 } WINDOWS_DIFFS = {
     {"{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"},
     {"{ProgramFiles}Beyond Compare 3\\BCompare.exe", "%s %s"},
@@ -79,14 +85,17 @@ static struct WindowsDiffInfos {
     {"{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"},
     {"{ProgramFiles}Microsoft SDKs\\Windows\\v7.1\\Bin\x64\\WinDiff.exe", "%s %s"},
     {"{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"},
+    {0, 0},
 };
 
 static struct LinuxDiffInfos {
     struct DiffInfo DIFF_MERGE;
     struct DiffInfo MELD_MERGE;
+    struct DiffInfo _NULL_TERMINATED;
 } LINUX_DIFFS = {
     {"/usr/bin/diffmerge", "--nosplash %s %s"},
     {"/usr/bin/meld", "%s %s"},
+    {0, 0},
 };
 
 /*
