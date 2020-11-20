@@ -34,6 +34,7 @@ const char* approval_namer_create_approval_name(const char* full_file_name, cons
     }
     else {
         length_file_name = strlen(full_file_name);
+        /* TODO test case no dot in full file name */
     }
 
     size_t length = 0;

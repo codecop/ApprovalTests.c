@@ -31,6 +31,7 @@ static int text_is_approved(const char* approved, const char* received)
 
 static void report_failure(struct ApprovalBaseName name)
 {
+    /* TODO not tested */
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
     struct ApprovalFileNames file_names = {approved_name, received_name};
@@ -61,6 +62,7 @@ const char* __approvals_approve(const char* received,
     else {
         /* FAIL */
         report_failure(name);
+        /* TODO not tested */
     }
 
     free((void*)base_name);

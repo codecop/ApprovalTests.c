@@ -33,6 +33,7 @@ long approvals_file_size(const char* filename)
     if (file == NULL) {
         fprintf(stderr, "Could not open file %s.\n", filename);
         return 0;
+        /* TODO test for size of missing file */
     }
 
     int error_seek = fseek(file, 0, SEEK_END);
@@ -60,6 +61,7 @@ const char* approvals_load_text_file(const char* filename)
     if (file == NULL) {
         fprintf(stderr, "Could not open file %s.\n", filename);
         return "";
+        /* TODO test for load missing file */
     }
 
     int error_seek = fseek(file, 0, SEEK_END);
@@ -98,11 +100,13 @@ const char* approvals_load_text_file(const char* filename)
                 "Did not read whole file %s, got " PF_SIZE_T
                 " bytes instead of " PF_SIZE_T ".\n",
                 filename, read, buffer_size);
+        /* TODO add logic counting newlines and adapting the read count on windows */
     }
 
     int error_close = fclose(file);
     if (error_close) {
         fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
+        /* TODO duplication in all close */
     }
 
     return read_buffer;
@@ -127,6 +131,7 @@ void approvals_save_text_file(const char* filename, const char* data)
     int error_flush = fflush(file);
     if (error_flush) {
         fprintf(stderr, "Could not flush %s, error %d.\n", filename, error_flush);
+        /* TODO duplication in all flush */
     }
     int error_close = fclose(file);
     if (error_close) {
@@ -141,6 +146,7 @@ void approvals_delete_file(const char* filename)
     int error_remove = remove(filename);
     if (error_remove) {
         fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
+        /* TODO test for non existing file */
     }
 }
 

@@ -1,11 +1,12 @@
 # Open
 
-* TODO in code, unused
-* TODO test resolving a linux tool, should work in ubuntu-latest
+* test resolving a linux tool, should work in ubuntu-latest
 * #ifndef __approval_assert_equals add a plain assert reporter by default
-* check coverage - few places missing
-* all malloc can fail - what to do?
+* all malloc can fail - what to do? - return NULL; /* error */
 * get first working reporter of list
+* use bool instead of 0/1/int
+* use NULL instead of 0 everywhere
+* empty arguments () -> (void)
 
 * Documentation
 

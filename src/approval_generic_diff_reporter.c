@@ -46,6 +46,7 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
     if (diff_program == 0) {
         /* This tool is not available. */
         return FailureReport_tool_missing;
+        /* TODO test case for that FailureReport_tool_missing */
     }
 
     approvals_create_if_needed(file_names.approved);
@@ -102,6 +103,7 @@ FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
     unsigned int i = 0;
     while (used_diffs[i].diff_program && i < (MAX_DIFF_REPORTERS - 1)) {
         i += 1;
+        /* TODO test cases for more than one diff */
     }
     used_diffs[i] = diff;
     return diffs_reporters[i];
