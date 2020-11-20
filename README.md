@@ -1,6 +1,6 @@
 # ApprovalTests.c
 
-Plain/portable C 99 version of [Approval Tests](https://approvaltests.com/).
+Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests](https://approvaltests.com/).
 
 > Unit testing asserts can be difficult to use. Approval tests simplify this by taking a snapshot of the results, and confirming that they have not changed.
 >
