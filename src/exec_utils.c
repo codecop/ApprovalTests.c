@@ -71,7 +71,7 @@ static const char* strip_tag(const char* diff_program)
     return string_create_substring(diff_program, substring_start, substring_length);
 }
 
-const char* aprovals_create_resolved_path(const char* diff_program)
+const char* approvals_create_resolved_path(const char* diff_program)
 {
     assert_str_not_empty(diff_program);
 

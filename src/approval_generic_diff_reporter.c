@@ -17,23 +17,32 @@ static void assert_diff_info(struct DiffInfo diff)
     assert_str_not_empty(diff.parameters);
 }
 
+static void assert_approval_file_names(struct ApprovalFileNames file_names)
+{
+    assert_str_not_empty(file_names.approved);
+    assert_str_not_empty(file_names.received);
+}
+
+/*
 static int diff_is_working_in_this_environment(struct DiffInfo diff)
 {
     assert_diff_info(diff);
 
-    const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
+    const char* diff_program = approvals_create_resolved_path(diff.diff_program);
     if (diff_program == 0) {
         return 0;
     }
     free((void*)diff_program);
     return 1;
 }
+*/
 
 FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     assert_diff_info(diff);
+    assert_approval_file_names(file_names);
 
-    const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
+    const char* diff_program = approvals_create_resolved_path(diff.diff_program);
     if (diff_program == 0) {
         /* This tool is not available. */
         return FailureReport_tool_missing;
