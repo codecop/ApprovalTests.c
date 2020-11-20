@@ -7,7 +7,7 @@
 /*
  * in public include
 extern void approvals_use_reporter(FailureReporter reporter);
-extern void approvals_clear_reporters();
+extern void approvals_clear_reporters(void);
 extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names);
 */
 

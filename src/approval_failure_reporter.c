@@ -24,7 +24,7 @@ void approvals_use_reporter(FailureReporter reporter)
     used_reporter[i] = reporter;
 }
 
-void approvals_clear_reporters()
+void approvals_clear_reporters(void)
 {
     unsigned int i = 0;
     while (i < MAX_REPORTERS) {

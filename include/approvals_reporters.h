@@ -24,7 +24,7 @@ struct ApprovalFileNames {
 typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_names);
 
 extern void approvals_use_reporter(FailureReporter reporter);
-extern void approvals_clear_reporters();
+extern void approvals_clear_reporters(void);
 
 /*
  * Available reporters.

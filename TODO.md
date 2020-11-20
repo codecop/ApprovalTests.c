@@ -6,7 +6,6 @@
 * get first working reporter of list
 * use bool instead of 0/1/int
 * use NULL instead of 0 everywhere
-* empty arguments () -> (void)
 
 * Documentation
 

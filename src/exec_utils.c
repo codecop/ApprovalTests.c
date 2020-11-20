@@ -17,7 +17,7 @@ static const char* program_files[] = {
     "/Applications",     /* Mac */
     "/usr/bin",          /* Linux */
 };
-static size_t count_program_files()
+static size_t count_program_files(void)
 {
     return sizeof(program_files) / sizeof(char*);
 }
@@ -27,7 +27,7 @@ static const char* windows_program_files_env[] = {
     "ProgramFiles",      /* */
     "ProgramW6432",      /* */
 };
-static size_t count_windows_program_files_env()
+static size_t count_windows_program_files_env(void)
 {
     return sizeof(windows_program_files_env) / sizeof(char*);
 }
