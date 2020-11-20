@@ -2,7 +2,6 @@
 
 * TODO in code, unused
 * TODO test resolving a linux tool, should work in ubuntu-latest
-* idea: Create Windows, Mac and Linux Strict containing the diff tools as entries.
 * #ifndef __approval_assert_equals add a plain assert reporter by default
 * check coverage - few places missing
 * all malloc can fail - what to do?
@@ -20,5 +19,6 @@
 
 ## Ideas
 
+* use x86 ubunto server to test it
 * build all o and exe files into Default?
 * add more switches from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
