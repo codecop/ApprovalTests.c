@@ -29,8 +29,8 @@ static int diff_is_working_in_this_environment(struct DiffInfo diff)
     assert_diff_info(diff);
 
     const char* diff_program = approvals_create_resolved_path(diff.diff_program);
-    if (diff_program == 0) {
-        return 0;
+    if (diff_program == NULL) {
+        return NULL;
     }
     free((void*)diff_program);
     return 1;
@@ -43,7 +43,7 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
     assert_approval_file_names(file_names);
 
     const char* diff_program = approvals_create_resolved_path(diff.diff_program);
-    if (diff_program == 0) {
+    if (diff_program == NULL) {
         /* This tool is not available. */
         return FailureReport_tool_missing;
         /* TODO test case for that FailureReport_tool_missing */

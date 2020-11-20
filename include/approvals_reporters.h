@@ -59,7 +59,7 @@ static struct MacDiffInfos {
     {"/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m"},
     {"/Applications/TkDiff.app/Contents/MacOS/tkdiff", "%s %s"},
     {"/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code", "-d %s %s"},
-    {0, 0},
+    {NULL, NULL},
 };
 
 static struct WindowsDiffInfos {
@@ -85,7 +85,7 @@ static struct WindowsDiffInfos {
     {"{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"},
     {"{ProgramFiles}Microsoft SDKs\\Windows\\v7.1\\Bin\x64\\WinDiff.exe", "%s %s"},
     {"{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"},
-    {0, 0},
+    {NULL, NULL},
 };
 
 static struct LinuxDiffInfos {
@@ -95,7 +95,7 @@ static struct LinuxDiffInfos {
 } LINUX_DIFFS = {
     {"/usr/bin/diffmerge", "--nosplash %s %s"},
     {"/usr/bin/meld", "%s %s"},
-    {0, 0},
+    {NULL, NULL},
 };
 
 /*

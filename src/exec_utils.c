@@ -37,7 +37,6 @@ static const char* get_path_in_program_files(const char* diff_program)
     assert_str_not_empty(diff_program);
 
     size_t i;
-
     for (i = 0; i < count_program_files(); i++) {
         const char* path = string_create_joined(3, program_files[i], OS_SLASH, diff_program);
         if (approvals_file_exists(path)) {
@@ -57,7 +56,7 @@ static const char* get_path_in_program_files(const char* diff_program)
         }
     }
 
-    return 0;
+    return NULL;
 }
 
 static const char* tag = "{ProgramFiles}";
@@ -84,10 +83,10 @@ const char* approvals_create_resolved_path(const char* diff_program)
         const char* remaining_name = strip_tag(diff_program);
         const char* resolved_program = get_path_in_program_files(remaining_name);
         free((void*)remaining_name);
-        return resolved_program; /* resolved or null */
+        return resolved_program; /* resolved or NULL */
     }
 
-    return 0;
+    return NULL;
 }
 
 const char* approvals_create_command_line(const char* diff_program,

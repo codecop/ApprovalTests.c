@@ -8,14 +8,14 @@
 
 #include <assert.h>
 
-#define assert_not_null(p) assert((p) != 0);
+#define assert_not_null(p) assert((p) != NULL);
 
 #define assert_str_not_empty(s) \
-    assert((s) != 0);           \
+    assert((s) != NULL);           \
     assert(*(s) != '\0');
 
 #define assert_str_longer_than(s, len) \
-    assert((s) != 0);                  \
+    assert((s) != NULL);                  \
     assert(strlen((s)) > (len));
 
 #endif

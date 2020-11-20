@@ -5,7 +5,6 @@
 * all malloc can fail - what to do? - return NULL; /* error */
 * get first working reporter of list
 * use bool instead of 0/1/int
-* use NULL instead of 0 everywhere
 
 * Documentation
 
