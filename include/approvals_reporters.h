@@ -104,4 +104,6 @@ static struct LinuxDiffInfos {
  */
 extern FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff);
 
+extern struct DiffInfo* approval_first_working_diff(struct DiffInfo diffInfos[]);
+
 #endif

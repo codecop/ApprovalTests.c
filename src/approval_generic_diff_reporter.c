@@ -24,20 +24,6 @@ static void assert_approval_file_names(struct ApprovalFileNames file_names)
     assert_str_not_empty(file_names.received);
 }
 
-/*
-static bool diff_is_working_in_this_environment(struct DiffInfo diff)
-{
-    assert_diff_info(diff);
-
-    const char* diff_program = approvals_create_resolved_path(diff.diff_program);
-    if (diff_program == NULL) {
-        return false;
-    }
-    free((void*)diff_program);
-    return true;
-}
-*/
-
 FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     assert_diff_info(diff);
@@ -112,4 +98,28 @@ FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
     }
     used_diffs[i] = diff;
     return diffs_reporters[i];
+}
+
+static bool diff_is_working_in_this_environment(struct DiffInfo* diff)
+{
+    assert_not_null(diff) assert_diff_info(*diff);
+
+    const char* diff_program = approvals_create_resolved_path(diff->diff_program);
+    if (diff_program == NULL) {
+        return false;
+    }
+    free((void*)diff_program);
+    return true;
+}
+
+struct DiffInfo* approval_first_working_diff(struct DiffInfo diffInfos[])
+{
+    struct DiffInfo* diff = diffInfos;
+    while (diff && diff->diff_program) {
+        if (diff_is_working_in_this_environment(diff)) {
+            return diff;
+        }
+        diff += 1;
+    }
+    return NULL;
 }
