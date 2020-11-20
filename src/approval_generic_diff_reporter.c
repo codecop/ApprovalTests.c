@@ -123,3 +123,18 @@ struct DiffInfo* approval_first_working_diff(struct DiffInfo diffInfos[])
     }
     return NULL;
 }
+
+struct DiffInfo* approval_first_working_mac_diff(struct MacDiffInfos* diffInfos)
+{
+    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+}
+
+struct DiffInfo* approval_first_working_windows_diff(struct WindowsDiffInfos* diffInfos)
+{
+    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+}
+
+struct DiffInfo* approval_first_working_linux_diff(struct LinuxDiffInfos* diffInfos)
+{
+    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+}

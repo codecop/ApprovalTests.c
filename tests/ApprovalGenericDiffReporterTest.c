@@ -40,8 +40,7 @@ static void test_find_no_working_reporter(void** state)
 {
     (void)state; /* unused */
 
-    struct DiffInfo* all_diffs = (struct DiffInfo*)&MAC_DIFFS;
-    struct DiffInfo* diff = approval_first_working_diff(all_diffs);
+    struct DiffInfo* diff = approval_first_working_mac_diff(&MAC_DIFFS);
 
     assert_null(diff);
 }
@@ -53,8 +52,7 @@ static void test_find_first_working_reporter(void** state)
         return;
     }
 
-    struct DiffInfo* all_diffs = (struct DiffInfo*)&WINDOWS_DIFFS;
-    struct DiffInfo* diff = approval_first_working_diff(all_diffs);
+    struct DiffInfo* diff = approval_first_working_windows_diff(&WINDOWS_DIFFS);
 
     assert_string_equal(WINDOWS_DIFFS.KDIFF3.diff_program, diff->diff_program);
 }

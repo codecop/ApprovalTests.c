@@ -14,4 +14,3 @@
 ## Ideas
 
 * use x86 ubuntu server to test it
-* build all o and exe files into Default?
