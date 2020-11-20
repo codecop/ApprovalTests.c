@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,7 +22,7 @@ static const char* read_approved(struct ApprovalBaseName name)
     return approved;
 }
 
-static int text_is_approved(const char* approved, const char* received)
+static bool text_is_approved(const char* approved, const char* received)
 {
     assert_not_null(approved);
     assert_not_null(received);

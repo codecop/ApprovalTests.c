@@ -11,19 +11,21 @@ static void test_string_starts_with_other_string(void** state)
 {
     (void)state; /* unused */
 
-    assert_true(string_starts_with("", ""));
-    assert_true(string_starts_with("foo", ""));
-    assert_true(string_starts_with("foo", "f"));
-    assert_true(string_starts_with("foo", "fo"));
-    assert_true(string_starts_with("foo", "foo"));
+    bool starts; /* type hack to accept bool */
+    assert_true(starts = string_starts_with("", ""));
+    assert_true(starts = string_starts_with("foo", ""));
+    assert_true(starts = string_starts_with("foo", "f"));
+    assert_true(starts = string_starts_with("foo", "fo"));
+    assert_true(starts = string_starts_with("foo", "foo"));
 }
 
 static void test_string_not_starting_with_string(void** state)
 {
     (void)state; /* unused */
 
-    assert_false(string_starts_with("", "a"));
-    assert_false(string_starts_with("foo", "o"));
+    bool starts; /* type hack to accept bool */
+    assert_false(starts = string_starts_with("", "a"));
+    assert_false(starts = string_starts_with("foo", "o"));
 }
 
 static void test_string_with_different_substrings(void** state)

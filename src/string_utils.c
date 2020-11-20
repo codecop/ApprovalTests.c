@@ -3,13 +3,14 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdbool.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "asserts.h"
 
-int string_starts_with(const char* s, const char* prefix)
+bool string_starts_with(const char* s, const char* prefix)
 {
     assert_not_null(s);
     assert_not_null(prefix);

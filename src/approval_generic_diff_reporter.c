@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,16 +25,16 @@ static void assert_approval_file_names(struct ApprovalFileNames file_names)
 }
 
 /*
-static int diff_is_working_in_this_environment(struct DiffInfo diff)
+static bool diff_is_working_in_this_environment(struct DiffInfo diff)
 {
     assert_diff_info(diff);
 
     const char* diff_program = approvals_create_resolved_path(diff.diff_program);
     if (diff_program == NULL) {
-        return NULL;
+        return false;
     }
     free((void*)diff_program);
-    return 1;
+    return true;
 }
 */
 

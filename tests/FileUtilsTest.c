@@ -3,6 +3,7 @@
 #include <stddef.h> /* size_t for mocka */
 
 #include <cmocka.h>
+#include <stdbool.h>
 
 #include "../src/file_utils.h"
 
@@ -14,17 +15,19 @@ static void test_create_file_if_needed(void** state)
     if (approvals_file_exists(test_file)) {
         approvals_delete_file(test_file);
     }
-    assert_false(approvals_file_exists(test_file));
+    bool exists; /* type hack to accept bool */
+    assert_false(exists = approvals_file_exists(test_file));
 
-    int result = approvals_create_if_needed(test_file);
+    bool result = approvals_create_if_needed(test_file);
     long size = approvals_file_size(test_file);
 
-    assert_true(approvals_file_exists(test_file));
+    assert_true(exists = approvals_file_exists(test_file));
     assert_true(result);
     assert_int_equal(0, size);
 
     approvals_delete_file(test_file);
-    assert_false(approvals_file_exists(test_file));
+    exists = approvals_file_exists(test_file);
+    assert_false(exists);
 }
 
 static void test_leave_file_alone_if_exists(void** state)
@@ -33,7 +36,7 @@ static void test_leave_file_alone_if_exists(void** state)
 
     const char* test_file = "tests/FileUtilsTest.existing_file.txt";
 
-    int result = approvals_create_if_needed(test_file);
+    bool result = approvals_create_if_needed(test_file);
 
     assert_false(result);
 }

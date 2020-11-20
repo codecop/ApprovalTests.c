@@ -50,11 +50,12 @@ static void test_write_received_file(void** state)
 
     const char* file_name =
         "tests/ApprovalWriterTest.test_write_received_file.received.txt";
-    assert_true(approvals_file_exists(file_name));
+    bool exists; /* type hack to accept bool */
+    assert_true(exists = approvals_file_exists(file_name));
     const char* read = approvals_load_text_file(file_name);
     assert_string_equal(text, read);
     approval_writer_delete_received_file(name);
-    assert_false(approvals_file_exists(file_name));
+    assert_false(exists = approvals_file_exists(file_name));
 
     free((void*)read);
 }

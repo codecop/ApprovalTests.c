@@ -3,6 +3,7 @@
 #include <stddef.h> /* size_t for mocka */
 
 #include <cmocka.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,14 +15,14 @@
 const char* tortoiseHg = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
 const char* kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
 
-static int has_file(const char* file, const char* test)
+static bool has_file(const char* file, const char* test)
 {
     if (approvals_file_exists(file)) {
-        return 1;
+        return true;
     }
 
     fprintf(stderr, "Ignoring test %s, test file %s missing.\n", test, file);
-    return 0;
+    return false;
 }
 
 static void test_resolve_existing_file(void** state)

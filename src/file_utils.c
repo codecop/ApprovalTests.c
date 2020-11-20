@@ -3,6 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,19 +11,19 @@
 #include "asserts.h"
 #include "x86_x64.h"
 
-int approvals_file_exists(const char* filename)
+bool approvals_file_exists(const char* filename)
 {
     assert_str_not_empty(filename);
 
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
-        return 0;
+        return false;
     }
     int error_close = fclose(file);
     if (error_close) {
         fprintf(stderr, "Could not close %s, error %d.\n", filename, error_close);
     }
-    return 1;
+    return true;
 }
 
 long approvals_file_size(const char* filename)
@@ -150,13 +151,13 @@ void approvals_delete_file(const char* filename)
     }
 }
 
-int approvals_create_if_needed(const char* filename)
+bool approvals_create_if_needed(const char* filename)
 {
     assert_str_not_empty(filename);
 
     if (approvals_file_exists(filename)) {
-        return 0;
+        return false;
     }
     approvals_save_text_file(filename, "");
-    return 1;
+    return true;
 }

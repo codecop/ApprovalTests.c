@@ -4,7 +4,6 @@
 * #ifndef __approval_assert_equals add a plain assert reporter by default
 * all malloc can fail - what to do? - return NULL; /* error */
 * get first working reporter of list
-* use bool instead of 0/1/int
 
 * Documentation
 
