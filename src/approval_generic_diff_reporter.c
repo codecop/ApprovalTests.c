@@ -17,6 +17,18 @@ static void assert_diff_info(struct DiffInfo diff)
     assert_str_not_empty(diff.parameters);
 }
 
+static int diff_is_working_in_this_environment(struct DiffInfo diff)
+{
+    assert_diff_info(diff);
+
+    const char* diff_program = aprovals_create_resolved_path(diff.diff_program);
+    if (diff_program == 0) {
+        return 0;
+    }
+    free((void*)diff_program);
+    return 1;
+}
+
 FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
 {
     assert_diff_info(diff);

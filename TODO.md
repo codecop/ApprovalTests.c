@@ -5,6 +5,7 @@
 * #ifndef __approval_assert_equals add a plain assert reporter by default
 * check coverage - few places missing
 * all malloc can fail - what to do?
+* get first working reporter of list
 
 * Documentation
 
