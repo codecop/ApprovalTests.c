@@ -43,6 +43,9 @@ const char* approval_namer_create_approval_name(const char* full_file_name, cons
     length += strlen(test_name);
     length += 1; /* \0 */
     char* s = (char*)malloc(length);
+    if (s == NULL) {
+        return NULL; /* error */
+    }
 
     char* offset = s;
     strcpy(offset, full_file_name);

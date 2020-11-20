@@ -39,6 +39,9 @@ static const char* get_path_in_program_files(const char* diff_program)
     size_t i;
     for (i = 0; i < count_program_files(); i++) {
         const char* path = string_create_joined(3, program_files[i], OS_SLASH, diff_program);
+        if (path == NULL) {
+            return NULL; /* error */
+        }
         if (approvals_file_exists(path)) {
             return path;
         }
@@ -49,6 +52,9 @@ static const char* get_path_in_program_files(const char* diff_program)
         const char* pf = getenv(windows_program_files_env[i]);
         if (pf) {
             const char* path = string_create_joined(3, pf, OS_SLASH, diff_program);
+            if (path == NULL) {
+                return NULL; /* error */
+            }
             if (approvals_file_exists(path)) {
                 return path;
             }
@@ -81,6 +87,9 @@ const char* approvals_create_resolved_path(const char* diff_program)
 
     if (string_starts_with(diff_program, tag)) {
         const char* remaining_name = strip_tag(diff_program);
+        if (remaining_name == NULL) {
+            return NULL; /* error */
+        }
         const char* resolved_program = get_path_in_program_files(remaining_name);
         free((void*)remaining_name);
         return resolved_program; /* resolved or NULL */
@@ -104,6 +113,9 @@ const char* approvals_create_command_line(const char* diff_program,
                     + 1  /* space after diff program */
                     + 4; /* maybe quotes around arguments */
     char* command = (char*)malloc(length + 1);
+    if (command == NULL) {
+        return NULL; /* error */
+    }
 
     char* offset = command;
 #ifdef OS_WINDOWS

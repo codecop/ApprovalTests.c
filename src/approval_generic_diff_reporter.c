@@ -54,6 +54,10 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
 
     const char* command_line = approvals_create_command_line(
         diff_program, diff.parameters, file_names.received, file_names.approved);
+    if (command_line == NULL) {
+        free((void*)diff_program);
+        return FailureReport_error; /* error */
+    }
 
     int result = system(command_line);
     /* TODO result is unused */

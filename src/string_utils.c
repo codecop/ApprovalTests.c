@@ -30,6 +30,9 @@ const char* string_create_substring(const char* s, unsigned int start, size_t le
     assert(start + length <= strlen(s));
 
     char* substring = (char*)malloc(length + 1);
+    if (substring == NULL) {
+        return NULL; /* error */
+    }
     strncpy(substring, s + start, length);
     substring[length] = '\0';
     return substring;
@@ -68,6 +71,9 @@ const char* string_create_joined(size_t count, ...)
     va_end(strings);
 
     char* s = (char*)malloc(total_length);
+    if (s == NULL) {
+        return NULL; /* error */
+    }
     char* offset = s;
 
     va_start(strings, count);
