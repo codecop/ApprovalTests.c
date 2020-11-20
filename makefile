@@ -41,15 +41,17 @@ CFLAGS := -g
 # user can override with -O
 
 STD := c99
-C_BASE_FLAGS = -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors -Wno-error=format -Wno-error=unused-variable
+C_BASE_FLAGS := -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors
+C_BASE_FLAGS += -Wno-error=format -Wno-error=unused-variable -Wno-error=format-nonliteral
+C_BASE_FLAGS += -Wbad-function-cast -Wdeprecated -Wdiv-by-zero -Wfloat-equal -Wformat=2 -Wint-to-pointer-cast -Wjump-misses-init -Wlogical-op -Woverflow -Wpointer-to-int-cast -Wshadow -Wswitch-default
 ifneq ($(OS),Windows_NT)
 C_BASE_FLAGS += -fPIC
 endif
 
-C_COMPILE_FLAGS = $(C_BASE_FLAGS) -c ${CFLAGS}
+C_COMPILE_FLAGS := $(C_BASE_FLAGS) -c ${CFLAGS}
 
-C_TEST_FLAGS = $(C_BASE_FLAGS) ${CFLAGS}
-LD_TEST_FLAGS = -lcmocka
+C_TEST_FLAGS := $(C_BASE_FLAGS) ${CFLAGS}
+LD_TEST_FLAGS := -lcmocka
 
 C_LIBRARY_FLAGS := $(C_BASE_FLAGS) ${CFLAGS} -shared
 ifeq ($(OS),Windows_NT)
