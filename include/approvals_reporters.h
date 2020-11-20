@@ -42,15 +42,15 @@ struct DiffInfo {
 
 /* Diff tools copied from DiffPrograms.java, https://github.com/approvals/ApprovalTests.Java */
 static struct MacDiffInfos {
-    struct DiffInfo DIFF_MERGE;
     struct DiffInfo BEYOND_COMPARE;
+    struct DiffInfo DIFF_MERGE;
     struct DiffInfo KALEIDOSCOPE;
     struct DiffInfo KDIFF3;
     struct DiffInfo TK_DIFF;
     struct DiffInfo VISUAL_STUDIO_CODE;
 } MAC_DIFFS = {
-    {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s "},
     {"/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "%s %s"},
+    {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s "},
     {"/Applications/Kaleidoscope.app/Contents/MacOS/ksdiff", "%s %s"},
     {"/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m"},
     {"/Applications/TkDiff.app/Contents/MacOS/tkdiff", "%s %s"},
@@ -58,25 +58,25 @@ static struct MacDiffInfos {
 };
 
 static struct WindowsDiffInfos {
+    struct DiffInfo ARAXIS_MERGE;
     struct DiffInfo BEYOND_COMPARE_3;
     struct DiffInfo BEYOND_COMPARE_4;
-    struct DiffInfo TORTOISE_TEXT_DIFF;
-    struct DiffInfo WIN_MERGE_REPORTER;
-    struct DiffInfo ARAXIS_MERGE;
     struct DiffInfo CODE_COMPARE;
     struct DiffInfo KDIFF3;
     struct DiffInfo TORTOISE_KDIFF3;
+    struct DiffInfo TORTOISE_TEXT_DIFF;
     struct DiffInfo VISUAL_STUDIO_CODE;
+    struct DiffInfo WIN_MERGE_REPORTER;
 } WINDOWS_DIFFS = {
+    {"{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"},
     {"{ProgramFiles}Beyond Compare 3\\BCompare.exe", "%s %s"},
     {"{ProgramFiles}Beyond Compare 4\\BCompare.exe", "%s %s"},
-    {"{ProgramFiles}TortoiseSVN\\bin\\TortoiseMerge.exe", "%s %s"},
-    {"{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"},
-    {"{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"},
     {"{ProgramFiles}Devart\\Code Compare\\CodeCompare.exe", "%s %s"},
     {"{ProgramFiles}KDiff3\\kdiff3.exe", "%s %s"},
     {"{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe", "%s %s"},
+    {"{ProgramFiles}TortoiseSVN\\bin\\TortoiseMerge.exe", "%s %s"},
     {"{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"},
+    {"{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"},
 };
 
 static struct LinuxDiffInfos {
