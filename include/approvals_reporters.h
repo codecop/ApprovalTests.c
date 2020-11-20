@@ -50,7 +50,7 @@ static struct MacDiffInfos {
     struct DiffInfo VISUAL_STUDIO_CODE;
 } MAC_DIFFS = {
     {"/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "%s %s"},
-    {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s "},
+    {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s"},
     {"/Applications/Kaleidoscope.app/Contents/MacOS/ksdiff", "%s %s"},
     {"/Applications/kdiff3.app/Contents/MacOS/kdiff3", "%s %s -m"},
     {"/Applications/TkDiff.app/Contents/MacOS/tkdiff", "%s %s"},
@@ -66,7 +66,8 @@ static struct WindowsDiffInfos {
     struct DiffInfo TORTOISE_KDIFF3;
     struct DiffInfo TORTOISE_TEXT_DIFF;
     struct DiffInfo VISUAL_STUDIO_CODE;
-    struct DiffInfo WIN_MERGE_REPORTER;
+    struct DiffInfo WIN_DIFF;
+    struct DiffInfo WIN_MERGE;
 } WINDOWS_DIFFS = {
     {"{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"},
     {"{ProgramFiles}Beyond Compare 3\\BCompare.exe", "%s %s"},
@@ -76,6 +77,7 @@ static struct WindowsDiffInfos {
     {"{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe", "%s %s"},
     {"{ProgramFiles}TortoiseSVN\\bin\\TortoiseMerge.exe", "%s %s"},
     {"{ProgramFiles}Microsoft VS Code\\Code.exe", "-d %s %s"},
+    {"{ProgramFiles}Microsoft SDKs\\Windows\\v7.1\\Bin\x64\\WinDiff.exe", "%s %s"},
     {"{ProgramFiles}WinMerge\\WinMergeU.exe", "%s %s"},
 };
 
@@ -83,9 +85,8 @@ static struct LinuxDiffInfos {
     struct DiffInfo DIFF_MERGE;
     struct DiffInfo MELD_MERGE;
 } LINUX_DIFFS = {
-    {"/usr/bin/diffmerge", "--nosplash %s %s "},
-    {"/usr/bin/meld", "%s %s "},
-    /* TODO blank at the end? */
+    {"/usr/bin/diffmerge", "--nosplash %s %s"},
+    {"/usr/bin/meld", "%s %s"},
 };
 
 /*

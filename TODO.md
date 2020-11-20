@@ -6,9 +6,6 @@
 * check coverage - few places missing
 * all malloc can fail - what to do?
 
-* Windows SDK 7.1 - see command line and add to Diff Tools
-  "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\x64\WinDiff.Exe"
-
 * Documentation
 
   * describe features related to usual approvals:
@@ -19,6 +16,6 @@
 
 ## Ideas
 
-* use x86 ubunto server to test it
+* use x86 ubuntu server to test it
 * build all o and exe files into Default?
 * add more switches from https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
