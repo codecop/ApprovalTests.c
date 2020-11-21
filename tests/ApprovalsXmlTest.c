@@ -1,3 +1,8 @@
+/***********************************************************************
+ * ApprovalTests.c - Approval Tests for C99.
+ * Copyright (c) 2020, Peter Kofler. All rights reserved.
+ * BSD3 licensed.
+ */
 #include <setjmp.h> /* used by cmocka */
 #include <stdarg.h> /* used by cmocka */
 #include <stddef.h> /* used by cmocka */
