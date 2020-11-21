@@ -14,6 +14,7 @@
 /* My local installations */
 const char* tortoiseHg = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
 const char* kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
+const char* linux_kdiff3 = "/usr/bin/kdiff3";
 
 static bool has_file(const char* file, const char* test)
 {
@@ -89,6 +90,24 @@ static void test_resolve_windows_x86_program_files(void** state)
     }
 }
 
+static void test_resolve_linux_program_files(void** state)
+{
+    (void)state; /* unused */
+    if (!has_file(linux_kdiff3, __func__)) {
+        return;
+    }
+
+    const char* diff_program = "{ProgramFiles}/kdiff3";
+    const char* resolved = approvals_create_resolved_path(diff_program);
+
+    assert_non_null(resolved);
+    assert_string_equal(linux_kdiff3, resolved);
+
+    if (resolved) {
+        free((void*)resolved);
+    }
+}
+
 static void test_not_resolve_missing_windows_file(void** state)
 {
     (void)state; /* unused */
@@ -125,6 +144,7 @@ int main(void)
         cmocka_unit_test(test_not_resolve_missing_file),          /* */
         cmocka_unit_test(test_resolve_windows_program_files),     /* */
         cmocka_unit_test(test_resolve_windows_x86_program_files), /* */
+        cmocka_unit_test(test_resolve_linux_program_files),       /* */
         cmocka_unit_test(test_not_resolve_missing_windows_file),  /* */
         cmocka_unit_test(test_create_command_line),               /* */
     };
