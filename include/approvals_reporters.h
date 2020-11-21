@@ -92,10 +92,12 @@ static struct WindowsDiffInfos {
 static struct LinuxDiffInfos {
     struct DiffInfo DIFF_MERGE;
     struct DiffInfo MELD_MERGE;
+    struct DiffInfo KDIFF3;
     struct DiffInfo _NULL_TERMINATED;
 } LINUX_DIFFS = {
     {"/usr/bin/diffmerge", "--nosplash %s %s"},
     {"/usr/bin/meld", "%s %s"},
+    {"{ProgramFiles}kdiff3", "%s %s"},
     {NULL, NULL},
 };
 

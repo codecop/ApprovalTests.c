@@ -11,7 +11,8 @@
 #include "../src/file_utils.h"
 
 /* My local installations */
-const char* kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
+const char* windows_kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
+const char* linux_kdiff3 = "/usr/bin/kdiff3";
 
 static bool has_file(const char* file, const char* test)
 {
@@ -45,16 +46,28 @@ static void test_find_no_working_reporter(void** state)
     assert_null(diff);
 }
 
-static void test_find_first_working_reporter(void** state)
+static void test_find_first_working_windows_reporter(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(kdiff3, __func__)) {
+    if (!has_file(windows_kdiff3, __func__)) {
         return;
     }
 
     struct DiffInfo* diff = approval_first_working_windows_diff(&WINDOWS_DIFFS);
 
     assert_string_equal(WINDOWS_DIFFS.KDIFF3.diff_program, diff->diff_program);
+}
+
+static void test_find_first_working_linux_reporter(void** state)
+{
+    (void)state; /* unused */
+    if (!has_file(linux_kdiff3, __func__)) {
+        return;
+    }
+
+    struct DiffInfo* diff = approval_first_working_linux_diff(&LINUX_DIFFS);
+
+    assert_string_equal(LINUX_DIFFS.KDIFF3.diff_program, diff->diff_program);
 }
 
 static int reset_reporters(void** state)
@@ -69,7 +82,8 @@ int main(void)
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test_teardown(show_windows_diff_reporter, reset_reporters), /* */
         cmocka_unit_test(test_find_no_working_reporter),                        /* */
-        cmocka_unit_test(test_find_first_working_reporter),                     /* */
+        cmocka_unit_test(test_find_first_working_windows_reporter),             /* */
+        cmocka_unit_test(test_find_first_working_linux_reporter),               /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

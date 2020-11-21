@@ -13,7 +13,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install libcmocka-dev
-      # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
+        # https://ubuntu.pkgs.org/20.10/ubuntu-universe-amd64/libcmocka-dev_1.1.5-2_amd64.deb.html
+        sudo apt-get install kdiff3
 
     - name: Build with make
       run: make build
