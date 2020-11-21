@@ -24,7 +24,8 @@
 </project>
 
 <!--
-call ant
 call ant -Darch=x86
-call ant -Dos=Linux -Darch=x86
+call ant
+ant -Dos=Linux -Darch=x86
+ant -Dos=Linux
 -->
