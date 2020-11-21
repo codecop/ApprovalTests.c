@@ -6,38 +6,31 @@ Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests
 >
 > In normal unit testing, you say `assert_int_equal(5, person->age)`. Approvals allow you to do this when the thing that you want to assert is no longer a primitive but a complex object. For example, you can say, `verify_txt(person_to_string(person))`.
 
-## Building
-
-Building under Windows creates the library stub (in `./lib`) and thd dynamic library (in `./bin`).
-For Linux this creates only the shared library (in `./lib`).
-
-    make build
-
 ## Usage with cmocka
 
 This approvals support [cmocka](https://cmocka.org/).
 
 ### Creating a Test
 
-See `ExampleTest` in `./example`.
+See the tests in `./example` folder.
 
 ### Compiling and Running
 
-Compile and run a test using the sources with:
+Compile and run a [cmocka](https://cmocka.org/) test which uses approvals using the [binary distribution](https://github.com/codecop/ApprovalTests.c/releases):
 
-    gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
-        ..\src\approvals.c ..\src\approvals_xml.c ..\src\string_builder.c AppTest.c ^
-        -l cmocka ^
+    gcc -std=c99 -pedantic -pedantic-errors -Wall -Wextra ...
+        AppTest.c
+        -l cmocka -l approvals
         -o AppTest.exe
+
     ./AppTest.exe
 
-If you are using the binary distribution, compile and run a test with:
+## Building
 
-    gcc -g -Wall -Wextra -pedantic -std=c99 ... ^
-        AppTest.c ^
-        -l cmocka -l approvals ^
-        -o AppTest.exe
-    ./AppTest.exe
+Building under Windows creates the library stub (in `./lib`) and thd dynamic library (in `./bin`).
+For Linux this command creates the shared library (in `./lib`).
+
+    make build
 
 ## License
 

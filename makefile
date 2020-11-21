@@ -41,9 +41,10 @@ CFLAGS := -g
 # user can override with -O
 
 STD := c99
-C_BASE_FLAGS := -std=$(STD) -Werror -Wall -Wextra -pedantic -pedantic-errors
-C_BASE_FLAGS += -Wno-error=format -Wno-error=unused-variable -Wno-error=format-nonliteral
+C_BASE_FLAGS := -std=$(STD) -pedantic -pedantic-errors
+C_BASE_FLAGS := -Werror -Wall -Wextra
 C_BASE_FLAGS += -Wbad-function-cast -Wdeprecated -Wdiv-by-zero -Wfloat-equal -Wformat=2 -Wint-to-pointer-cast -Wjump-misses-init -Wlogical-op -Woverflow -Wpointer-to-int-cast -Wshadow -Wswitch-default
+C_BASE_FLAGS += -Wno-error=format -Wno-error=unused-variable -Wno-error=format-nonliteral
 ifneq ($(OS),Windows_NT)
 C_BASE_FLAGS += -fPIC
 endif
