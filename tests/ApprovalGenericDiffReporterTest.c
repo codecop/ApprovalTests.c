@@ -30,6 +30,21 @@ static bool has_file(const char* file, const char* test)
     /* TODO duplication, extract test helper to include directly */
 }
 
+#define assume_has_file(needed_file)                         \
+    {                                                        \
+        _assume_has_file((needed_file), __FILE__, __LINE__); \
+    }
+
+static void _assume_has_file(const char* needed_file, const char* file, const int line)
+{
+    if (approvals_file_exists(needed_file)) {
+        return;
+    }
+
+    fprintf(stderr, "[          ] - test file %s missing.\n", needed_file);
+    _skip(file, line);
+}
+
 /* show is not testing - check test output */
 static void show_windows_diff_reporter(void** state)
 {
@@ -67,10 +82,7 @@ static void test_find_first_working_windows_reporter(void** state)
 static void test_find_first_working_linux_reporter(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(linux_kdiff3, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(linux_kdiff3);
 
     struct DiffInfo* diff = approval_first_working_linux_diff(&LINUX_DIFFS);
 
