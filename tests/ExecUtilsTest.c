@@ -106,7 +106,7 @@ static void test_resolve_linux_program_files(void** state)
         return;
     }
 
-    const char* diff_program = "{ProgramFiles}/kdiff3";
+    const char* diff_program = "{ProgramFiles}kdiff3";
     const char* resolved = approvals_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
