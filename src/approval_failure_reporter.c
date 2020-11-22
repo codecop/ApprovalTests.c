@@ -16,6 +16,7 @@ static FailureReporter used_reporter[MAX_REPORTERS];
 void approvals_use_reporter(FailureReporter reporter)
 {
     assert_not_null(reporter);
+    /* TODO allow NULL for using the first_working_... which can be null */
 
     unsigned int i = 0;
     while (used_reporter[i] && i < (MAX_REPORTERS - 1)) {
