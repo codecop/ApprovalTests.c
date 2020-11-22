@@ -12,9 +12,9 @@ Test_dir = 'tests'
 
 Gcc = %w|
   gcc
-    -g -std=c99 -O
-    -Werror -Wall -Wextra -pedantic
-    -Wno-error=format -Wno-error=unused-variable
+    -g -std=c99 -pedantic -pedantic-errors -O
+    -Werror -Wall -Wextra
+    -Wno-error=format -Wno-error=unused-variable -Wno-error=format-nonliteral
     %s
     -l cmocka
     -o %s
@@ -30,6 +30,10 @@ def norm(path)
 end
 
 def to_source_file(name)
+    if name == '../include/approvals_cmocka'
+        # hardcoded, include the while library
+        name = 'approvals'
+    end
     # normalize separators
     source_file = name.gsub(/\\/, File::SEPARATOR)
     # drop leading ./
@@ -100,7 +104,7 @@ def run_command(command)
         result = yield
         if result
             result.split(/\n/).each do |line|
-                if line =~ /failed|error|failure/i
+                if line =~ /failed|error/i
                     Ansi.puts_with_color(Ansi::RED, line)
                 elsif line =~ /warning/i
                     Ansi.puts_with_color(Ansi::YELLOW, line)
@@ -138,10 +142,7 @@ def run_tests(test_exe)
     assert(!File.exist?(test_exe))
 end
 
-if __FILE__ == $0
-
-    source = ARGV[0]
-
+def process(source)
     to_compile = []
 
     source_file = to_source_file(source)
@@ -157,4 +158,18 @@ if __FILE__ == $0
     clean(test_exe)
     compile(to_compile.uniq, test_exe)
     run_tests(test_exe)
+end
+
+if __FILE__ == $0
+
+    source = ARGV[0]
+    if source == 'all'
+        sources = Dir[Src_dir + '/*.c']
+        sources.each do |source|
+            process(source)
+        end
+    else
+        process(source)
+    end
+
 end
