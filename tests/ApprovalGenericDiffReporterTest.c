@@ -55,6 +55,7 @@ static void test_find_first_working_windows_reporter(void** state)
 {
     (void)state; /* unused */
     if (!has_file(windows_kdiff3, __func__)) {
+        skip();
         return;
     }
 
@@ -67,6 +68,7 @@ static void test_find_first_working_linux_reporter(void** state)
 {
     (void)state; /* unused */
     if (!has_file(linux_kdiff3, __func__)) {
+        skip();
         return;
     }
 

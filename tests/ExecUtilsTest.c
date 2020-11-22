@@ -35,6 +35,7 @@ static void test_resolve_existing_file(void** state)
 {
     (void)state; /* unused */
     if (!has_file(tortoiseHg, __func__)) {
+        skip();
         return;
     }
 
@@ -63,6 +64,7 @@ static void test_resolve_windows_program_files(void** state)
 {
     (void)state; /* unused */
     if (!has_file(tortoiseHg, __func__)) {
+        skip();
         return;
     }
 
@@ -81,6 +83,7 @@ static void test_resolve_windows_x86_program_files(void** state)
 {
     (void)state; /* unused */
     if (!has_file(kdiff3, __func__)) {
+        skip();
         return;
     }
 
@@ -99,6 +102,7 @@ static void test_resolve_linux_program_files(void** state)
 {
     (void)state; /* unused */
     if (!has_file(linux_kdiff3, __func__)) {
+        skip();
         return;
     }
 
