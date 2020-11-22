@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Package" basedir="." default="zip">
+<project name="Package" basedir=".." default="zip">
 
     <property name="version" value="1.1"/>
     <property name="os" value="Windows"/>
@@ -24,8 +24,8 @@
 </project>
 
 <!--
-call ant -Darch=x86
-call ant
-ant -Dos=Linux -Darch=x86
-ant -Dos=Linux
+call -f releases\build.xml ant -Darch=x86
+call -f releases\build.xml ant
+ant -f releases/build.xml -Dos=Linux -Darch=x86
+ant -f releases/build.xml -Dos=Linux
 -->

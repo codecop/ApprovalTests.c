@@ -1,3 +1,5 @@
+@if exist "%~n0%~x0" @cd ..
+
 @set V=1.1
 @rem rmdir /S /Q releases\v%V%
 mkdir releases\v%V%
@@ -6,14 +8,14 @@ mkdir releases\v%V%
 @setlocal
 call ..\setenv.bat
 call make build test example
-call ant -Darch=x86 -Dversion=%V%
+call ant -f releases\build.xml -Darch=x86 -Dversion=%V%
 @endlocal
 
 @rem create Windows x64 binaries
 @setlocal
 call ..\setenv_x64.bat
 call make build test example
-call ant -Dversion=%V%
+call  -Dversion=%V%
 @rem leave x64 binaries around
 make clean
 @endlocal
@@ -21,7 +23,7 @@ make clean
 @rem create Linux x86 binaries
 @setlocal
 set PATH=%PATH%;C:\Progra~2\msysGit-1.8.5\bin
-call ssh pkofler@anthill "cd ApprovalTests.c && git pull && make build test && ant -Dos=Linux -Darch=x86 -Dversion=%V%"
+call ssh pkofler@anthill "cd ApprovalTests.c && git pull && make build test && ant -f releases/build.xml -Dos=Linux -Darch=x86 -Dversion=%V%"
 call scp pkofler@anthill:~/ApprovalTests.c/releases/v%V%/Binaries_Linux_x86.zip releases\v%V%\
 @endlocal
 
