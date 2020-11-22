@@ -5,8 +5,11 @@
  */
 
 /*
- * Need to include cmocka before including this macro.
-#include <cmocka.h>
+ * These headers or their equivalents MUST be included prior to including
+ * this header file.
+ * @code
+ * #include <cmocka.h>
+ * @endcode
 */
 #ifndef __approval_assert_equals
 

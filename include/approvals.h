@@ -5,8 +5,11 @@
  */
 
 /*
- * Need to include stdlib before including this macro.
-#include <stdlib.h>
+ * These headers or their equivalents MUST be included prior to including
+ * this header file.
+ * @code
+ * #include <stdlib.h>
+ * @endcode
 */
 extern const char* __approvals_approve(const char* received,
                                        const char* full_file_name,
