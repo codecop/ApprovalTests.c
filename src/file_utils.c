@@ -77,7 +77,7 @@ const char* approvals_load_text_file(const char* filename)
         fclose(file);
         return "";
     }
-    size_t buffer_size = file_size;
+    size_t buffer_size = (size_t)file_size; /* might truncate for large files */
     error_seek = fseek(file, 0, SEEK_SET);
     if (error_seek) {
         fprintf(stderr, "Could not reset file %s, error %d.\n", filename, error_seek);

@@ -71,7 +71,7 @@ static const char* strip_tag(const char* diff_program)
 {
     assert_str_longer_than(diff_program, strlen(tag));
 
-    int substring_start = strlen(tag);
+    size_t substring_start = strlen(tag);
     size_t substring_length = strlen(diff_program) - strlen(tag);
     return string_create_substring(diff_program, substring_start, substring_length);
 }

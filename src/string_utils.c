@@ -26,7 +26,7 @@ bool string_starts_with(const char* s, const char* prefix)
     return *pi == '\0';
 }
 
-const char* string_create_substring(const char* s, unsigned int start, size_t length)
+const char* string_create_substring(const char* s, size_t start, size_t length)
 {
     assert_not_null(s);
     assert(start + length <= strlen(s));

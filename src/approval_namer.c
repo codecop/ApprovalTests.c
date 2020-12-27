@@ -30,7 +30,7 @@ const char* approval_namer_create_approval_name(const char* full_file_name, cons
     const char* last_dot = strrchr(full_file_name, '.');
     size_t length_file_name = 0;
     if (last_dot) {
-        length_file_name = last_dot - full_file_name;
+        length_file_name = (size_t) (last_dot - full_file_name);
     }
     else {
         length_file_name = strlen(full_file_name);
