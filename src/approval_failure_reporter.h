@@ -11,4 +11,10 @@ extern void approvals_clear_reporters(void);
 extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names);
 */
 
-extern void approval_report_failure(struct ApprovalFileNames file_names);
+struct ApprovalAssertionData {
+    const char* file;
+    const int line;
+};
+
+extern void approval_report_failure(struct ApprovalFileNames file_names,
+                                    struct ApprovalAssertionData assertion_data);

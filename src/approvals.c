@@ -7,10 +7,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "asserts.h"
 #include "approval_failure_reporter.h"
 #include "approval_namer.h"
 #include "approval_writer.h"
+#include "asserts.h"
 #include "file_utils.h"
 
 static const char* read_approved(struct ApprovalBaseName name)
@@ -30,13 +30,13 @@ static bool text_is_approved(const char* approved, const char* received)
     return strcmp(approved, received) == 0;
 }
 
-static void report_failure(struct ApprovalBaseName name)
+static void report_failure(struct ApprovalBaseName name, struct ApprovalAssertionData assertion_data)
 {
     /* TODO not tested */
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
-    struct ApprovalFileNames file_names = {approved_name, received_name};
-    approval_report_failure(file_names);
+    const struct ApprovalFileNames file_names = {approved_name, received_name};
+    approval_report_failure(file_names, assertion_data);
     free((void*)received_name);
     free((void*)approved_name);
 }
@@ -44,6 +44,7 @@ static void report_failure(struct ApprovalBaseName name)
 const char* __approvals_approve(const char* received,
                                 const char* full_file_name,
                                 const char* test_name,
+                                int line,
                                 const char* extension_no_dot)
 {
     assert_not_null(received);
@@ -62,7 +63,8 @@ const char* __approvals_approve(const char* received,
     }
     else {
         /* FAIL */
-        report_failure(name);
+        const struct ApprovalAssertionData assertion_data = {full_file_name, line};
+        report_failure(name, assertion_data);
         /* TODO not tested */
     }
 

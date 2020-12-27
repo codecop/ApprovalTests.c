@@ -22,7 +22,8 @@ static void show_quiet_reporter_prints_copy_command(void** state)
     printf("On Windows system expect output of\n%s\n",
            ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
     approval_report_failure(
-        (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"});
+        (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"},
+        (struct ApprovalAssertionData){"ApprovalFailureReporterTest.c", 26});
 }
 
 static int reporters_called[3];
@@ -59,7 +60,9 @@ static void test_abort_sequence_of_reporters(void** state)
     reporters_called[1] = 0;
     reporters_called[2] = 0;
 
-    approval_report_failure((struct ApprovalFileNames){"approved", "received"});
+    approval_report_failure(
+        (struct ApprovalFileNames){"approved", "received"},
+        (struct ApprovalAssertionData){"ApprovalFailureReporterTest.c", 65});
 
     assert_int_equal(1, reporters_called[0]);
     assert_int_equal(1, reporters_called[1]);

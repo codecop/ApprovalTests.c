@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/approvals_reporters.h"
+#include "approval_failure_reporter.h"
 #include "asserts.h"
 #include "system_utils.h"
 
@@ -40,9 +40,16 @@ static void assert_approval_file_names(struct ApprovalFileNames file_names)
     assert_str_not_empty(file_names.received);
 }
 
-void approval_report_failure(struct ApprovalFileNames file_names)
+static void assert_approval_assertion_data(struct ApprovalAssertionData assertion_data)
+{
+    assert_str_not_empty(assertion_data.file);
+    assert(assertion_data.line > 0);
+}
+
+void approval_report_failure(struct ApprovalFileNames file_names, struct ApprovalAssertionData assertion_data)
 {
     assert_approval_file_names(file_names);
+    assert_approval_assertion_data(assertion_data);
 
     unsigned int i = 0;
     while (used_reporter[i] && i < MAX_REPORTERS) {

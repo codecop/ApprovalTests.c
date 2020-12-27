@@ -16,7 +16,7 @@ static void test_approvals_verify(void** state)
 {
     (void)state; /* unused */
 
-    const char* approved = __approvals_approve("abc123", __FILE__, __func__, "txt");
+    const char* approved = __approvals_approve("abc123", __FILE__, __func__, 42, "txt");
     assert_string_equal(approved, "abc123");
 
     free((void*)approved);
