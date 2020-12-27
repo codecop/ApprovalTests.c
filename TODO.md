@@ -1,8 +1,5 @@
 # Open
 
-* C way: find all array and use pointer arith instead
-  "An expression that evaluates to an object is inherently more subtle and error-prone than the address of that object. Correct use of pointers can simplify code:"
-
 * C way: allow function pointers at certain places for future expansion.
 
 * default approval is last

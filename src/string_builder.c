@@ -23,7 +23,7 @@ struct StringBuilder* make_sb(void)
     }
     this->buffer_length = INITIAL_BUFFER;
     this->buffer = malloc(this->buffer_length);
-    this->buffer[0] = '\0';
+    *this->buffer = '\0';
     this->position = 0;
     return this;
 }

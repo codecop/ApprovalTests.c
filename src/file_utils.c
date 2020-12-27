@@ -85,7 +85,7 @@ const char* approvals_load_text_file(const char* filename)
         return "";
     }
 
-    char* read_buffer = malloc(sizeof(char[1]) * (buffer_size + 1));
+    char* read_buffer = malloc(sizeof(char) * (buffer_size + 1));
     if (read_buffer == NULL) {
         fprintf(stderr,
                 "Could not allocate buffer for file %s, need " PF_SIZE_T " bytes.\n",

@@ -16,29 +16,23 @@ static const char* program_files[] = {
     "C:\\Program Files", /* Windows */
     "/Applications",     /* Mac */
     "/usr/bin",          /* Linux */
+    0,
 };
-static size_t count_program_files(void)
-{
-    return sizeof(program_files) / sizeof(char*);
-}
 
 static const char* windows_program_files_env[] = {
     "ProgramFiles(x86)", /* */
     "ProgramFiles",      /* */
     "ProgramW6432",      /* */
+    0,
 };
-static size_t count_windows_program_files_env(void)
-{
-    return sizeof(windows_program_files_env) / sizeof(char*);
-}
 
 static const char* get_path_in_program_files(const char* diff_program)
 {
     assert_str_not_empty(diff_program);
 
-    size_t i;
-    for (i = 0; i < count_program_files(); i++) {
-        const char* path = string_create_joined(3, program_files[i], OS_SLASH, diff_program);
+    const char** base_path;
+    for (base_path = program_files; *base_path; base_path++) {
+        const char* path = string_create_joined(3, *base_path, OS_SLASH, diff_program);
         if (path == NULL) {
             return NULL; /* error */
         }
@@ -48,8 +42,9 @@ static const char* get_path_in_program_files(const char* diff_program)
         free((void*)path);
     }
 
-    for (i = 0; i < count_windows_program_files_env(); i++) {
-        const char* pf = getenv(windows_program_files_env[i]);
+    const char** env_key;
+    for (env_key = windows_program_files_env; *env_key; env_key++) {
+        const char* pf = getenv(*env_key);
         if (pf) {
             const char* path = string_create_joined(3, pf, OS_SLASH, diff_program);
             if (path == NULL) {

@@ -112,7 +112,7 @@ static bool diff_is_working_in_this_environment(struct DiffInfo* diff)
     return true;
 }
 
-struct DiffInfo* approval_first_working_diff(struct DiffInfo diffInfos[])
+struct DiffInfo* approval_first_working_diff(struct DiffInfo* diffInfos)
 {
     struct DiffInfo* diff = diffInfos;
     while (diff && diff->diff_program) {
