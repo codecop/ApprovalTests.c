@@ -28,10 +28,26 @@ static void test_create_approval_base_name(void** state)
     free((void*)base_name);
 }
 
+static void test_create_approval_base_name_no_dot(void** state)
+{
+    (void)state; /* unused */
+
+    const char* base_name = approval_namer_create_approval_name("file_no_dot", "method");
+
+    assert_string_equal(
+        "file_no_dot"
+        "."
+        "method",
+        base_name);
+
+    free((void*)base_name);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_create_approval_base_name), /* */
+        cmocka_unit_test(test_create_approval_base_name),        /* */
+        cmocka_unit_test(test_create_approval_base_name_no_dot), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
