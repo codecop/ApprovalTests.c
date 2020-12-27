@@ -58,8 +58,10 @@ static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 
 #define open_diff_tool_name_for(i) open_diff_tool_##i
 #define open_diff_tool_for(i)                                                                    \
-    static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names) \
+    static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names, \
+                                                            struct ApprovalVerifyLine verify_line) \
     {                                                                                            \
+        (void)verify_line; /* unused */                                                          \
         return approval_open_diff_tool(used_diffs[i], file_names);                               \
     }
 

@@ -23,28 +23,31 @@ static void show_quiet_reporter_prints_copy_command(void** state)
            ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
     approval_report_failure(
         (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"},
-        (struct ApprovalAssertionData){"ApprovalFailureReporterTest.c", 26});
+        (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 26});
 }
 
 static int reporters_called[3];
 
-FailureReporterResult fakeReportA(struct ApprovalFileNames file_names)
+FailureReporterResult fakeReportA(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
 {
     (void)file_names; /* unused */
+    (void)verify_line; /* unused */
     reporters_called[0] = 1;
     return FailureReport_continue;
 }
 
-FailureReporterResult fakeReportB(struct ApprovalFileNames file_names)
+FailureReporterResult fakeReportB(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
 {
     (void)file_names; /* unused */
+    (void)verify_line; /* unused */
     reporters_called[1] = 1;
     return FailureReport_abort;
 }
 
-FailureReporterResult fakeReportC(struct ApprovalFileNames file_names)
+FailureReporterResult fakeReportC(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
 {
     (void)file_names; /* unused */
+    (void)verify_line; /* unused */
     reporters_called[2] = 1;
     return FailureReport_continue;
 }
@@ -62,11 +65,35 @@ static void test_abort_sequence_of_reporters(void** state)
 
     approval_report_failure(
         (struct ApprovalFileNames){"approved", "received"},
-        (struct ApprovalAssertionData){"ApprovalFailureReporterTest.c", 65});
+        (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 65});
 
     assert_int_equal(1, reporters_called[0]);
     assert_int_equal(1, reporters_called[1]);
     assert_int_equal(0, reporters_called[2]);
+}
+
+FailureReporterResult mockReport(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+{
+    assert_string_equal("approved", file_names.approved);
+    assert_string_equal("received", file_names.received);
+    assert_string_equal("ApprovalFailureReporterTest.c", verify_line.file);
+    assert_int_equal(91, verify_line.line);
+    reporters_called[0] = 1;
+    return FailureReport_continue;
+}
+
+static void test_passing_data_to_reporter(void** state)
+{
+    (void)state; /* unused */
+
+    approvals_use_reporter(mockReport);
+    reporters_called[0] = 0;
+
+    approval_report_failure(
+        (struct ApprovalFileNames){"approved", "received"},
+        (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 91});
+
+    assert_int_equal(1, reporters_called[0]);
 }
 
 static int reset_reporters(void** state)
@@ -81,6 +108,7 @@ int main(void)
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test_teardown(show_quiet_reporter_prints_copy_command, reset_reporters), /* */
         cmocka_unit_test_teardown(test_abort_sequence_of_reporters, reset_reporters), /* */
+        cmocka_unit_test_teardown(test_passing_data_to_reporter, reset_reporters), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

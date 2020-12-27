@@ -30,13 +30,13 @@ static bool text_is_approved(const char* approved, const char* received)
     return strcmp(approved, received) == 0;
 }
 
-static void report_failure(struct ApprovalBaseName name, struct ApprovalAssertionData assertion_data)
+static void report_failure(struct ApprovalBaseName name, struct ApprovalVerifyLine verify_line)
 {
     /* TODO not tested */
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
     const struct ApprovalFileNames file_names = {approved_name, received_name};
-    approval_report_failure(file_names, assertion_data);
+    approval_report_failure(file_names, verify_line);
     free((void*)received_name);
     free((void*)approved_name);
 }
@@ -63,8 +63,8 @@ const char* __approvals_approve(const char* received,
     }
     else {
         /* FAIL */
-        const struct ApprovalAssertionData assertion_data = {full_file_name, line};
-        report_failure(name, assertion_data);
+        const struct ApprovalVerifyLine verify_line = {full_file_name, line};
+        report_failure(name, verify_line);
         /* TODO not tested */
     }
 
