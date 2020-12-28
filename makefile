@@ -33,7 +33,7 @@ example_src_files := $(wildcard $(example_dir)/*Test.c)
 example_run_files := $(example_src_files:.c=$(exec_extension))
 
 ##### tools
-CC := gcc
+CC := @gcc
 COV := gcov
 
 ##### flags
