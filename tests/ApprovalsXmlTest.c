@@ -11,6 +11,7 @@
 #include <stdlib.h>
 
 #include "../include/approvals_cmocka.h"
+#include "../src/approval_cmocka_reporter.h"
 
 static void test_verify_xml(void** state)
 {
