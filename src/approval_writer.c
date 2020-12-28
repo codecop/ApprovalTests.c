@@ -47,7 +47,7 @@ void approval_writer_write_received_file(struct ApprovalBaseName name, const cha
     assert_not_null(received);
 
     const char* received_name = approval_writer_create_received_file_name(name);
-    approvals_save_text_file(received_name, received);
+    approval_save_text_file(received_name, received);
     free((void*)received_name);
 }
 
@@ -56,6 +56,6 @@ void approval_writer_delete_received_file(struct ApprovalBaseName name)
     assert_approval_base_name(name);
 
     const char* received_name = approval_writer_create_received_file_name(name);
-    approvals_delete_file(received_name);
+    approval_delete_file(received_name);
     free((void*)received_name);
 }

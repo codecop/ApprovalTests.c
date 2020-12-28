@@ -36,7 +36,7 @@ static const char* get_path_in_program_files(const char* diff_program)
         if (path == NULL) {
             return NULL; /* error */
         }
-        if (approvals_file_exists(path)) {
+        if (approval_file_exists(path)) {
             return path;
         }
         free((void*)path);
@@ -50,7 +50,7 @@ static const char* get_path_in_program_files(const char* diff_program)
             if (path == NULL) {
                 return NULL; /* error */
             }
-            if (approvals_file_exists(path)) {
+            if (approval_file_exists(path)) {
                 return path;
             }
             free((void*)path);
@@ -71,11 +71,11 @@ static const char* strip_tag(const char* diff_program)
     return string_create_substring(diff_program, substring_start, substring_length);
 }
 
-const char* approvals_create_resolved_path(const char* diff_program)
+const char* approval_create_resolved_path(const char* diff_program)
 {
     assert_str_not_empty(diff_program);
 
-    if (approvals_file_exists(diff_program)) {
+    if (approval_file_exists(diff_program)) {
         /* copy name for consistent semantic of this method */
         return string_create_joined(1, diff_program);
     }
@@ -93,10 +93,10 @@ const char* approvals_create_resolved_path(const char* diff_program)
     return NULL;
 }
 
-const char* approvals_create_command_line(const char* diff_program,
-                                          const char* parameters,
-                                          const char* args1,
-                                          const char* args2)
+const char* approval_create_command_line(const char* diff_program,
+                                         const char* parameters,
+                                         const char* args1,
+                                         const char* args2)
 {
     assert_str_not_empty(diff_program);
     assert_str_not_empty(parameters);

@@ -21,7 +21,7 @@ const char* linux_kdiff3 = "/usr/bin/kdiff3";
 
 static bool has_file(const char* file, const char* test)
 {
-    if (approvals_file_exists(file)) {
+    if (approval_file_exists(file)) {
         return true;
     }
 
@@ -37,7 +37,7 @@ static bool has_file(const char* file, const char* test)
 
 static void _assume_has_file(const char* needed_file, const char* file, const int line)
 {
-    if (approvals_file_exists(needed_file)) {
+    if (approval_file_exists(needed_file)) {
         return;
     }
 

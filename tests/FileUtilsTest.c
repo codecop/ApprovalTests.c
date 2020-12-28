@@ -17,21 +17,21 @@ static void test_create_file_if_needed(void** state)
     (void)state; /* unused */
 
     const char* test_file = "empty_temp_file_will_be_deleted";
-    if (approvals_file_exists(test_file)) {
-        approvals_delete_file(test_file);
+    if (approval_file_exists(test_file)) {
+        approval_delete_file(test_file);
     }
     bool exists; /* type hack to accept bool */
-    assert_false(exists = approvals_file_exists(test_file));
+    assert_false(exists = approval_file_exists(test_file));
 
-    bool result = approvals_create_if_needed(test_file);
-    long size = approvals_file_size(test_file);
+    bool result = approval_create_if_needed(test_file);
+    long size = approval_file_size(test_file);
 
-    assert_true(exists = approvals_file_exists(test_file));
+    assert_true(exists = approval_file_exists(test_file));
     assert_true(result);
     assert_int_equal(0, size);
 
-    approvals_delete_file(test_file);
-    exists = approvals_file_exists(test_file);
+    approval_delete_file(test_file);
+    exists = approval_file_exists(test_file);
     assert_false(exists);
 }
 
@@ -41,7 +41,7 @@ static void test_leave_file_alone_if_exists(void** state)
 
     const char* test_file = "tests/FileUtilsTest.existing_file.txt";
 
-    bool result = approvals_create_if_needed(test_file);
+    bool result = approval_create_if_needed(test_file);
 
     assert_false(result);
 }
@@ -52,7 +52,7 @@ static void test_size_of_non_empty_file(void** state)
 
     const char* test_file = "tests/FileUtilsTest.existing_file.txt";
 
-    long result = approvals_file_size(test_file);
+    long result = approval_file_size(test_file);
 
     assert_int_equal(82, result);
 }

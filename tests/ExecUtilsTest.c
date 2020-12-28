@@ -23,7 +23,7 @@ const char* linux_kdiff3 = "/usr/bin/kdiff3";
 
 static bool has_file(const char* file, const char* test)
 {
-    if (approvals_file_exists(file)) {
+    if (approval_file_exists(file)) {
         return true;
     }
 
@@ -40,7 +40,7 @@ static void test_resolve_existing_file(void** state)
     }
 
     const char* diff_program = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(tortoiseHg, resolved);
@@ -55,7 +55,7 @@ static void test_not_resolve_missing_file(void** state)
     (void)state; /* unused */
 
     const char* diff_program = "/this_does_not_exist.exe";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_null(resolved);
 }
@@ -69,7 +69,7 @@ static void test_resolve_windows_program_files(void** state)
     }
 
     const char* diff_program = "{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(tortoiseHg, resolved);
@@ -88,7 +88,7 @@ static void test_resolve_windows_x86_program_files(void** state)
     }
 
     const char* diff_program = "{ProgramFiles}KDiff3\\kdiff3.exe";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(kdiff3, resolved);
@@ -107,7 +107,7 @@ static void test_resolve_linux_program_files(void** state)
     }
 
     const char* diff_program = "{ProgramFiles}kdiff3";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_non_null(resolved);
     assert_string_equal(linux_kdiff3, resolved);
@@ -122,7 +122,7 @@ static void test_not_resolve_missing_windows_file(void** state)
     (void)state; /* unused */
 
     const char* diff_program = "{ProgramFiles}this_does_not_exist.exe";
-    const char* resolved = approvals_create_resolved_path(diff_program);
+    const char* resolved = approval_create_resolved_path(diff_program);
 
     assert_null(resolved);
 }
@@ -131,7 +131,7 @@ static void test_create_command_line(void** state)
 {
     (void)state; /* unused */
 
-    const char* command_line = approvals_create_command_line(
+    const char* command_line = approval_create_command_line(
         "kdiff3.exe", "%s %s", "received.file", "approved_file");
 
     assert_non_null(command_line);

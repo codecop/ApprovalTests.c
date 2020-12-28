@@ -11,7 +11,7 @@
 #include "asserts.h"
 #include "x86_x64.h"
 
-bool approvals_file_exists(const char* filename)
+bool approval_file_exists(const char* filename)
 {
     assert_str_not_empty(filename);
 
@@ -26,7 +26,7 @@ bool approvals_file_exists(const char* filename)
     return true;
 }
 
-long approvals_file_size(const char* filename)
+long approval_file_size(const char* filename)
 {
     assert_str_not_empty(filename);
 
@@ -54,7 +54,7 @@ long approvals_file_size(const char* filename)
     return file_size;
 }
 
-const char* approvals_load_text_file(const char* filename)
+const char* approval_load_text_file(const char* filename)
 {
     assert_str_not_empty(filename);
 
@@ -113,7 +113,7 @@ const char* approvals_load_text_file(const char* filename)
     return read_buffer;
 }
 
-void approvals_save_text_file(const char* filename, const char* data)
+void approval_save_text_file(const char* filename, const char* data)
 {
     assert_str_not_empty(filename);
     assert_not_null(data);
@@ -140,7 +140,7 @@ void approvals_save_text_file(const char* filename, const char* data)
     }
 }
 
-void approvals_delete_file(const char* filename)
+bool approval_delete_file(const char* filename)
 {
     assert_str_not_empty(filename);
 
@@ -148,16 +148,18 @@ void approvals_delete_file(const char* filename)
     if (error_remove) {
         fprintf(stderr, "Could not delete %s, error %d.\n", filename, error_remove);
         /* TODO test for non existing file */
+        return false;
     }
+    return true;
 }
 
-bool approvals_create_if_needed(const char* filename)
+bool approval_create_if_needed(const char* filename)
 {
     assert_str_not_empty(filename);
 
-    if (approvals_file_exists(filename)) {
+    if (approval_file_exists(filename)) {
         return false;
     }
-    approvals_save_text_file(filename, "");
+    approval_save_text_file(filename, "");
     return true;
 }

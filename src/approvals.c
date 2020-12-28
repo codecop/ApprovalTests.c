@@ -17,7 +17,7 @@
 static const char* read_approved(struct ApprovalBaseName name)
 {
     const char* approved_name = approval_writer_create_approved_file_name(name);
-    const char* approved = approvals_load_text_file(approved_name);
+    const char* approved = approval_load_text_file(approved_name);
     free((void*)approved_name);
 
     return approved;

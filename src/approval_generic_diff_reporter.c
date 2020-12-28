@@ -29,16 +29,16 @@ FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct Appro
     assert_diff_info(diff);
     assert_approval_file_names(file_names);
 
-    const char* diff_program = approvals_create_resolved_path(diff.diff_program);
+    const char* diff_program = approval_create_resolved_path(diff.diff_program);
     if (diff_program == NULL) {
         /* This tool is not available. */
         return FailureReport_tool_missing;
         /* TODO test case for that FailureReport_tool_missing */
     }
 
-    approvals_create_if_needed(file_names.approved);
+    approval_create_if_needed(file_names.approved);
 
-    const char* command_line = approvals_create_command_line(
+    const char* command_line = approval_create_command_line(
         diff_program, diff.parameters, file_names.received, file_names.approved);
     if (command_line == NULL) {
         free((void*)diff_program);
@@ -108,7 +108,7 @@ static bool diff_is_working_in_this_environment(struct DiffInfo* diff)
 {
     assert_not_null(diff) assert_diff_info(*diff);
 
-    const char* diff_program = approvals_create_resolved_path(diff->diff_program);
+    const char* diff_program = approval_create_resolved_path(diff->diff_program);
     if (diff_program == NULL) {
         return false;
     }
