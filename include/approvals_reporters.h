@@ -38,6 +38,7 @@ typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_n
 
 extern void approvals_use_reporter(FailureReporter reporter);
 extern void approvals_clear_reporters(void);
+extern void __approvals_set_final_reporter(FailureReporter reporter);
 
 /*
  * Available reporters.
@@ -49,6 +50,14 @@ extern void approvals_clear_reporters(void);
 extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
                                                            struct ApprovalData data,
                                                            struct ApprovalVerifyLine verify_line);
+
+/*
+ * A reporter which uses `assert` to compare the approvals. Stops execution on failure.
+ * This is the default final reporter.
+ */
+extern FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames file_names,
+                                                            struct ApprovalData data,
+                                                            struct ApprovalVerifyLine verify_line);
 
 struct DiffInfo {
     const char* diff_program;

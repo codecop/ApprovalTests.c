@@ -1,11 +1,11 @@
 # Open
 
-* C way: allow function pointers at certain places for future expansion.
-* `const struct` and const everything?
+* C way
 
-* default approval is last
+  * allow function pointers at certain places for future expansion.
+  * `const struct` and const everything?
 
-  * use cmocka equals as internal reporter
+* Approval Reporters
 
   * ignore duplicate reporters = same pointers
 

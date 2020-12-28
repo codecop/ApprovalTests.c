@@ -10,11 +10,18 @@
  * @code
  * #include <cmocka.h>
  * @endcode
-*/
-#ifndef __approval_assert_equals
+ */
+#ifndef ApprovalsCmocka_H_
+#define ApprovalsCmocka_H_
 
-#define __approval_assert_equals(__approved, __got) \
-    assert_string_equal((__approved), (__got));
+#include "approvals_reporters.h"
+
+extern FailureReporterResult __approval_report_failure_cmocka(struct ApprovalFileNames file_names,
+                                                              struct ApprovalData data,
+                                                              struct ApprovalVerifyLine verify_line);
+
+#define __approvals_final_reporter \
+    __approvals_set_final_reporter(__approval_report_failure_cmocka)
 
 #endif
 #include "approvals.h"

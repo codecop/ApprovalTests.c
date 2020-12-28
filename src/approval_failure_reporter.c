@@ -7,12 +7,12 @@
 #include <stdlib.h>
 
 #include "../include/approvals_reporters.h"
-#include "approval_cmocka_reporter.h"
 #include "asserts.h"
 #include "system_utils.h"
 
 #define MAX_REPORTERS 10
 static FailureReporter used_reporter[MAX_REPORTERS];
+static FailureReporter final_reporter = approval_report_failure_assert;
 
 void approvals_use_reporter(FailureReporter reporter)
 {
@@ -35,6 +35,16 @@ void approvals_clear_reporters(void)
     }
 }
 
+void __approvals_set_final_reporter(FailureReporter reporter)
+{
+    if (reporter) {
+        final_reporter = reporter;
+    }
+    else {
+        final_reporter = approval_report_failure_assert;
+    }
+}
+
 static void assert_approval_file_names(struct ApprovalFileNames file_names)
 {
     assert_str_not_empty(file_names.approved);
@@ -53,11 +63,11 @@ static void assert_approval_verify_line(struct ApprovalVerifyLine verify_line)
     assert(verify_line.line > 0);
 }
 
-static void run_final_reporters(struct ApprovalFileNames file_names,
-                                struct ApprovalData data,
-                                struct ApprovalVerifyLine verify_line)
+static void run_final_reporter(struct ApprovalFileNames file_names,
+                               struct ApprovalData data,
+                               struct ApprovalVerifyLine verify_line)
 {
-    approval_report_failure_cmocka(file_names, data, verify_line);
+    (*final_reporter)(file_names, data, verify_line);
 }
 
 void approval_report_failure(struct ApprovalFileNames file_names,
@@ -77,7 +87,7 @@ void approval_report_failure(struct ApprovalFileNames file_names,
         }
     }
 
-    run_final_reporters(file_names, data, verify_line);
+    run_final_reporter(file_names, data, verify_line);
 }
 
 FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
@@ -94,4 +104,17 @@ FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames fil
     fprintf(stdout, "mv %s %s\n", file_names.received, file_names.approved);
 #endif
     return FailureReport_continue;
+}
+
+FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames file_names,
+                                                     struct ApprovalData data,
+                                                     struct ApprovalVerifyLine verify_line)
+{
+    (void)file_names;  /* unused */
+    (void)data;        /* unused */
+    (void)verify_line; /* unused */
+
+    /* TODO implement */
+
+    return FailureReport_abort;
 }
