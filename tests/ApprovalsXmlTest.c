@@ -18,6 +18,8 @@ static void test_verify_xml(void** state)
     (void)state; /* unused */
 
     verify_xml("<nope />");
+
+    /* TODO 3. movethis  to ApprovalCmockaTest */
 }
 
 typedef struct {

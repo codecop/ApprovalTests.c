@@ -10,7 +10,7 @@
 
 #include "asserts.h"
 
-/* TODO define for '\0' - which name? */
+/* TODO 4. define for '\0' - which name? */
 
 bool string_starts_with(const char* s, const char* prefix)
 {

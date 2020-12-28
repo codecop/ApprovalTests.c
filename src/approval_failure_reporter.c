@@ -17,7 +17,7 @@ static FailureReporter final_reporter = approval_report_failure_assert;
 void approvals_use_reporter(FailureReporter reporter)
 {
     assert_not_null(reporter);
-    /* TODO allow NULL for using the first_working_... which can be null */
+    /* TODO 2. allow NULL for using the first_working_... which can be null */
 
     unsigned int i = 0;
     while (used_reporter[i] && i < (MAX_REPORTERS - 1)) {
@@ -114,7 +114,7 @@ FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames fi
     (void)data;        /* unused */
     (void)verify_line; /* unused */
 
-    /* TODO implement */
+    /* TODO 1. implement */
 
     return FailureReport_abort;
 }

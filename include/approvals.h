@@ -23,6 +23,8 @@ extern const char* __approvals_xml_format(const char* xml);
 #define __approvals_final_reporter __approvals_set_final_reporter(0)
 #endif
 
+/* TODO 3. do formatting of XML inside based on extension, no need to expose __approvals_xml_format */
+
 #define verify_xml(xml)                                              \
     __approvals_final_reporter;                                      \
     const char* __got = __approvals_xml_format(xml);                 \

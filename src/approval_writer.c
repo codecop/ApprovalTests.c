@@ -32,7 +32,7 @@ static const char* create_approvals_file_name_for(struct ApprovalBaseName name, 
 const char* approval_writer_create_approved_file_name(struct ApprovalBaseName name)
 {
     return create_approvals_file_name_for(name, "approved");
-    /* TODO make both constants */
+    /* TODO 4. make both strings constants (define) */
 }
 
 const char* approval_writer_create_received_file_name(struct ApprovalBaseName name)
