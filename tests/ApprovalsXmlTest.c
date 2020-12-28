@@ -10,17 +10,7 @@
 #include <cmocka.h>
 #include <stdlib.h>
 
-#include "../include/approvals_cmocka.h"
-#include "../src/approval_cmocka_reporter.h"
-
-static void test_verify_xml(void** state)
-{
-    (void)state; /* unused */
-
-    verify_xml("<nope />");
-
-    /* TODO 3. movethis  to ApprovalCmockaTest */
-}
+#include "../src/approvals_xml.h"
 
 typedef struct {
     char* xml;
@@ -65,22 +55,9 @@ static void test_format_xml(void** state)
     free((void*)formatted);
 }
 
-static void test_complex_complete_xml(void** state)
-{
-    (void)state; /* unused */
-
-    verify_xml(
-        "<orders><order id='1234'><product id='EVENT02' stylist='Celeste "
-        "Pulchritudo'><price "
-        "currency='USD'>149.99</price>Makeover</product></order><order "
-        "id='1235'><product id='LIPSTICK01' weight='30'><price "
-        "currency='USD'>14.99</price>Cherry Bloom</product></order></orders>");
-}
-
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_verify_xml),                          /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[0]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[1]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[2]), /* */
@@ -90,7 +67,6 @@ int main(void)
         cmocka_unit_test_prestate(test_format_xml, &test_cases[6]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[7]), /* */
         cmocka_unit_test_prestate(test_format_xml, &test_cases[8]), /* */
-        cmocka_unit_test(test_complex_complete_xml),                /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
