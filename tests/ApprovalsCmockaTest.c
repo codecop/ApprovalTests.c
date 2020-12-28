@@ -10,22 +10,19 @@
 #include <cmocka.h>
 #include <stdlib.h>
 
-#include "../include/approvals.h"
+#include "../include/approvals_cmocka.h"
 
-static void test_approvals_verify(void** state)
+static void test_verify_txt(void** state)
 {
     (void)state; /* unused */
 
-    const char* approved = __approvals_approve("abc123", __FILE__, __func__, 42, "txt");
-    assert_string_equal(approved, "abc123");
-
-    free((void*)approved);
+    verify_txt("Some text.\nNew line.\n");
 }
 
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
-        cmocka_unit_test(test_approvals_verify), /* */
+        cmocka_unit_test(test_verify_txt), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
