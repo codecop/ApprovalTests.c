@@ -3,14 +3,14 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <stdbool.h>
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "asserts.h"
 
-/* TODO 4. define for '\0' - which name? */
+#define TERM '\0'
 
 bool string_starts_with(const char* s, const char* prefix)
 {
@@ -19,11 +19,11 @@ bool string_starts_with(const char* s, const char* prefix)
 
     const char* si = s;
     const char* pi = prefix;
-    while (*si != '\0' && *pi != '\0' && *si == *pi) {
+    while (*si != TERM && *pi != TERM && *si == *pi) {
         si += 1;
         pi += 1;
     }
-    return *pi == '\0';
+    return *pi == TERM;
 }
 
 const char* string_create_substring(const char* s, size_t start, size_t length)
@@ -36,7 +36,7 @@ const char* string_create_substring(const char* s, size_t start, size_t length)
         return NULL; /* error */
     }
     strncpy(substring, s + start, length);
-    substring[length] = '\0';
+    substring[length] = TERM;
     return substring;
 }
 
@@ -87,7 +87,7 @@ const char* string_create_joined(size_t count, ...)
     }
     va_end(strings);
 
-    *offset = '\0';
+    *offset = TERM;
 
     return s;
 }
