@@ -22,12 +22,19 @@ struct ApprovalFileNames {
     const char* received;
 };
 
+struct ApprovalData {
+    const char* approved;
+    const char* received;
+};
+
 struct ApprovalVerifyLine {
     const char* file;
     const int line;
 };
 
-typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line);
+typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_names,
+                                                 struct ApprovalData data,
+                                                 struct ApprovalVerifyLine verify_line);
 
 extern void approvals_use_reporter(FailureReporter reporter);
 extern void approvals_clear_reporters(void);
@@ -39,7 +46,9 @@ extern void approvals_clear_reporters(void);
 /*
  * A reporter which creates the command to accept the received file as the approve file.
  */
-extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line);
+extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
+                                                           struct ApprovalData data,
+                                                           struct ApprovalVerifyLine verify_line);
 
 struct DiffInfo {
     const char* diff_program;

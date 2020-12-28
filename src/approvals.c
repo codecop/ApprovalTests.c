@@ -30,13 +30,13 @@ static bool text_is_approved(const char* approved, const char* received)
     return strcmp(approved, received) == 0;
 }
 
-static void report_failure(struct ApprovalBaseName name, struct ApprovalVerifyLine verify_line)
+static void report_failure(struct ApprovalBaseName name, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
 {
     /* TODO not tested */
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* received_name = approval_writer_create_received_file_name(name);
     const struct ApprovalFileNames file_names = {approved_name, received_name};
-    approval_report_failure(file_names, verify_line);
+    approval_report_failure(file_names, data, verify_line);
     free((void*)received_name);
     free((void*)approved_name);
 }
@@ -52,7 +52,8 @@ const char* __approvals_approve(const char* received,
     assert_str_not_empty(test_name)
     assert_str_not_empty(extension_no_dot)
 
-    const char* base_name = approval_namer_create_approval_name(full_file_name, test_name);
+    const char* base_name =
+        approval_namer_create_approval_name(full_file_name, test_name);
     const struct ApprovalBaseName name = {base_name, extension_no_dot};
     const char* approved = read_approved(name);
 
@@ -63,8 +64,9 @@ const char* __approvals_approve(const char* received,
     }
     else {
         /* FAIL */
+        const struct ApprovalData data = {approved, received};
         const struct ApprovalVerifyLine verify_line = {full_file_name, line};
-        report_failure(name, verify_line);
+        report_failure(name, data, verify_line);
         /* TODO not tested */
     }
 

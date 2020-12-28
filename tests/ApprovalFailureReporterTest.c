@@ -23,30 +23,40 @@ static void show_quiet_reporter_prints_copy_command(void** state)
            ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
     approval_report_failure(
         (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"},
+        (struct ApprovalData){"ignored", "ignored"},
         (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 26});
 }
 
 static int reporters_called[3];
 
-FailureReporterResult fakeReportA(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+FailureReporterResult fakeReportA(struct ApprovalFileNames file_names,
+                                  struct ApprovalData data,
+                                  struct ApprovalVerifyLine verify_line)
 {
-    (void)file_names; /* unused */
+    (void)file_names;  /* unused */
+    (void)data;        /* unused */
     (void)verify_line; /* unused */
     reporters_called[0] = 1;
     return FailureReport_continue;
 }
 
-FailureReporterResult fakeReportB(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+FailureReporterResult fakeReportB(struct ApprovalFileNames file_names,
+                                  struct ApprovalData data,
+                                  struct ApprovalVerifyLine verify_line)
 {
-    (void)file_names; /* unused */
+    (void)file_names;  /* unused */
+    (void)data;        /* unused */
     (void)verify_line; /* unused */
     reporters_called[1] = 1;
     return FailureReport_abort;
 }
 
-FailureReporterResult fakeReportC(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+FailureReporterResult fakeReportC(struct ApprovalFileNames file_names,
+                                  struct ApprovalData data,
+                                  struct ApprovalVerifyLine verify_line)
 {
-    (void)file_names; /* unused */
+    (void)file_names;  /* unused */
+    (void)data;        /* unused */
     (void)verify_line; /* unused */
     reporters_called[2] = 1;
     return FailureReport_continue;
@@ -63,19 +73,23 @@ static void test_abort_sequence_of_reporters(void** state)
     reporters_called[1] = 0;
     reporters_called[2] = 0;
 
-    approval_report_failure(
-        (struct ApprovalFileNames){"approved", "received"},
-        (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 65});
+    approval_report_failure((struct ApprovalFileNames){"approved", "received"},
+                            (struct ApprovalData){"ignored", "ignored"},
+                            (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 65});
 
     assert_int_equal(1, reporters_called[0]);
     assert_int_equal(1, reporters_called[1]);
     assert_int_equal(0, reporters_called[2]);
 }
 
-FailureReporterResult mockReport(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+FailureReporterResult mockReport(struct ApprovalFileNames file_names,
+                                 struct ApprovalData data,
+                                 struct ApprovalVerifyLine verify_line)
 {
-    assert_string_equal("approved", file_names.approved);
-    assert_string_equal("received", file_names.received);
+    assert_string_equal("approvedFileName", file_names.approved);
+    assert_string_equal("receivedFileName", file_names.received);
+    assert_string_equal("approved", data.approved);
+    assert_string_equal("received", data.received);
     assert_string_equal("ApprovalFailureReporterTest.c", verify_line.file);
     assert_int_equal(91, verify_line.line);
     reporters_called[0] = 1;
@@ -90,7 +104,8 @@ static void test_passing_data_to_reporter(void** state)
     reporters_called[0] = 0;
 
     approval_report_failure(
-        (struct ApprovalFileNames){"approved", "received"},
+        (struct ApprovalFileNames){"approvedFileName", "receivedFileName"},
+        (struct ApprovalData){"approved", "received"},
         (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 91});
 
     assert_int_equal(1, reporters_called[0]);

@@ -40,20 +40,27 @@ static void assert_approval_file_names(struct ApprovalFileNames file_names)
     assert_str_not_empty(file_names.received);
 }
 
+static void assert_approval_data(struct ApprovalData data)
+{
+    assert_str_not_empty(data.approved);
+    assert_str_not_empty(data.received);
+}
+
 static void assert_approval_verify_line(struct ApprovalVerifyLine verify_line)
 {
     assert_str_not_empty(verify_line.file);
     assert(verify_line.line > 0);
 }
 
-void approval_report_failure(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+void approval_report_failure(struct ApprovalFileNames file_names, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
+    assert_approval_data(data);
     assert_approval_verify_line(verify_line);
 
     unsigned int i = 0;
     while (used_reporter[i] && i < MAX_REPORTERS) {
-        FailureReporterResult result = (*used_reporter[i])(file_names, verify_line);
+        FailureReporterResult result = (*used_reporter[i])(file_names, data, verify_line);
         i += 1;
         if (result == FailureReport_abort) {
             break;
@@ -61,9 +68,10 @@ void approval_report_failure(struct ApprovalFileNames file_names, struct Approva
     }
 }
 
-FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names, struct ApprovalVerifyLine verify_line)
+FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
+    (void)data; /* unused */
     (void)verify_line; /* unused */
 
 #ifdef OS_WINDOWS

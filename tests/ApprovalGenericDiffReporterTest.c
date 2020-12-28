@@ -55,6 +55,7 @@ static void show_windows_diff_reporter(void** state)
     approval_report_failure(
         (struct ApprovalFileNames){"tests/ApprovalGenericDiffReporterTest_approved.txt",
                                    "tests/ApprovalGenericDiffReporterTest_received.txt"},
+        (struct ApprovalData){"ignored", "ignored"},
         (struct ApprovalVerifyLine){"tests/ApprovalGenericDiffReporterTest.c", 58});
 }
 
