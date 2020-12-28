@@ -11,8 +11,8 @@
  * #include <cmocka.h>
  * @endcode
  */
-#ifndef ApprovalsCmocka_H_
-#define ApprovalsCmocka_H_
+#ifndef Approvals_Cmocka_H_
+#define Approvals_Cmocka_H_
 
 #include "approvals_reporters.h"
 
@@ -23,5 +23,6 @@ extern FailureReporterResult __approval_report_failure_cmocka(struct ApprovalFil
 #define __approvals_final_reporter \
     __approvals_set_final_reporter(__approval_report_failure_cmocka)
 
-#endif
 #include "approvals.h"
+
+#endif

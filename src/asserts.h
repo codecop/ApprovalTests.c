@@ -3,8 +3,8 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#ifndef Approval_Asserts_H_
-#define Approval_Asserts_H_
+#ifndef Approvals_Asserts_H_
+#define Approvals_Asserts_H_
 
 #include <assert.h>
 

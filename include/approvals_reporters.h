@@ -3,8 +3,8 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#ifndef ApprovalsFailureReporters_H_
-#define ApprovalsFailureReporters_H_
+#ifndef Approvals_FailureReporters_H_
+#define Approvals_FailureReporters_H_
 
 /*
  * Definition of failure reporters.
