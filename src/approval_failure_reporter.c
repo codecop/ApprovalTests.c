@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "../include/approvals_reporters.h"
+#include "approval_cmocka_reporter.h"
 #include "asserts.h"
 #include "system_utils.h"
 
@@ -52,7 +53,16 @@ static void assert_approval_verify_line(struct ApprovalVerifyLine verify_line)
     assert(verify_line.line > 0);
 }
 
-void approval_report_failure(struct ApprovalFileNames file_names, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
+static void run_final_reporters(struct ApprovalFileNames file_names,
+                                struct ApprovalData data,
+                                struct ApprovalVerifyLine verify_line)
+{
+    approval_report_failure_cmocka(file_names, data, verify_line);
+}
+
+void approval_report_failure(struct ApprovalFileNames file_names,
+                             struct ApprovalData data,
+                             struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
     assert_approval_data(data);
@@ -66,12 +76,16 @@ void approval_report_failure(struct ApprovalFileNames file_names, struct Approva
             break;
         }
     }
+
+    run_final_reporters(file_names, data, verify_line);
 }
 
-FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
+FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
+                                                    struct ApprovalData data,
+                                                    struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
-    (void)data; /* unused */
+    (void)data;        /* unused */
     (void)verify_line; /* unused */
 
 #ifdef OS_WINDOWS

@@ -88,8 +88,8 @@ FailureReporterResult mockReport(struct ApprovalFileNames file_names,
 {
     assert_string_equal("approvedFileName", file_names.approved);
     assert_string_equal("receivedFileName", file_names.received);
-    assert_string_equal("approved", data.approved);
-    assert_string_equal("received", data.received);
+    assert_string_equal("same_else_report_fails", data.approved);
+    assert_string_equal("same_else_report_fails", data.received);
     assert_string_equal("ApprovalFailureReporterTest.c", verify_line.file);
     assert_int_equal(91, verify_line.line);
     reporters_called[0] = 1;
@@ -105,7 +105,7 @@ static void test_passing_data_to_reporter(void** state)
 
     approval_report_failure(
         (struct ApprovalFileNames){"approvedFileName", "receivedFileName"},
-        (struct ApprovalData){"approved", "received"},
+        (struct ApprovalData){"same_else_report_fails", "same_else_report_fails"},
         (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 91});
 
     assert_int_equal(1, reporters_called[0]);
