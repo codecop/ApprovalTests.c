@@ -30,7 +30,7 @@ def norm(path)
 end
 
 def to_source_file(name)
-    if name == '../include/approvals_cmocka' || name == '../include/approvals'
+    if name == '../include/approvals_cmocka'
         # hardcoded, include the while library
         name = 'approvals'
     end
