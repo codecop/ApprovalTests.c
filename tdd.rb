@@ -30,7 +30,7 @@ def norm(path)
 end
 
 def to_source_file(name)
-    if name == '../include/approvals_cmocka'
+    if name == '../include/approvals_cmocka' || name == '../include/approvals'
         # hardcoded, include the while library
         name = 'approvals'
     end
@@ -51,7 +51,7 @@ def to_source_file(name)
 end
 
 def test_file_from_source_file(source_file)
-    assert(File.exist?(source_file))
+    assert(File.exist?(source_file), "source file #{source_file} missing")
 
     file_name = source_file[/#{File::SEPARATOR}[^#{File::SEPARATOR}\.]+\.c$/][1..-3]
     # replace snake case with camel case
@@ -68,7 +68,7 @@ def test_file_from_source_file(source_file)
 end
 
 def included_files(source_file)
-    assert(File.exist?(source_file))
+    assert(File.exist?(source_file), "source file #{source_file} missing")
 
     IO.readlines(source_file).
       find_all { |line| line =~ /^#include \"/ }.
@@ -123,7 +123,7 @@ def clean(test_exe)
     if File.exist?(test_exe)
         run_command("del #{test_exe}") do
             File.delete(test_exe)
-            assert(!File.exist?(test_exe))
+            assert(!File.exist?(test_exe), "could not delete #{test_exe}")
         end
     end
 end
@@ -134,23 +134,29 @@ def compile(to_compile, test_exe)
 end
 
 def run_tests(test_exe)
-    assert(File.exist?(test_exe))
+    assert(File.exist?(test_exe), "test exe file #{test_exe} missing")
     command = "run #{test_exe}"
     run_command(command) { `"#{test_exe}" 2>&1` }
 
     File.delete(test_exe)
-    assert(!File.exist?(test_exe))
+    assert(!File.exist?(test_exe), "could not delete #{test_exe}")
 end
 
 def process(source)
     to_compile = []
 
     source_file = to_source_file(source)
-    assert(File.exist?(source_file))
+    assert(File.exist?(source_file), "source file #{source_file} missing")
     recursive_included_files(to_compile, source_file)
 
     test_file = test_file_from_source_file(source_file)
-    assert(File.exist?(test_file))
+    if !File.exist?(test_file)
+        # assert(File.exist?(test_file), "test file #{test_file} missing")
+        puts
+        Ansi.puts_with_color(Ansi::WHITE, "run #{test_file}")
+        Ansi.puts_with_color(Ansi::RED, "test file #{test_file} missing")
+        return
+    end
     recursive_included_files(to_compile, test_file)
 
     test_exe = test_file_from_source_file(source_file)[0..-3] + '.exe'
