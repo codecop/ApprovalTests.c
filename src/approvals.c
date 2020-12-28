@@ -45,7 +45,7 @@ static void report_failure(struct ApprovalBaseName name, struct ApprovalData dat
 static const char* format_received(const char* received, const char* extension_no_dot)
 {
     if (strcmp(extension_no_dot, "xml") == 0) {
-        return approvals_xml_format(received);
+        return approval_xml_format(received);
     }
     return received;
 }

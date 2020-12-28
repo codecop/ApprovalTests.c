@@ -49,7 +49,7 @@ static void test_format_xml(void** state)
     FormatterTestCase test_case = **(FormatterTestCase**)state;
 
     const char* xml = test_case.xml;
-    const char* formatted = approvals_xml_format(xml);
+    const char* formatted = approval_xml_format(xml);
 
     assert_string_equal(test_case.expected_xml, formatted);
     free((void*)formatted);
