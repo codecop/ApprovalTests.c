@@ -16,8 +16,10 @@ static FailureReporter final_reporter = approval_report_failure_assert;
 
 void approvals_use_reporter(FailureReporter reporter)
 {
-    assert_not_null(reporter);
-    /* TODO 2. allow NULL for using the first_working_... which can be null */
+    if (reporter == NULL) {
+        /* ignore NULL reporters, maybe no matching diff */
+        return;
+    }
 
     unsigned int i = 0;
     while (used_reporter[i] && i < (MAX_REPORTERS - 1)) {

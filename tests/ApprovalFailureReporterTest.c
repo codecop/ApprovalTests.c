@@ -96,11 +96,11 @@ FailureReporterResult mockReport(struct ApprovalFileNames file_names,
     return FailureReport_continue;
 }
 
-static void test_passing_data_to_reporter(void** state)
+static void test_pass_data_to_reporter(void** state)
 {
     (void)state; /* unused */
 
-    __approvals_set_final_reporter(fakeReportA); /* ignore final */
+    __approvals_set_final_reporter(fakeReportA); /* ignore final reporter */
     approvals_use_reporter(mockReport);
     reporters_called[0] = 0;
 
@@ -112,7 +112,7 @@ static void test_passing_data_to_reporter(void** state)
     assert_int_equal(2, reporters_called[0]);
 }
 
-static void test_passing_data_to_final_reporter(void** state)
+static void test_pass_data_to_final_reporter(void** state)
 {
     (void)state; /* unused */
 
@@ -123,6 +123,21 @@ static void test_passing_data_to_final_reporter(void** state)
         (struct ApprovalFileNames){"approvedFileName", "receivedFileName"},
         (struct ApprovalData){"approved", "received"},
         (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 91});
+
+    assert_int_equal(1, reporters_called[0]);
+}
+
+static void test_ignore_null_reporters(void** state)
+{
+    (void)state; /* unused */
+
+    approvals_use_reporter(NULL);
+    approvals_use_reporter(fakeReportA);
+    reporters_called[0] = 0;
+
+    approval_report_failure((struct ApprovalFileNames){"approved", "received"},
+                            (struct ApprovalData){"ignored", "ignored"},
+                            (struct ApprovalVerifyLine){"ApprovalFailureReporterTest.c", 65});
 
     assert_int_equal(1, reporters_called[0]);
 }
@@ -140,8 +155,9 @@ int main(void)
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test_teardown(show_quiet_reporter_prints_copy_command, reset_reporters), /* */
         cmocka_unit_test_teardown(test_abort_sequence_of_reporters, reset_reporters), /* */
-        cmocka_unit_test_teardown(test_passing_data_to_reporter, reset_reporters), /* */
-        cmocka_unit_test_teardown(test_passing_data_to_final_reporter, reset_reporters), /* */
+        cmocka_unit_test_teardown(test_pass_data_to_reporter, reset_reporters), /* */
+        cmocka_unit_test_teardown(test_pass_data_to_final_reporter, reset_reporters), /* */
+        cmocka_unit_test_teardown(test_ignore_null_reporters, reset_reporters), /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
