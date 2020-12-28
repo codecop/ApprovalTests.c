@@ -41,11 +41,11 @@ static void report_failure(struct ApprovalBaseName name, struct ApprovalData dat
     free((void*)approved_name);
 }
 
-const char* __approvals_approve(const char* received,
-                                const char* full_file_name,
-                                const char* test_name,
-                                int line,
-                                const char* extension_no_dot)
+void __approvals_approve(const char* received,
+                         const char* full_file_name,
+                         const char* test_name,
+                         int line,
+                         const char* extension_no_dot)
 {
     assert_not_null(received);
     assert_str_not_empty(full_file_name)
@@ -70,6 +70,6 @@ const char* __approvals_approve(const char* received,
         /* TODO not tested */
     }
 
+    free((void*)approved);
     free((void*)base_name);
-    return approved;
 }
