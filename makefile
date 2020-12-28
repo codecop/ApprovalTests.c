@@ -52,7 +52,6 @@ endif
 C_COMPILE_FLAGS := $(C_BASE_FLAGS) -c ${CFLAGS}
 
 C_TEST_FLAGS := $(C_BASE_FLAGS) ${CFLAGS}
-LD_TEST_FLAGS := -lcmocka
 
 C_LIBRARY_FLAGS := $(C_BASE_FLAGS) ${CFLAGS} -shared
 ifeq ($(OS),Windows_NT)
@@ -60,7 +59,9 @@ C_LIBRARY_FLAGS += -Wl,--out-implib,${lib_dir}/lib$(library_name).a
 # https://stackoverflow.com/questions/17601949/building-a-shared-library-using-gcc-on-linux-and-mingw-on-windows
 endif
 
-APPROVALS := -l$(library_name)
+LD_FLAGS := -lcmocka
+
+LD_APPROVALS := -l$(library_name)
 
 ##### compile targets
 
@@ -72,7 +73,7 @@ $(src_dir)/%.o: $(src_dir)/%.c
 ##### test targets
 
 $(test_dir)/%$(exec_extension): $(test_dir)/%.c ${obj_files}
-	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(LD_TEST_FLAGS) -o $@
+	$(CC) $(C_TEST_FLAGS) ${obj_files} $< $(LD_FLAGS) -o $@
 
 .PHONY: test
 test: ${test_run_files}
@@ -91,14 +92,14 @@ $(cov_dir)/%.c.gcov: $(src_dir)/%.c $(cov_dir)
 	mv *.c.gcov ${cov_dir}/
 
 coverage: C_COMPILE_FLAGS += --coverage
-coverage: LD_TEST_FLAGS += -lgcov
+coverage: LD_FLAGS += -lgcov
 coverage: clean test ${cov_files}
 	rm -f $(src_dir)/*.gcno $(src_dir)/*.gcda
 
 ##### library targets
 
 ${library}: ${obj_files}
-	$(CC) $(C_LIBRARY_FLAGS) $^ -o ${library}
+	$(CC) $(C_LIBRARY_FLAGS) $^ $(LD_FLAGS) -o ${library}
 
 build: very-clean ${library}
 
@@ -123,7 +124,7 @@ very-clean: clean
 ##### example targets
 
 $(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
-	$(CC) $(C_TEST_FLAGS) $< $(LD_TEST_FLAGS) $(APPROVALS) -o $@
+	$(CC) $(C_TEST_FLAGS) $< $(LD_FLAGS) $(LD_APPROVALS) -o $@
 
 .PHONY: example
 example: ${example_run_files}
