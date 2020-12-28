@@ -10,6 +10,7 @@
 #include "approval_failure_reporter.h"
 #include "approval_namer.h"
 #include "approval_writer.h"
+#include "approvals_xml.h" /* TODO rename to approval_xml */
 #include "asserts.h"
 #include "file_utils.h"
 
@@ -22,12 +23,12 @@ static const char* read_approved(struct ApprovalBaseName name)
     return approved;
 }
 
-static bool text_is_approved(const char* approved, const char* received)
+static bool is_approved(struct ApprovalData data)
 {
-    assert_not_null(approved);
-    assert_not_null(received);
+    assert_not_null(data.approved);
+    assert_not_null(data.received);
 
-    return strcmp(approved, received) == 0;
+    return strcmp(data.approved, data.received) == 0;
 }
 
 static void report_failure(struct ApprovalBaseName name, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
@@ -41,35 +42,47 @@ static void report_failure(struct ApprovalBaseName name, struct ApprovalData dat
     free((void*)approved_name);
 }
 
-void __approvals_approve(const char* received,
+static const char* format_received(const char* received, const char* extension_no_dot)
+{
+    if (strcmp(extension_no_dot, "xml") == 0) {
+        return approvals_xml_format(received);
+    }
+    return received;
+}
+
+void __approvals_approve(const char* raw_received,
                          const char* full_file_name,
                          const char* test_name,
                          int line,
                          const char* extension_no_dot)
 {
-    assert_not_null(received);
+    assert_not_null(raw_received);
     assert_str_not_empty(full_file_name)
     assert_str_not_empty(test_name)
     assert_str_not_empty(extension_no_dot)
 
-    const char* base_name =
-        approval_namer_create_approval_name(full_file_name, test_name);
+    const char* base_name = approval_namer_create_approval_name(full_file_name, test_name);
     const struct ApprovalBaseName name = {base_name, extension_no_dot};
     const char* approved = read_approved(name);
 
+    const char* received = format_received(raw_received, extension_no_dot);
     approval_writer_write_received_file(name, received);
-    if (text_is_approved(approved, received)) {
+
+    const struct ApprovalData data = {approved, received};
+    if (is_approved(data)) {
         /* OK */
         approval_writer_delete_received_file(name);
     }
     else {
         /* FAIL */
-        const struct ApprovalData data = {approved, received};
         const struct ApprovalVerifyLine verify_line = {full_file_name, line};
         report_failure(name, data, verify_line);
         /* TODO not tested */
     }
 
+    if (raw_received != received) {
+        free((void*)received);
+    }
     free((void*)approved);
     free((void*)base_name);
 }

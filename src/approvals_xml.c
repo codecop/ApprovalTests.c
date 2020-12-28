@@ -19,7 +19,7 @@ static void xml_newline(struct StringBuilder* sb, unsigned int intent)
     }
 }
 
-const char* __approvals_xml_format(const char* xml)
+const char* approvals_xml_format(const char* xml)
 {
     struct StringBuilder* sb = make_sb_sized(strlen(xml));
     if (sb == NULL) {

@@ -8,7 +8,6 @@
 #include <stddef.h> /* used by cmocka */
 
 #include <cmocka.h>
-#include <stdlib.h> /* TODO remove? */
 
 #include "../include/approvals_cmocka.h"
 
