@@ -10,7 +10,7 @@
 #include "approval_failure_reporter.h"
 #include "approval_namer.h"
 #include "approval_writer.h"
-#include "approvals_xml.h" /* TODO rename to approval_xml */
+#include "approval_xml.h"
 #include "asserts.h"
 #include "file_utils.h"
 

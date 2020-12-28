@@ -10,7 +10,7 @@
 #include <cmocka.h>
 #include <stdlib.h>
 
-#include "../src/approvals_xml.h"
+#include "../src/approval_xml.h"
 
 typedef struct {
     char* xml;
