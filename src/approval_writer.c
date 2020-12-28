@@ -4,12 +4,14 @@
  * BSD3 licensed.
  */
 #include <stdlib.h>
-#include <string.h>
 
-#include "asserts.h"
 #include "approval_writer.h"
+#include "asserts.h"
 #include "file_utils.h"
 #include "string_utils.h"
+
+#define APPROVED "approved"
+#define RECEIVED "received"
 
 static void assert_approval_base_name(struct ApprovalBaseName name)
 {
@@ -31,13 +33,12 @@ static const char* create_approvals_file_name_for(struct ApprovalBaseName name, 
 
 const char* approval_writer_create_approved_file_name(struct ApprovalBaseName name)
 {
-    return create_approvals_file_name_for(name, "approved");
-    /* TODO 4. make both strings constants (define) */
+    return create_approvals_file_name_for(name, APPROVED);
 }
 
 const char* approval_writer_create_received_file_name(struct ApprovalBaseName name)
 {
-    return create_approvals_file_name_for(name, "received");
+    return create_approvals_file_name_for(name, RECEIVED);
 }
 
 void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
