@@ -90,6 +90,24 @@ static void test_load_of_missing_file(void** state)
     assert_string_equal("", result);
 }
 
+static void test_save_empty_string(void** state)
+{
+    (void)state; /* unused */
+
+    const char* test_file = "empty_temp_file_will_be_deleted";
+    bool exists = approval_file_exists(test_file);
+    if (exists) {
+        approval_delete_file(test_file);
+    }
+
+    approval_save_text_file(test_file, "");
+
+    exists = approval_file_exists(test_file);
+    assert_true(exists);
+
+    approval_delete_file(test_file);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
@@ -99,6 +117,7 @@ int main(void)
         cmocka_unit_test(test_size_of_missing_file),       /* */
         cmocka_unit_test(test_remove_of_missing_file),     /* */
         cmocka_unit_test(test_load_of_missing_file),       /* */
+        cmocka_unit_test(test_save_empty_string),          /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
