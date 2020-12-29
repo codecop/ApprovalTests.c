@@ -18,6 +18,13 @@ static void test_verify_txt(void** state)
     verify_txt("Some text.\nNew line.\n");
 }
 
+static void test_verify_empty_no_file(void** state)
+{
+    (void)state; /* unused */
+
+    verify_txt("");
+}
+
 static void test_verify_xml(void** state)
 {
     (void)state; /* unused */
@@ -41,6 +48,7 @@ int main(void)
 {
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_verify_txt),           /* */
+        cmocka_unit_test(test_verify_empty_no_file), /* */
         cmocka_unit_test(test_verify_xml),           /* */
         cmocka_unit_test(test_complex_complete_xml), /* */
     };
