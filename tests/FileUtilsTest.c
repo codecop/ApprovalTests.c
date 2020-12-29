@@ -9,6 +9,7 @@
 
 #include <cmocka.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "../src/file_utils.h"
 
@@ -68,7 +69,7 @@ static void test_size_of_missing_file(void** state)
     assert_int_equal(0, result);
 }
 
-static void test_remove_of_missing_file(void** state)
+static void test_remove_missing_file(void** state)
 {
     (void)state; /* unused */
 
@@ -79,7 +80,7 @@ static void test_remove_of_missing_file(void** state)
     assert_false(result);
 }
 
-static void test_load_of_missing_file(void** state)
+static void test_load_missing_file(void** state)
 {
     (void)state; /* unused */
 
@@ -88,6 +89,7 @@ static void test_load_of_missing_file(void** state)
     const char* result = approval_load_text_file(test_file);
 
     assert_string_equal("", result);
+    free((void*)result);
 }
 
 static void test_save_empty_string(void** state)
@@ -115,8 +117,8 @@ int main(void)
         cmocka_unit_test(test_leave_file_alone_if_exists), /* */
         cmocka_unit_test(test_size_of_non_empty_file),     /* */
         cmocka_unit_test(test_size_of_missing_file),       /* */
-        cmocka_unit_test(test_remove_of_missing_file),     /* */
-        cmocka_unit_test(test_load_of_missing_file),       /* */
+        cmocka_unit_test(test_remove_missing_file),        /* */
+        cmocka_unit_test(test_load_missing_file),          /* */
         cmocka_unit_test(test_save_empty_string),          /* */
     };
 

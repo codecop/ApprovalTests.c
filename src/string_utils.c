@@ -91,3 +91,10 @@ const char* string_create_joined(size_t count, ...)
 
     return s;
 }
+
+const char* string_create_empty(void)
+{
+    char* empty = (char*)malloc(1);
+    *empty = TERM;
+    return empty;
+}

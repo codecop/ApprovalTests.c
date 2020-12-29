@@ -9,6 +9,7 @@
 #include <string.h>
 
 #include "asserts.h"
+#include "string_utils.h"
 #include "x86_x64.h"
 
 static void close_verbosely(FILE* file, const char* filename)
@@ -62,27 +63,27 @@ const char* approval_load_text_file(const char* filename)
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
         fprintf(stderr, "Could not open %s.\n", filename);
-        return "";
+        return string_create_empty();
     }
 
     int error_seek = fseek(file, 0, SEEK_END);
     if (error_seek) {
         fprintf(stderr, "Could not go to end of file %s, error %d.\n", filename, error_seek);
         fclose(file);
-        return "";
+        return string_create_empty();
     }
     long file_size = ftell(file);
     if (file_size < 0) {
         fprintf(stderr, "Could not get file size of file %s, file size %ld.\n", filename, file_size);
         fclose(file);
-        return "";
+        return string_create_empty();
     }
     size_t buffer_size = (size_t)file_size; /* might truncate for large files */
     error_seek = fseek(file, 0, SEEK_SET);
     if (error_seek) {
         fprintf(stderr, "Could not reset file %s, error %d.\n", filename, error_seek);
         fclose(file);
-        return "";
+        return string_create_empty();
     }
 
     char* read_buffer = malloc(sizeof(char) * (buffer_size + 1));
@@ -91,7 +92,7 @@ const char* approval_load_text_file(const char* filename)
                 "Could not allocate buffer for file %s, need " PF_SIZE_T " bytes.\n",
                 filename, buffer_size);
         fclose(file);
-        return "";
+        return string_create_empty();
     }
 
     size_t read = fread(read_buffer, sizeof(char), buffer_size, file);
