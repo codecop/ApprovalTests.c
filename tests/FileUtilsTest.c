@@ -57,12 +57,48 @@ static void test_size_of_non_empty_file(void** state)
     assert_int_equal(82, result);
 }
 
+static void test_size_of_missing_file(void** state)
+{
+    (void)state; /* unused */
+
+    const char* test_file = "tests/FileUtilsTest.non_existing_file.txt";
+
+    long result = approval_file_size(test_file);
+
+    assert_int_equal(0, result);
+}
+
+static void test_remove_of_missing_file(void** state)
+{
+    (void)state; /* unused */
+
+    const char* test_file = "tests/FileUtilsTest.non_existing_file.txt";
+
+    bool result = approval_delete_file(test_file);
+
+    assert_false(result);
+}
+
+static void test_load_of_missing_file(void** state)
+{
+    (void)state; /* unused */
+
+    const char* test_file = "tests/FileUtilsTest.non_existing_file.txt";
+
+    const char* result = approval_load_text_file(test_file);
+
+    assert_string_equal("", result);
+}
+
 int main(void)
 {
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_create_file_if_needed),      /* */
         cmocka_unit_test(test_leave_file_alone_if_exists), /* */
         cmocka_unit_test(test_size_of_non_empty_file),     /* */
+        cmocka_unit_test(test_size_of_missing_file),       /* */
+        cmocka_unit_test(test_remove_of_missing_file),     /* */
+        cmocka_unit_test(test_load_of_missing_file),       /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);
