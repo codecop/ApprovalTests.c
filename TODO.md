@@ -5,10 +5,6 @@
   * allow function pointers at certain places for future expansion.
   * `const struct` and const everything?
 
-* Approval Reporters
-
-  * ignore duplicate reporters = same pointers
-
 * Documentation in Markdown
 
   * describe features related to usual approvals:

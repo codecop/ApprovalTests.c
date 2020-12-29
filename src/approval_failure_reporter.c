@@ -3,8 +3,10 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 
 #include "../include/approvals_reporters.h"
 #include "asserts.h"
@@ -55,8 +57,8 @@ static void assert_approval_file_names(struct ApprovalFileNames file_names)
 
 static void assert_approval_data(struct ApprovalData data)
 {
-    assert_str_not_empty(data.approved);
-    assert_str_not_empty(data.received);
+    assert_not_null(data.approved);
+    assert_not_null(data.received);
 }
 
 static void assert_approval_verify_line(struct ApprovalVerifyLine verify_line)
@@ -113,10 +115,7 @@ FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames fi
                                                      struct ApprovalVerifyLine verify_line)
 {
     (void)file_names;  /* unused */
-    (void)data;        /* unused */
     (void)verify_line; /* unused */
-
-    /* TODO 1. implement */
-
+    assert(strcmp(data.approved, data.received) == 0);
     return FailureReport_abort;
 }
