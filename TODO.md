@@ -11,7 +11,7 @@
   * cmocka integration, verify text, verify xml,
   * binaries for linux and windows x64
 
-  * 1.1 quiet reporter, diff reporters,
+  * 1.1 quiet reporter, diff reporters, without cmocka (plain assert)
   * binaries for linux and windows x86
 
 * create second Example with reporters in before
