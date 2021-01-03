@@ -4,42 +4,15 @@
  * BSD3 licensed.
  */
 #include "cmocka_utils.h"
-#include <stdbool.h>
-#include <stdio.h>
+
+#include "cmocka_assume_file.c"
 
 #include "../src/approval_failure_reporter.h"
 #include "../src/approval_generic_diff_reporter.h"
-#include "../src/file_utils.h"
 
 /* My local installations */
 const char* windows_kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
 const char* linux_kdiff3 = "/usr/bin/kdiff3";
-
-static bool has_file(const char* file, const char* test)
-{
-    if (approval_file_exists(file)) {
-        return true;
-    }
-
-    fprintf(stderr, "Ignoring test %s, test file %s missing.\n", test, file);
-    return false;
-    /* TODO duplication, extract test helper to include directly */
-}
-
-#define assume_has_file(needed_file)                         \
-    {                                                        \
-        _assume_has_file((needed_file), __FILE__, __LINE__); \
-    }
-
-static void _assume_has_file(const char* needed_file, const char* file, const int line)
-{
-    if (approval_file_exists(needed_file)) {
-        return;
-    }
-
-    fprintf(stderr, "[          ] - test file %s missing.\n", needed_file);
-    _skip(file, line);
-}
 
 /* show is not testing - check test output */
 static void show_windows_diff_reporter(void** state)
@@ -67,10 +40,7 @@ static void test_find_no_working_reporter(void** state)
 static void test_find_first_working_windows_reporter(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(windows_kdiff3, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(windows_kdiff3);
 
     struct DiffInfo* diff = approval_first_working_windows_diff(&WINDOWS_DIFFS);
 

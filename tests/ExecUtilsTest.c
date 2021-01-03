@@ -4,12 +4,11 @@
  * BSD3 licensed.
  */
 #include "cmocka_utils.h"
-#include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 
+#include "cmocka_assume_file.c"
+
 #include "../src/exec_utils.h"
-#include "../src/file_utils.h"
 #include "../src/system_utils.h"
 
 /* My local installations */
@@ -17,23 +16,10 @@ const char* tortoiseHg = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
 const char* kdiff3 = "C:\\Program Files (x86)\\KDiff3\\kdiff3.exe";
 const char* linux_kdiff3 = "/usr/bin/kdiff3";
 
-static bool has_file(const char* file, const char* test)
-{
-    if (approval_file_exists(file)) {
-        return true;
-    }
-
-    fprintf(stderr, "Ignoring test %s, test file %s missing.\n", test, file);
-    return false;
-}
-
 static void test_resolve_existing_file(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(tortoiseHg, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(tortoiseHg);
 
     const char* diff_program = "C:\\Program Files\\TortoiseHg\\bin\\kdiff3.exe";
     const char* resolved = approval_create_resolved_path(diff_program);
@@ -59,10 +45,7 @@ static void test_not_resolve_missing_file(void** state)
 static void test_resolve_windows_program_files(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(tortoiseHg, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(tortoiseHg);
 
     const char* diff_program = "{ProgramFiles}TortoiseHg\\bin\\kdiff3.exe";
     const char* resolved = approval_create_resolved_path(diff_program);
@@ -78,10 +61,7 @@ static void test_resolve_windows_program_files(void** state)
 static void test_resolve_windows_x86_program_files(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(kdiff3, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(kdiff3);
 
     const char* diff_program = "{ProgramFiles}KDiff3\\kdiff3.exe";
     const char* resolved = approval_create_resolved_path(diff_program);
@@ -97,10 +77,7 @@ static void test_resolve_windows_x86_program_files(void** state)
 static void test_resolve_linux_program_files(void** state)
 {
     (void)state; /* unused */
-    if (!has_file(linux_kdiff3, __func__)) {
-        skip();
-        return;
-    }
+    assume_has_file(linux_kdiff3);
 
     const char* diff_program = "{ProgramFiles}kdiff3";
     const char* resolved = approval_create_resolved_path(diff_program);
