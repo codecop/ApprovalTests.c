@@ -12,19 +12,19 @@
 #include "exec_utils.h"
 #include "file_utils.h"
 
-static void assert_diff_info(struct DiffInfo diff)
+static void assert_diff_info(const struct DiffInfo diff)
 {
     assert_str_not_empty(diff.diff_program);
     assert_str_not_empty(diff.parameters);
 }
 
-static void assert_approval_file_names(struct ApprovalFileNames file_names)
+static void assert_approval_file_names(const struct ApprovalFileNames file_names)
 {
     assert_str_not_empty(file_names.approved);
     assert_str_not_empty(file_names.received);
 }
 
-FailureReporterResult approval_open_diff_tool(struct DiffInfo diff, struct ApprovalFileNames file_names)
+FailureReporterResult approval_open_diff_tool(const struct DiffInfo diff, const struct ApprovalFileNames file_names)
 {
     assert_diff_info(diff);
     assert_approval_file_names(file_names);
@@ -58,9 +58,9 @@ static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 
 #define open_diff_tool_name_for(i) open_diff_tool_##i
 #define open_diff_tool_for(i)                                                                    \
-    static FailureReporterResult open_diff_tool_name_for(i)(struct ApprovalFileNames file_names, \
-                                                            struct ApprovalData data,            \
-                                                            struct ApprovalVerifyLine verify_line) \
+    static FailureReporterResult open_diff_tool_name_for(i)(const struct ApprovalFileNames file_names, \
+                                                            const struct ApprovalData data,      \
+                                                            const struct ApprovalVerifyLine verify_line) \
     {                                                                                            \
         (void)data; /* unused */                                                                 \
         (void)verify_line; /* unused */                                                          \
@@ -91,7 +91,7 @@ static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
     open_diff_tool_name_for(9), /* */
 };
 
-FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
+FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff)
 {
     assert_diff_info(diff);
 
@@ -104,7 +104,7 @@ FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff)
     return diffs_reporters[i];
 }
 
-static bool diff_is_working_in_this_environment(struct DiffInfo* diff)
+static bool diff_is_working_in_this_environment(const struct DiffInfo* diff)
 {
     assert_not_null(diff) assert_diff_info(*diff);
 
@@ -116,9 +116,9 @@ static bool diff_is_working_in_this_environment(struct DiffInfo* diff)
     return true;
 }
 
-struct DiffInfo* approval_first_working_diff(struct DiffInfo* diffInfos)
+const struct DiffInfo* approval_first_working_diff(const struct DiffInfo* diffInfos)
 {
-    struct DiffInfo* diff = diffInfos;
+    const struct DiffInfo* diff = diffInfos;
     while (diff && diff->diff_program) {
         if (diff_is_working_in_this_environment(diff)) {
             return diff;
@@ -128,17 +128,17 @@ struct DiffInfo* approval_first_working_diff(struct DiffInfo* diffInfos)
     return NULL;
 }
 
-struct DiffInfo* approval_first_working_mac_diff(struct MacDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_mac_diff(const struct MacDiffInfos* diffInfos)
 {
-    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+    return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }
 
-struct DiffInfo* approval_first_working_windows_diff(struct WindowsDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_windows_diff(const struct WindowsDiffInfos* diffInfos)
 {
-    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+    return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }
 
-struct DiffInfo* approval_first_working_linux_diff(struct LinuxDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_linux_diff(const struct LinuxDiffInfos* diffInfos)
 {
-    return approval_first_working_diff((struct DiffInfo*)diffInfos);
+    return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }

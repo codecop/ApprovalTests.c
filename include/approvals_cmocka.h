@@ -16,9 +16,9 @@
 
 #include "approvals_reporters.h"
 
-extern FailureReporterResult __approval_report_failure_cmocka(struct ApprovalFileNames file_names,
-                                                              struct ApprovalData data,
-                                                              struct ApprovalVerifyLine verify_line);
+extern FailureReporterResult __approval_report_failure_cmocka(const struct ApprovalFileNames file_names,
+                                                              const struct ApprovalData data,
+                                                              const struct ApprovalVerifyLine verify_line);
 
 #define __approvals_final_reporter \
     __approvals_set_final_reporter(__approval_report_failure_cmocka)

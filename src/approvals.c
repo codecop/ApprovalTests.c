@@ -14,7 +14,7 @@
 #include "asserts.h"
 #include "file_utils.h"
 
-static const char* read_approved(struct ApprovalBaseName name)
+static const char* read_approved(const struct ApprovalBaseName name)
 {
     const char* approved_name = approval_writer_create_approved_file_name(name);
     const char* approved = approval_load_text_file(approved_name);
@@ -23,7 +23,7 @@ static const char* read_approved(struct ApprovalBaseName name)
     return approved;
 }
 
-static bool is_approved(struct ApprovalData data)
+static bool is_approved(const struct ApprovalData data)
 {
     assert_not_null(data.approved);
     assert_not_null(data.received);
@@ -31,7 +31,7 @@ static bool is_approved(struct ApprovalData data)
     return strcmp(data.approved, data.received) == 0;
 }
 
-static void report_failure(struct ApprovalBaseName name, struct ApprovalData data, struct ApprovalVerifyLine verify_line)
+static void report_failure(const struct ApprovalBaseName name, const struct ApprovalData data, const struct ApprovalVerifyLine verify_line)
 {
     /* TODO not tested */
     const char* approved_name = approval_writer_create_approved_file_name(name);

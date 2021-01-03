@@ -32,9 +32,9 @@ struct ApprovalVerifyLine {
     const int line;
 };
 
-typedef FailureReporterResult (*FailureReporter)(struct ApprovalFileNames file_names,
-                                                 struct ApprovalData data,
-                                                 struct ApprovalVerifyLine verify_line);
+typedef FailureReporterResult (*FailureReporter)(const struct ApprovalFileNames file_names,
+                                                 const struct ApprovalData data,
+                                                 const struct ApprovalVerifyLine verify_line);
 
 extern void approvals_use_reporter(FailureReporter reporter);
 extern void approvals_clear_reporters(void);
@@ -47,17 +47,17 @@ extern void __approvals_set_final_reporter(FailureReporter reporter);
 /*
  * A reporter which creates the command to accept the received file as the approve file.
  */
-extern FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
-                                                           struct ApprovalData data,
-                                                           struct ApprovalVerifyLine verify_line);
+extern FailureReporterResult approval_report_failure_quiet(const struct ApprovalFileNames file_names,
+                                                           const struct ApprovalData data,
+                                                           const struct ApprovalVerifyLine verify_line);
 
 /*
  * A reporter which uses `assert` to compare the approvals. Stops execution on failure.
  * This is the default final reporter.
  */
-extern FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames file_names,
-                                                            struct ApprovalData data,
-                                                            struct ApprovalVerifyLine verify_line);
+extern FailureReporterResult approval_report_failure_assert(const struct ApprovalFileNames file_names,
+                                                            const struct ApprovalData data,
+                                                            const struct ApprovalVerifyLine verify_line);
 
 struct DiffInfo {
     const char* diff_program;
@@ -68,14 +68,14 @@ struct DiffInfo {
  * Diff tools to use with `approval_report_failure_generic_diff`.
  * Copied from `DiffPrograms.java`, https://github.com/approvals/ApprovalTests.Java
  */
-static struct MacDiffInfos {
-    struct DiffInfo BEYOND_COMPARE;
-    struct DiffInfo DIFF_MERGE;
-    struct DiffInfo KALEIDOSCOPE;
-    struct DiffInfo KDIFF3;
-    struct DiffInfo TK_DIFF;
-    struct DiffInfo VISUAL_STUDIO_CODE;
-    struct DiffInfo _NULL_TERMINATED;
+static const struct MacDiffInfos {
+    const struct DiffInfo BEYOND_COMPARE;
+    const struct DiffInfo DIFF_MERGE;
+    const struct DiffInfo KALEIDOSCOPE;
+    const struct DiffInfo KDIFF3;
+    const struct DiffInfo TK_DIFF;
+    const struct DiffInfo VISUAL_STUDIO_CODE;
+    const struct DiffInfo _NULL_TERMINATED;
 } MAC_DIFFS = {
     {"/Applications/Beyond Compare.app/Contents/MacOS/bcomp", "%s %s"},
     {"/Applications/DiffMerge.app/Contents/MacOS/DiffMerge", "--nosplash %s %s"},
@@ -86,18 +86,18 @@ static struct MacDiffInfos {
     {NULL, NULL},
 };
 
-static struct WindowsDiffInfos {
-    struct DiffInfo ARAXIS_MERGE;
-    struct DiffInfo BEYOND_COMPARE_3;
-    struct DiffInfo BEYOND_COMPARE_4;
-    struct DiffInfo CODE_COMPARE;
-    struct DiffInfo KDIFF3;
-    struct DiffInfo TORTOISE_KDIFF3;
-    struct DiffInfo TORTOISE_TEXT_DIFF;
-    struct DiffInfo VISUAL_STUDIO_CODE;
-    struct DiffInfo WIN_DIFF;
-    struct DiffInfo WIN_MERGE;
-    struct DiffInfo _NULL_TERMINATED;
+static const struct WindowsDiffInfos {
+    const struct DiffInfo ARAXIS_MERGE;
+    const struct DiffInfo BEYOND_COMPARE_3;
+    const struct DiffInfo BEYOND_COMPARE_4;
+    const struct DiffInfo CODE_COMPARE;
+    const struct DiffInfo KDIFF3;
+    const struct DiffInfo TORTOISE_KDIFF3;
+    const struct DiffInfo TORTOISE_TEXT_DIFF;
+    const struct DiffInfo VISUAL_STUDIO_CODE;
+    const struct DiffInfo WIN_DIFF;
+    const struct DiffInfo WIN_MERGE;
+    const struct DiffInfo _NULL_TERMINATED;
 } WINDOWS_DIFFS = {
     {"{ProgramFiles}Araxis\\Araxis Merge\\Compare.exe", "%s %s"},
     {"{ProgramFiles}Beyond Compare 3\\BCompare.exe", "%s %s"},
@@ -112,11 +112,11 @@ static struct WindowsDiffInfos {
     {NULL, NULL},
 };
 
-static struct LinuxDiffInfos {
-    struct DiffInfo DIFF_MERGE;
-    struct DiffInfo MELD_MERGE;
-    struct DiffInfo KDIFF3;
-    struct DiffInfo _NULL_TERMINATED;
+static const struct LinuxDiffInfos {
+    const struct DiffInfo DIFF_MERGE;
+    const struct DiffInfo MELD_MERGE;
+    const struct DiffInfo KDIFF3;
+    const struct DiffInfo _NULL_TERMINATED;
 } LINUX_DIFFS = {
     {"/usr/bin/diffmerge", "--nosplash %s %s"},
     {"/usr/bin/meld", "%s %s"},
@@ -127,11 +127,11 @@ static struct LinuxDiffInfos {
 /*
  * A reporter which opens the diff between the received file as the approve file.
  */
-extern FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff);
+extern FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff);
 
-extern struct DiffInfo* approval_first_working_diff(struct DiffInfo* diffInfos);
-extern struct DiffInfo* approval_first_working_mac_diff(struct MacDiffInfos* diffInfos);
-extern struct DiffInfo* approval_first_working_windows_diff(struct WindowsDiffInfos* diffInfos);
-extern struct DiffInfo* approval_first_working_linux_diff(struct LinuxDiffInfos* diffInfos);
+extern const struct DiffInfo* approval_first_working_diff(const struct DiffInfo* diffInfos);
+extern const struct DiffInfo* approval_first_working_mac_diff(const struct MacDiffInfos* diffInfos);
+extern const struct DiffInfo* approval_first_working_windows_diff(const struct WindowsDiffInfos* diffInfos);
+extern const struct DiffInfo* approval_first_working_linux_diff(const struct LinuxDiffInfos* diffInfos);
 
 #endif

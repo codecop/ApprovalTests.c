@@ -11,6 +11,6 @@ extern void approvals_clear_reporters(void);
 extern FailureReporterResult approval_report_failure_quiet(*);
 */
 
-extern void approval_report_failure(struct ApprovalFileNames file_names,
-                                    struct ApprovalData data,
-                                    struct ApprovalVerifyLine verify_line);
+extern void approval_report_failure(const struct ApprovalFileNames file_names,
+                                    const struct ApprovalData data,
+                                    const struct ApprovalVerifyLine verify_line);

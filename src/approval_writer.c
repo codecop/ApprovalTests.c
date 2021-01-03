@@ -13,13 +13,13 @@
 #define APPROVED "approved"
 #define RECEIVED "received"
 
-static void assert_approval_base_name(struct ApprovalBaseName name)
+static void assert_approval_base_name(const struct ApprovalBaseName name)
 {
     assert_str_not_empty(name.base_name);
     assert_not_null(name.extension_no_dot);
 }
 
-static const char* create_approvals_file_name_for(struct ApprovalBaseName name, const char* suffix)
+static const char* create_approvals_file_name_for(const struct ApprovalBaseName name, const char* suffix)
 {
     assert_approval_base_name(name);
     assert_str_not_empty(suffix);
@@ -31,17 +31,17 @@ static const char* create_approvals_file_name_for(struct ApprovalBaseName name, 
                                 name.extension_no_dot);
 }
 
-const char* approval_writer_create_approved_file_name(struct ApprovalBaseName name)
+const char* approval_writer_create_approved_file_name(const struct ApprovalBaseName name)
 {
     return create_approvals_file_name_for(name, APPROVED);
 }
 
-const char* approval_writer_create_received_file_name(struct ApprovalBaseName name)
+const char* approval_writer_create_received_file_name(const struct ApprovalBaseName name)
 {
     return create_approvals_file_name_for(name, RECEIVED);
 }
 
-void approval_writer_write_received_file(struct ApprovalBaseName name, const char* received)
+void approval_writer_write_received_file(const struct ApprovalBaseName name, const char* received)
 {
     assert_approval_base_name(name);
     assert_not_null(received);
@@ -51,7 +51,7 @@ void approval_writer_write_received_file(struct ApprovalBaseName name, const cha
     free((void*)received_name);
 }
 
-void approval_writer_delete_received_file(struct ApprovalBaseName name)
+void approval_writer_delete_received_file(const struct ApprovalBaseName name)
 {
     assert_approval_base_name(name);
 

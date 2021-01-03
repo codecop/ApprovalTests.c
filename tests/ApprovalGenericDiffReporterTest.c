@@ -22,17 +22,17 @@ static void show_windows_diff_reporter(void** state)
     approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_DIFFS.KDIFF3));
 
     approval_report_failure(
-        (struct ApprovalFileNames){"tests/ApprovalGenericDiffReporterTest_approved.txt",
+        (const struct ApprovalFileNames){"tests/ApprovalGenericDiffReporterTest_approved.txt",
                                    "tests/ApprovalGenericDiffReporterTest_received.txt"},
-        (struct ApprovalData){"ignored", "ignored"},
-        (struct ApprovalVerifyLine){"tests/ApprovalGenericDiffReporterTest.c", 58});
+        (const struct ApprovalData){"ignored", "ignored"},
+        (const struct ApprovalVerifyLine){"tests/ApprovalGenericDiffReporterTest.c", 58});
 }
 
 static void test_find_no_working_reporter(void** state)
 {
     (void)state; /* unused */
 
-    struct DiffInfo* diff = approval_first_working_mac_diff(&MAC_DIFFS);
+    const struct DiffInfo* diff = approval_first_working_mac_diff(&MAC_DIFFS);
 
     assert_null(diff);
 }
@@ -42,7 +42,7 @@ static void test_find_first_working_windows_reporter(void** state)
     (void)state; /* unused */
     assume_has_file(windows_kdiff3);
 
-    struct DiffInfo* diff = approval_first_working_windows_diff(&WINDOWS_DIFFS);
+    const struct DiffInfo* diff = approval_first_working_windows_diff(&WINDOWS_DIFFS);
 
     assert_string_equal(WINDOWS_DIFFS.KDIFF3.diff_program, diff->diff_program);
 }
@@ -52,7 +52,7 @@ static void test_find_first_working_linux_reporter(void** state)
     (void)state; /* unused */
     assume_has_file(linux_kdiff3);
 
-    struct DiffInfo* diff = approval_first_working_linux_diff(&LINUX_DIFFS);
+    const struct DiffInfo* diff = approval_first_working_linux_diff(&LINUX_DIFFS);
 
     assert_string_equal(LINUX_DIFFS.KDIFF3.diff_program, diff->diff_program);
 }

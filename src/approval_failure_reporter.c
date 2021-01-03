@@ -49,34 +49,34 @@ void __approvals_set_final_reporter(FailureReporter reporter)
     }
 }
 
-static void assert_approval_file_names(struct ApprovalFileNames file_names)
+static void assert_approval_file_names(const struct ApprovalFileNames file_names)
 {
     assert_str_not_empty(file_names.approved);
     assert_str_not_empty(file_names.received);
 }
 
-static void assert_approval_data(struct ApprovalData data)
+static void assert_approval_data(const struct ApprovalData data)
 {
     assert_not_null(data.approved);
     assert_not_null(data.received);
 }
 
-static void assert_approval_verify_line(struct ApprovalVerifyLine verify_line)
+static void assert_approval_verify_line(const struct ApprovalVerifyLine verify_line)
 {
     assert_str_not_empty(verify_line.file);
     assert(verify_line.line > 0);
 }
 
-static void run_final_reporter(struct ApprovalFileNames file_names,
-                               struct ApprovalData data,
-                               struct ApprovalVerifyLine verify_line)
+static void run_final_reporter(const struct ApprovalFileNames file_names,
+                               const struct ApprovalData data,
+                               const struct ApprovalVerifyLine verify_line)
 {
     (*final_reporter)(file_names, data, verify_line);
 }
 
-void approval_report_failure(struct ApprovalFileNames file_names,
-                             struct ApprovalData data,
-                             struct ApprovalVerifyLine verify_line)
+void approval_report_failure(const struct ApprovalFileNames file_names,
+                             const struct ApprovalData data,
+                             const struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
     assert_approval_data(data);
@@ -94,9 +94,9 @@ void approval_report_failure(struct ApprovalFileNames file_names,
     run_final_reporter(file_names, data, verify_line);
 }
 
-FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames file_names,
-                                                    struct ApprovalData data,
-                                                    struct ApprovalVerifyLine verify_line)
+FailureReporterResult approval_report_failure_quiet(const struct ApprovalFileNames file_names,
+                                                    const struct ApprovalData data,
+                                                    const struct ApprovalVerifyLine verify_line)
 {
     assert_approval_file_names(file_names);
     (void)data;        /* unused */
@@ -110,9 +110,9 @@ FailureReporterResult approval_report_failure_quiet(struct ApprovalFileNames fil
     return FailureReport_continue;
 }
 
-FailureReporterResult approval_report_failure_assert(struct ApprovalFileNames file_names,
-                                                     struct ApprovalData data,
-                                                     struct ApprovalVerifyLine verify_line)
+FailureReporterResult approval_report_failure_assert(const struct ApprovalFileNames file_names,
+                                                     const struct ApprovalData data,
+                                                     const struct ApprovalVerifyLine verify_line)
 {
     (void)file_names;  /* unused */
     (void)verify_line; /* unused */

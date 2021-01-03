@@ -11,9 +11,9 @@
 
 #include "../include/approvals_reporters.h"
 
-FailureReporterResult __approval_report_failure_cmocka(struct ApprovalFileNames file_names,
-                                                       struct ApprovalData data,
-                                                       struct ApprovalVerifyLine verify_line)
+FailureReporterResult __approval_report_failure_cmocka(const struct ApprovalFileNames file_names,
+                                                       const struct ApprovalData data,
+                                                       const struct ApprovalVerifyLine verify_line)
 {
     (void)file_names; /* unused */
 

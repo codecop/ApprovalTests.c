@@ -6,8 +6,8 @@
 #include "../include/approvals_reporters.h"
 /*
  * in public include
-extern FailureReporter approval_report_failure_generic_diff(struct DiffInfo diff);
+extern FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff);
 */
 
-extern FailureReporterResult approval_open_diff_tool(struct DiffInfo diff,
-                                                     struct ApprovalFileNames file_names);
+extern FailureReporterResult approval_open_diff_tool(const struct DiffInfo diff,
+                                                     const struct ApprovalFileNames file_names);
