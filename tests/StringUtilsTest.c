@@ -106,6 +106,23 @@ static void test_string_joining(void** state)
     free((void*)s);
 }
 
+static void test_string_count_char(void** state)
+{
+    (void)state; /* unused */
+
+    unsigned int count = string_count("", '\n');
+    assert_int_equal(0, count);
+
+    count = string_count("foo", '\n');
+    assert_int_equal(0, count);
+
+    count = string_count("foo", 'f');
+    assert_int_equal(1, count);
+
+    count = string_count("foo", 'o');
+    assert_int_equal(2, count);
+}
+
 int main(void)
 {
     cmocka_print_test_suite;
@@ -119,6 +136,7 @@ int main(void)
         cmocka_unit_test(test_string_joining_two),               /* */
         cmocka_unit_test(test_string_joining_multiple),          /* */
         cmocka_unit_test(test_string_joining),                   /* */
+        cmocka_unit_test(test_string_count_char),                /* */
     };
 
     return cmocka_run_group_tests(test_suite, NULL, NULL);

@@ -98,3 +98,18 @@ const char* string_create_empty(void)
     *empty = TERM;
     return empty;
 }
+
+unsigned int string_count(const char* s, char needle)
+{
+    assert_not_null(s);
+    unsigned int count = 0;
+
+    while (*s != TERM) {
+        if (*s == needle) {
+            count++;
+        }
+        s += 1;
+    }
+
+    return count;
+}

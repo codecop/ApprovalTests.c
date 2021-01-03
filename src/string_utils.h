@@ -11,3 +11,4 @@ extern const char* string_create_substring(const char* s, size_t start, size_t l
 extern size_t string_count_joined(size_t count, ...);
 extern const char* string_create_joined(size_t count, ...);
 extern const char* string_create_empty(void);
+extern unsigned int string_count(const char* s, char needle);
