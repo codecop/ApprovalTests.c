@@ -36,9 +36,9 @@ typedef FailureReporterResult (*FailureReporter)(const struct ApprovalFileNames 
                                                  const struct ApprovalData data,
                                                  const struct ApprovalVerifyLine verify_line);
 
-extern void approvals_use_reporter(FailureReporter reporter);
+extern void approvals_use_reporter(const FailureReporter reporter);
 extern void approvals_clear_reporters(void);
-extern void __approvals_set_final_reporter(FailureReporter reporter);
+extern void __approvals_set_final_reporter(const FailureReporter reporter);
 
 /*
  * Available reporters.

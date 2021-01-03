@@ -7,7 +7,7 @@
 extern void __approvals_approve(const char* received,
                                 const char* full_file_name,
                                 const char* test_name,
-                                int line,
+                                const int line,
                                 const char* extension_no_dot);
 
 #ifndef __approvals_final_reporter

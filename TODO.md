@@ -1,9 +1,5 @@
 # Open
 
-* C way
-
-  * `const struct` and const everything?
-
 * Documentation in Markdown
 
   * describe features related to usual approvals:

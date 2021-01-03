@@ -26,7 +26,7 @@ bool string_starts_with(const char* s, const char* prefix)
     return *pi == TERM;
 }
 
-const char* string_create_substring(const char* s, size_t start, size_t length)
+const char* string_create_substring(const char* s, const size_t start, const size_t length)
 {
     assert_not_null(s);
     assert(start + length <= strlen(s));
@@ -40,7 +40,7 @@ const char* string_create_substring(const char* s, size_t start, size_t length)
     return substring;
 }
 
-static size_t vstring_count_joined(size_t count, va_list strings)
+static size_t vstring_count_joined(const size_t count, va_list strings)
 {
     size_t length = 0;
 
@@ -53,7 +53,7 @@ static size_t vstring_count_joined(size_t count, va_list strings)
     return length;
 }
 
-size_t string_count_joined(size_t count, ...)
+size_t string_count_joined(const size_t count, ...)
 {
     va_list strings;
 
@@ -64,7 +64,7 @@ size_t string_count_joined(size_t count, ...)
     return total_length;
 }
 
-const char* string_create_joined(size_t count, ...)
+const char* string_create_joined(const size_t count, ...)
 {
     va_list strings;
 
@@ -99,7 +99,7 @@ const char* string_create_empty(void)
     return empty;
 }
 
-unsigned int string_count(const char* s, char needle)
+unsigned int string_count(const char* s, const char needle)
 {
     assert_not_null(s);
     unsigned int count = 0;

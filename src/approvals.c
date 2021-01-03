@@ -53,7 +53,7 @@ static const char* format_received(const char* received, const char* extension_n
 void __approvals_approve(const char* raw_received,
                          const char* full_file_name,
                          const char* test_name,
-                         int line,
+                         const int line,
                          const char* extension_no_dot)
 {
     assert_not_null(raw_received);

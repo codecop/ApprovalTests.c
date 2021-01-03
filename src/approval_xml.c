@@ -10,7 +10,7 @@
 
 #include "string_builder.h"
 
-static void xml_newline(struct StringBuilder* sb, unsigned int intent)
+static void xml_newline(struct StringBuilder* sb, const unsigned int intent)
 {
     sb_append(sb, "\n");
     unsigned int i;

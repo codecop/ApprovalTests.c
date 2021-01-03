@@ -16,7 +16,7 @@
 static FailureReporter used_reporter[MAX_REPORTERS];
 static FailureReporter final_reporter = approval_report_failure_assert;
 
-void approvals_use_reporter(FailureReporter reporter)
+void approvals_use_reporter(const FailureReporter reporter)
 {
     if (reporter == NULL) {
         /* ignore NULL reporters, maybe no matching diff */
@@ -39,7 +39,7 @@ void approvals_clear_reporters(void)
     }
 }
 
-void __approvals_set_final_reporter(FailureReporter reporter)
+void __approvals_set_final_reporter(const FailureReporter reporter)
 {
     if (reporter) {
         final_reporter = reporter;

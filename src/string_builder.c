@@ -28,7 +28,7 @@ struct StringBuilder* make_sb(void)
     return this;
 }
 
-static int sb_ensure_size(struct StringBuilder* this, size_t length)
+static int sb_ensure_size(struct StringBuilder* this, const size_t length)
 {
     size_t required_size = this->position + length + 1;
     if (this->buffer_length > required_size) {
@@ -53,7 +53,7 @@ static int sb_ensure_size(struct StringBuilder* this, size_t length)
     return EXIT_SUCCESS;
 }
 
-struct StringBuilder* make_sb_sized(size_t length)
+struct StringBuilder* make_sb_sized(const size_t length)
 {
     struct StringBuilder* sb = make_sb();
     int error = sb_ensure_size(sb, length);
@@ -64,7 +64,7 @@ struct StringBuilder* make_sb_sized(size_t length)
     return sb;
 }
 
-int sb_append_len(struct StringBuilder* this, const char* s, size_t length)
+int sb_append_len(struct StringBuilder* this, const char* s, const size_t length)
 {
     int error = sb_ensure_size(this, length);
     if (error) {
