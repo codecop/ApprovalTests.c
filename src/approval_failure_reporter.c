@@ -6,7 +6,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #include "../include/approvals_reporters.h"
 #include "asserts.h"
