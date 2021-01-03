@@ -3,11 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <setjmp.h> /* used by cmocka */
-#include <stdarg.h> /* used by cmocka */
-#include <stddef.h> /* used by cmocka */
-
-#include <cmocka.h>
+#include "cmocka_utils.h"
 #include <stdlib.h>
 
 #include "../src/approval_writer.h"
@@ -67,6 +63,8 @@ static void test_write_received_file(void** state)
 
 int main(void)
 {
+    cmocka_print_test_suite;
+
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_create_approved_file_name), /* */
         cmocka_unit_test(test_create_received_file_name), /* */

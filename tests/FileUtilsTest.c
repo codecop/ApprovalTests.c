@@ -3,11 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <setjmp.h> /* jmp_buf for mocka */
-#include <stdarg.h> /* va_start for mocka */
-#include <stddef.h> /* size_t for mocka */
-
-#include <cmocka.h>
+#include "cmocka_utils.h"
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -112,6 +108,8 @@ static void test_save_empty_string(void** state)
 
 int main(void)
 {
+    cmocka_print_test_suite;
+
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_create_file_if_needed),      /* */
         cmocka_unit_test(test_leave_file_alone_if_exists), /* */

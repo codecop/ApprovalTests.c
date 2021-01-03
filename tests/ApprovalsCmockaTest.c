@@ -3,11 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <setjmp.h> /* used by cmocka */
-#include <stdarg.h> /* used by cmocka */
-#include <stddef.h> /* used by cmocka */
-
-#include <cmocka.h>
+#include "cmocka_utils.h"
 
 #include "../include/approvals_cmocka.h"
 
@@ -46,6 +42,8 @@ static void test_complex_complete_xml(void** state)
 
 int main(void)
 {
+    cmocka_print_test_suite;
+
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_verify_txt),           /* */
         cmocka_unit_test(test_verify_empty_no_file), /* */

@@ -3,11 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <setjmp.h> /* jmp_buf for mocka */
-#include <stdarg.h> /* va_start for mocka */
-#include <stddef.h> /* size_t for mocka */
-
-#include <cmocka.h>
+#include "cmocka_utils.h"
 #include <stdlib.h>
 
 #include "../src/string_utils.h"
@@ -112,6 +108,8 @@ static void test_string_joining(void** state)
 
 int main(void)
 {
+    cmocka_print_test_suite;
+
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_string_starts_with_other_string),  /* */
         cmocka_unit_test(test_string_not_starting_with_string),  /* */

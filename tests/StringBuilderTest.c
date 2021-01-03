@@ -3,11 +3,7 @@
  * Copyright (c) 2020, Peter Kofler. All rights reserved.
  * BSD3 licensed.
  */
-#include <setjmp.h> /* used by cmocka */
-#include <stdarg.h> /* used by cmocka */
-#include <stddef.h> /* used by cmocka */
-
-#include <cmocka.h>
+#include "cmocka_utils.h"
 #include <stdlib.h>
 
 #include "../src/string_builder.h"
@@ -75,6 +71,8 @@ static void test_string_builder_grow(void** state)
 
 int main(void)
 {
+    cmocka_print_test_suite;
+
     const struct CMUnitTest test_suite[] = {
         cmocka_unit_test(test_string_builder_empty), /* */
         cmocka_unit_test(test_string_append_empty),  /* */
