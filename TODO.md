@@ -2,7 +2,6 @@
 
 * C way
 
-  * allow function pointers at certain places for future expansion.
   * `const struct` and const everything?
 
 * Documentation in Markdown
