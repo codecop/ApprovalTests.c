@@ -97,12 +97,20 @@ const char* approval_load_text_file(const char* filename)
 
     size_t read = fread(read_buffer, sizeof(char), buffer_size, file);
     read_buffer[read] = '\0';
+
+    /* Maybe read a Windows text file and possible dropped the Windows newlines. */
+    if (read != buffer_size) {
+        unsigned int count_newlines = string_count(read_buffer, '\n');
+        if (read + count_newlines == buffer_size) {
+            read += count_newlines;
+        }
+    }
+
     if (read != buffer_size) {
         fprintf(stderr,
                 "Did not read whole file %s, got " PF_SIZE_T
                 " bytes instead of " PF_SIZE_T ".\n",
                 filename, read, buffer_size);
-        /* TODO add logic counting newlines and adapting the read count on windows */
     }
 
     close_verbosely(file, filename);
