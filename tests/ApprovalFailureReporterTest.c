@@ -4,7 +4,6 @@
  * BSD3 licensed.
  */
 #include "cmocka_utils.h"
-#include <stdio.h>
 
 #include "../src/approval_failure_reporter.h"
 
@@ -15,8 +14,8 @@ static void show_quiet_reporter_prints_copy_command(void** state)
 
     approvals_use_reporter(approval_report_failure_quiet);
 
-    printf("On Windows system expect output of\n%s\n",
-           ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
+    print_message("On Windows system expect output of\n%s\n",
+                  ">>>>>move /Y \"received_file.txt\" \"approved_file.txt\"<<<<<");
     approval_report_failure(
         (struct ApprovalFileNames){"approved_file.txt", "received_file.txt"},
         (struct ApprovalData){"ignored", "ignored"},
