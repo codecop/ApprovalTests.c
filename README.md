@@ -6,9 +6,23 @@ Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests
 >
 > In normal unit testing, you say `assert_int_equal(5, person->age)`. Approvals allow you to do this when the thing that you want to assert is no longer a primitive but a complex object. For example, you can say, `verify_txt(person_to_string(person))`.
 
-## Usage with cmocka
+## Features
 
-This approvals support [cmocka](https://cmocka.org/).
+### V1.0
+
+* Verify using `verify_txt()` and `verify_xml()` macros with [cmocka](https://cmocka.org/).
+* Format XML before verification.
+* Release binaries for Windows x64 and Linux x64.
+
+### V1.1
+
+* Add reporters: quiet reporter prints the copy command and
+  diff reporters open an external diff tool.
+* Extensive list of predefined diff tools for `approval_first_working_diff`.
+* Verify without cmocka using plain `assert`.
+* Release binaries for Windows x86 and Linux x86, too.
+
+## Usage
 
 ### Creating a Test
 
