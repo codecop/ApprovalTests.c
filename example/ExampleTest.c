@@ -10,7 +10,6 @@
 #include <cmocka.h> /* see https://cmocka.org/ */
 
 #include <approvals_cmocka.h> /* see https://github.com/codecop/ApprovalTests.c */
-#include <stdlib.h>           /* used by approvals */
 
 static void test_some_text(void** state)
 {
