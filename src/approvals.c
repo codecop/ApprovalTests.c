@@ -57,9 +57,9 @@ void __approvals_approve(const char* raw_received,
                          const char* extension_no_dot)
 {
     assert_not_null(raw_received);
-    assert_str_not_empty(full_file_name)
-    assert_str_not_empty(test_name)
-    assert_str_not_empty(extension_no_dot)
+    assert_str_not_empty(full_file_name);
+    assert_str_not_empty(test_name);
+    assert_str_not_empty(extension_no_dot);
 
     const char* base_name = approval_namer_create_approval_name(full_file_name, test_name);
     const struct ApprovalBaseName name = {base_name, extension_no_dot};
