@@ -127,7 +127,7 @@ static const struct LinuxDiffInfos {
 /*
  * A reporter which opens the diff between the received file as the approve file.
  */
-extern FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff);
+extern FailureReporter approval_report_failure_generic_diff(const struct DiffInfo* diff);
 
 extern const struct DiffInfo* approval_first_working_diff(const struct DiffInfo* diffInfos);
 extern const struct DiffInfo* approval_first_working_mac_diff(void);

@@ -24,7 +24,8 @@ static void assert_approval_file_names(const struct ApprovalFileNames file_names
     assert_str_not_empty(file_names.received);
 }
 
-FailureReporterResult approval_open_diff_tool(const struct DiffInfo diff, const struct ApprovalFileNames file_names)
+FailureReporterResult approval_open_diff_tool(const struct DiffInfo diff,
+                                              const struct ApprovalFileNames file_names)
 {
     assert_diff_info(diff);
     assert_approval_file_names(file_names);
@@ -57,14 +58,15 @@ FailureReporterResult approval_open_diff_tool(const struct DiffInfo diff, const 
 static struct DiffInfo used_diffs[MAX_DIFF_REPORTERS];
 
 #define open_diff_tool_name_for(i) open_diff_tool_##i
-#define open_diff_tool_for(i)                                                                    \
-    static FailureReporterResult open_diff_tool_name_for(i)(const struct ApprovalFileNames file_names, \
-                                                            const struct ApprovalData data,      \
-                                                            const struct ApprovalVerifyLine verify_line) \
-    {                                                                                            \
-        (void)data; /* unused */                                                                 \
-        (void)verify_line; /* unused */                                                          \
-        return approval_open_diff_tool(used_diffs[i], file_names);                               \
+#define open_diff_tool_for(i)                                                      \
+    static FailureReporterResult open_diff_tool_name_for(i) (                      \
+        const struct ApprovalFileNames file_names,                                 \
+        const struct ApprovalData data,                                            \
+        const struct ApprovalVerifyLine verify_line)                               \
+    {                                                                              \
+        (void)data;        /* unused */                                            \
+        (void)verify_line; /* unused */                                            \
+        return approval_open_diff_tool(used_diffs[i], file_names);                 \
     }
 
 open_diff_tool_for(0)
@@ -91,22 +93,26 @@ static FailureReporter diffs_reporters[MAX_DIFF_REPORTERS] = {
     open_diff_tool_name_for(9), /* */
 };
 
-FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff)
+FailureReporter approval_report_failure_generic_diff(const struct DiffInfo* diff)
 {
-    assert_diff_info(diff);
+    if (diff == NULL || diff->diff_program == NULL) {
+        /* no suitable diff was found */
+        return NULL;
+    }
 
     unsigned int i = 0;
     while (used_diffs[i].diff_program && i < (MAX_DIFF_REPORTERS - 1)) {
         i += 1;
         /* TODO test cases for more than one diff */
     }
-    used_diffs[i] = diff;
+    used_diffs[i] = *diff;
     return diffs_reporters[i];
 }
 
 static bool diff_is_working_in_this_environment(const struct DiffInfo* diff)
 {
-    assert_not_null(diff) assert_diff_info(*diff);
+    assert_not_null(diff);
+    assert_diff_info(*diff);
 
     const char* diff_program = approval_create_resolved_path(diff->diff_program);
     if (diff_program == NULL) {

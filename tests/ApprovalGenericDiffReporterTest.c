@@ -19,7 +19,7 @@ static void show_windows_diff_reporter(void** state)
 {
     (void)state; /* unused */
 
-    approvals_use_reporter(approval_report_failure_generic_diff(WINDOWS_DIFFS.KDIFF3));
+    approvals_use_reporter(approval_report_failure_generic_diff(&WINDOWS_DIFFS.KDIFF3));
 
     approval_report_failure(
         (const struct ApprovalFileNames){"tests/ApprovalGenericDiffReporterTest_approved.txt",
