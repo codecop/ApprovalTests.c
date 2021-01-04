@@ -130,8 +130,8 @@ static const struct LinuxDiffInfos {
 extern FailureReporter approval_report_failure_generic_diff(const struct DiffInfo diff);
 
 extern const struct DiffInfo* approval_first_working_diff(const struct DiffInfo* diffInfos);
-extern const struct DiffInfo* approval_first_working_mac_diff(const struct MacDiffInfos* diffInfos);
-extern const struct DiffInfo* approval_first_working_windows_diff(const struct WindowsDiffInfos* diffInfos);
-extern const struct DiffInfo* approval_first_working_linux_diff(const struct LinuxDiffInfos* diffInfos);
+extern const struct DiffInfo* approval_first_working_mac_diff(void);
+extern const struct DiffInfo* approval_first_working_windows_diff(void);
+extern const struct DiffInfo* approval_first_working_linux_diff(void);
 
 #endif

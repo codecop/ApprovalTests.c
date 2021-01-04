@@ -128,17 +128,20 @@ const struct DiffInfo* approval_first_working_diff(const struct DiffInfo* diffIn
     return NULL;
 }
 
-const struct DiffInfo* approval_first_working_mac_diff(const struct MacDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_mac_diff(void)
 {
+    const struct MacDiffInfos* diffInfos = &MAC_DIFFS;
     return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }
 
-const struct DiffInfo* approval_first_working_windows_diff(const struct WindowsDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_windows_diff(void)
 {
+    const struct WindowsDiffInfos* diffInfos = &WINDOWS_DIFFS;
     return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }
 
-const struct DiffInfo* approval_first_working_linux_diff(const struct LinuxDiffInfos* diffInfos)
+const struct DiffInfo* approval_first_working_linux_diff(void)
 {
+    const struct LinuxDiffInfos* diffInfos = &LINUX_DIFFS;
     return approval_first_working_diff((const struct DiffInfo*)diffInfos);
 }
