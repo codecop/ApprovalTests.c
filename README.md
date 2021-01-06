@@ -11,7 +11,8 @@ Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests
 ### V1.0
 
 * Verify using `verify_txt()` and `verify_xml()` macros with [cmocka](https://cmocka.org/).
-* Format XML before verification.
+* Format XML before verification, so approved file is readable.
+* See `example/ExampleTest`.
 * Release binaries for Windows x64 and Linux x64.
 
 ### V1.1
@@ -19,6 +20,7 @@ Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests
 * Add reporters: quiet reporter prints the copy command and
   diff reporters open an external diff tool.
 * Extensive list of predefined diff tools for `approval_first_working_diff`.
+* See `example/ReporterExampleTest`.
 * Verify without cmocka using plain `assert`.
 * Release binaries for Windows x86 and Linux x86, too.
 
