@@ -35,6 +35,7 @@
 *.i*86
 *.x86_64
 *.hex
+*.
 
 # Debug files
 *.dSYM/
@@ -54,11 +55,7 @@ dkms.conf
 # VSCode
 .vscode
 
-# local help scripts
-_compile.bat
-_test.bat
-
-# links
+# Windows links
 *.lnk
 *.URL
 
