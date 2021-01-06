@@ -22,6 +22,7 @@ Approval Tests for C99. This is a plain/portable C 99 version of [Approval Tests
 * Extensive list of predefined diff tools for `approval_first_working_diff`.
 * See `example/ReporterExampleTest`.
 * Verify without cmocka using plain `assert`.
+* See `example/NoFrameworkExampleTest`.
 * Release binaries for Windows x86 and Linux x86, too.
 
 ## Usage

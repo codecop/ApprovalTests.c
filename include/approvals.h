@@ -11,7 +11,7 @@ extern void __approvals_approve(const char* received,
                                 const char* extension_no_dot);
 
 #ifndef __approvals_final_reporter
-#define __approvals_final_reporter __approvals_set_final_reporter(0)
+#define __approvals_final_reporter
 #endif
 
 #define verify(__got, __extension) \
