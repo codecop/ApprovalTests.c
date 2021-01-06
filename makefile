@@ -122,6 +122,7 @@ very-clean: clean
 	rm -f $(lib_dir)/*.a
 
 ##### example targets
+# example build needs approvals to be "installed"
 
 $(example_dir)/%$(exec_extension): $(example_dir)/%.c ${library}
 	$(CC) $(C_TEST_FLAGS) $< $(LD_FLAGS) $(LD_APPROVALS) -o $@
