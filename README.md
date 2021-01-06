@@ -33,11 +33,11 @@ See the tests in `./example` folder.
 Compile and run a [cmocka](https://cmocka.org/) test which uses approvals using the [binary distribution](https://github.com/codecop/ApprovalTests.c/releases):
 
     gcc -std=c99 -pedantic -pedantic-errors -Wall -Wextra ...
-        AppTest.c
+        ExampleTest.c
         -l cmocka -l approvals
-        -o AppTest.exe
+        -o ExampleTest.exe
 
-    ./AppTest.exe
+    ./ExampleTest.exe
 
 ## Building
 
