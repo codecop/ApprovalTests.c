@@ -1,6 +1,6 @@
 @if exist "%~n0%~x0" @cd ..
 
-@set V=1.1
+@set V=1.2
 @rem rmdir /S /Q releases\v%V%
 mkdir releases\v%V%
 
